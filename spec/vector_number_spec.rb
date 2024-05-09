@@ -2,10 +2,12 @@
 
 RSpec.describe VectorNumber do
   it "has a version number" do
-    expect(VectorNumber::VERSION).not_to be nil
+    expect(VectorNumber::VERSION).not_to be_nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  describe ".[]" do
+    it "creates a new Vector" do
+      expect(described_class[1, 2, 3]).to be_a VectorNumber::Vector
+    end
   end
 end
