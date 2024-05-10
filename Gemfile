@@ -2,12 +2,14 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in vector_number.gemspec
 gemspec
 
-gem "rake", "~> 13.0"
+gem "rake", "~> 13.0", require: false
 
-gem "rspec", "~> 3.0"
+gem "rspec", "~> 3.0", require: false
 
-gem "rubocop", "~> 1.21"
-gem "rubocop-rspec"
+gem "rubocop", "~> 1.21", require: false
+gem "rubocop-performance", require: false
+gem "rubocop-rake", require: false
+gem "rubocop-rspec", require: false
+gem "rubocop-thread_safety", require: false
