@@ -27,7 +27,7 @@ class VectorNumber < Numeric
   #
   # @example
   #   VectorNumber[1, 2, 3] #=> (6)
-  #   VectorNumber
+  #   VectorNumber['b', VectorNumber::I, mult: :asterisk] #=> (1*'b' + 1i)
   # @param values [Array<Object>] values to put in the number
   # @param options [Hash{Symbol => Object}] options for the number
   # @return [VectorNumber]
