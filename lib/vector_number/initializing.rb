@@ -3,11 +3,15 @@
 class VectorNumber < Numeric
   # Private methods for initializing vector numbers.
   module Initializing
-    private
-
     # @return [Array<Symbol>]
-    KNOWN_OPTIONS = %i[].freeze
-    private_constant :KNOWN_OPTIONS
+    KNOWN_OPTIONS = %i[mult].freeze
+
+    # @return [Hash{Symbol => Object}]
+    DEFAULT_OPTIONS = {
+      mult: :dot
+    }.freeze
+
+    private
 
     # @param values [Array, Hash{Object => Numeric}, VectorNumber, nil]
     # @return [void]
@@ -53,10 +57,10 @@ class VectorNumber < Numeric
     # @param vector [VectorNumber, Hash{Object => Numeric}]
     # @return [void]
     def add_vector_to_data(vector)
-      vector.each do |unit, value|
-        raise RangeError, "#{value} is not a real number" unless real_number?(value)
+      vector.each do |unit, coefficient|
+        raise RangeError, "#{coefficient} is not a real number" unless real_number?(coefficient)
 
-        @data[unit] += value
+        @data[unit] += coefficient
       end
     end
 
@@ -64,8 +68,8 @@ class VectorNumber < Numeric
     # @yieldreturn [Numeric]
     # @return [void]
     def apply_transform(&block)
-      @data.transform_values! do |value|
-        new_value = block[value]
+      @data.transform_values! do |coefficient|
+        new_value = block[coefficient]
         next new_value if real_number?(new_value)
 
         raise RangeError, "transform returned non-real value"
@@ -80,16 +84,16 @@ class VectorNumber < Numeric
         if safe
           options
         elsif options.is_a?(Hash)
-          options.slice(*KNOWN_OPTIONS).freeze
+          DEFAULT_OPTIONS.merge(options.slice(*KNOWN_OPTIONS)).freeze
         else
-          {}
+          DEFAULT_OPTIONS
         end
     end
 
     # Compact coefficients, calculate size and freeze data.
     # @return [void]
     def finalize_contents
-      @data.delete_if { |_unit, value| value.zero? }
+      @data.delete_if { |_unit, coefficient| coefficient.zero? }
       @data.freeze
       @size = @data.size
     end

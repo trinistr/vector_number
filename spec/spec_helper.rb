@@ -13,6 +13,8 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.order = :random
+
   number_helper = Module.new do
     def num(...)
       VectorNumber.[](...)

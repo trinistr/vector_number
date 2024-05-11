@@ -4,6 +4,7 @@ require_relative "vector_number/version"
 require_relative "vector_number/initializing"
 require_relative "vector_number/comparing"
 require_relative "vector_number/querying"
+require_relative "vector_number/stringifying"
 
 # A class to add together anything.
 class VectorNumber < Numeric
@@ -12,6 +13,7 @@ class VectorNumber < Numeric
   include Initializing
   include Comparing
   include Querying
+  include Stringifying
 
   # @return [Complex]
   I = 1.i
@@ -21,6 +23,11 @@ class VectorNumber < Numeric
   # @return [Hash{Symbol => Object}]
   attr_reader :options
 
+  # Create new VectorNumber from +values+.
+  #
+  # @example
+  #   VectorNumber[1, 2, 3] #=> (6)
+  #   VectorNumber
   # @param values [Array<Object>] values to put in the number
   # @param options [Hash{Symbol => Object}] options for the number
   # @return [VectorNumber]
@@ -31,7 +38,10 @@ class VectorNumber < Numeric
   # @param values [Array, Hash{Object => Numeric}, VectorNumber]
   #   values for this number, hashes are treated like plain vector numbers
   # @param options [Hash{Symbol => Object}]
-  #   ignored if +values+ is a VectorNumber
+  #   if +values+ is a VectorNumber, this argument is ignored
+  #   and +options+ are copied directly
+  # @option options [Symbol, String] :mult
+  #   text to use between unit and coefficient, see {Stringifying#to_s} for explanation
   # @yieldparam coefficient [Numeric]
   # @yieldreturn [Numeric] new coefficient, must be a real number
   # @raise [RangeError] if any pesky non-reals get where they shouldn't
