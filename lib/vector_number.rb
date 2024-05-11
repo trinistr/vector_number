@@ -1,35 +1,47 @@
 # frozen_string_literal: true
 
 require_relative "vector_number/version"
+require_relative "vector_number/initializing"
+require_relative "vector_number/comparing"
 require_relative "vector_number/querying"
 
 # A class to add together anything.
 class VectorNumber < Numeric
   include Enumerable
 
+  include Initializing
+  include Comparing
   include Querying
 
-  class Error < StandardError; end
-
+  # @return [Complex]
   I = 1.i
 
   attr_reader :size
+  # @return [Hash{Symbol => Object}]
+  attr_reader :options
 
-  def self.[](*args)
-    new(args)
+  # @param values [Array<Object>] values to put in the number
+  # @param options [Hash{Symbol => Object}] options for the number
+  # @return [VectorNumber]
+  def self.[](*values, **options)
+    new(values, options)
   end
 
-  def initialize(array = nil)
+  # @param values [Array, Hash{Object => Numeric}, VectorNumber]
+  #   values for this number, hashes are treated like plain vector numbers
+  # @param options [Hash{Symbol => Object}]
+  #   ignored if +values+ is a VectorNumber
+  # @yieldparam coefficient [Numeric]
+  # @yieldreturn [Numeric] new coefficient, must be a real number
+  # @raise [RangeError] if any pesky non-reals get where they shouldn't
+  def initialize(values = nil, options = {}, &)
     super()
-    @data = Hash.new(0)
-    array&.each { |value| put_value_in_buckets(value) }
-    recalculate_contents
-  end
-
-  def dup
-    result = self.class.new
-    result.data = @data
-    result
+    initialize_from(values)
+    apply_transform(&) if block_given?
+    finalize_contents
+    values.is_a?(self.class) ? save_options(values.options, safe: true) : save_options(options)
+    @data.freeze
+    freeze
   end
 
   def each
@@ -42,24 +54,18 @@ class VectorNumber < Numeric
 
   protected
 
+  # @return [Hash{Object => Numeric}]
   attr_reader :data
 
-  def data=(hash)
-    @data = hash.dup
-    recalculate_contents
-  end
-
-  def add_vector_to_self(vector)
-    vector.each { |unit, value| @data[unit] += value }
-    recalculate_contents
-  end
-
+  # @return [Symbol]
   def type_of_self
     :vector
   end
 
   private
 
+  # @param value [Object]
+  # @return [Symbol]
   def type_of(value)
     case value
     when self.class
@@ -71,26 +77,5 @@ class VectorNumber < Numeric
     else
       :itself
     end
-  end
-
-  def put_value_in_buckets(value)
-    case type_of(value)
-    when :complex, :real
-      put_numeric_value_in_buckets(value)
-    when :vector
-      add_vector_to_self(value)
-    when :itself
-      @data[value] += 1
-    end
-  end
-
-  def put_numeric_value_in_buckets(value)
-    @data[1] += value.real
-    @data[I] += value.imaginary
-  end
-
-  def recalculate_contents
-    @data.delete_if { |_unit, value| value.zero? }
-    @size = @data.size
   end
 end
