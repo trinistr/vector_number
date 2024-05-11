@@ -1,0 +1,14 @@
+# TypeProf 0.21.3
+
+# Classes
+class VectorNumber
+  module Querying
+    def real?: -> false
+    def finite?: -> bool
+    def infinite?: -> (1 | nil)
+    def zero?: -> bool
+    def nonzero?: -> bool
+    def positive?: -> bool?
+    def negative?: -> bool?
+  end
+end

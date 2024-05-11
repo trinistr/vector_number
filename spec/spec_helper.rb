@@ -12,4 +12,11 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  number_helper = Module.new do
+    def num(...)
+      VectorNumber.[](...)
+    end
+  end
+  config.include number_helper
 end

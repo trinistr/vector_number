@@ -7,9 +7,13 @@ require_relative "vector_number/querying"
 class VectorNumber < Numeric
   include Enumerable
 
+  include Querying
+
   class Error < StandardError; end
 
   I = 1.i
+
+  attr_reader :size
 
   def self.[](*args)
     new(args)
@@ -19,10 +23,13 @@ class VectorNumber < Numeric
     super()
     @data = Hash.new(0)
     array&.each { |value| put_value_in_buckets(value) }
+    recalculate_contents
   end
 
-  def size
-    @data.size
+  def dup
+    result = self.class.new
+    result.data = @data
+    result
   end
 
   def each
@@ -39,10 +46,12 @@ class VectorNumber < Numeric
 
   def data=(hash)
     @data = hash.dup
+    recalculate_contents
   end
 
   def add_vector_to_self(vector)
     vector.each { |unit, value| @data[unit] += value }
+    recalculate_contents
   end
 
   def type_of_self
@@ -78,5 +87,10 @@ class VectorNumber < Numeric
   def put_numeric_value_in_buckets(value)
     @data[1] += value.real
     @data[I] += value.imaginary
+  end
+
+  def recalculate_contents
+    @data.delete_if { |_unit, value| value.zero? }
+    @size = @data.size
   end
 end
