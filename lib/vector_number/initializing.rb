@@ -80,7 +80,7 @@ class VectorNumber < Numeric
         if safe
           options
         elsif options.is_a?(Hash)
-          options.slice(KNOWN_OPTIONS).freeze
+          options.slice(*KNOWN_OPTIONS).freeze
         else
           {}
         end

@@ -2,7 +2,7 @@
 
 class VectorNumber < Numeric
   # Methods for querying state of the number.
-  # Mostly modeled after {Complex}.
+  # Mostly modeled after {::Complex}.
   module Querying
     # Always returns +false+.
     # @return [false]
@@ -28,6 +28,11 @@ class VectorNumber < Numeric
       size.zero?
     end
 
+    # @!parse
+    #   # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
+    #   # @return [VectorNumber, nil]
+    #   def nonzero?; end
+
     # Returns +true+ if all non-zero coefficients are positive,
     # +false+ if all non-zero coefficients are negative or all are zero,
     # or +nil+ otherwise.
@@ -40,6 +45,10 @@ class VectorNumber < Numeric
       end
     end
 
+    # Returns +true+ if all non-zero coefficients are negative,
+    # +false+ if all non-zero coefficients are positive or all are zero,
+    # or +nil+ otherwise.
+    # @return [Boolean, nil]
     def negative?
       if nonzero? && all? { |_u, v| v.negative? }
         true

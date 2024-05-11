@@ -1,4 +1,89 @@
-class VectorNumber
+# A class to add together anything.
+class VectorNumber < Numeric
+  include _Each[[Object, Numeric]]
+  include Enumerable[[Object, Numeric]]
+  # include VectorNumber::Initializing
+  # include VectorNumber::Comparing
+  # include VectorNumber::Querying
+  I: Complex
   VERSION: String
-  # See the writing guide of rbs: https://github.com/ruby/rbs#guides
+
+  attr_reader size: Integer
+
+  attr_reader options: ::Hash[Symbol, Object]
+
+  # _@param_ `values` — values to put in the number
+  #
+  # _@param_ `options` — options for the number
+  def self.[]: (*::Array[Object] values, **::Hash[Symbol, Object] options) -> VectorNumber
+
+  # _@param_ `values` — values for this number, hashes are treated like plain vector numbers
+  #
+  # _@param_ `options` — ignored if +values+ is a VectorNumber
+  def initialize: (?(::Array[untyped] | ::Hash[Object, Numeric] | VectorNumber)? values, ?::Hash[Symbol, Object] options) ?{ (Numeric coefficient) -> Numeric } -> void
+
+  # Always returns +false+.
+  def real?: () -> bool
+
+  # Returns +true+ if all coefficients are finite, +false+ otherwise.
+  def finite?: () -> bool
+
+  # Returns +1+ if any coefficients are infinite, +nil+ otherwise.
+  def infinite?: () -> Integer?
+
+  # Returns +true+ if there are no non-zero coefficients, +false+ otherwise.
+  def zero?: () -> bool
+
+  # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
+  def nonzero?: () -> VectorNumber?
+
+  # Returns +true+ if all non-zero coefficients are positive,
+  # +false+ if all non-zero coefficients are negative or all are zero,
+  # or +nil+ otherwise.
+  def positive?: () -> bool?
+
+  # Returns +true+ if all non-zero coefficients are negative,
+  # +false+ if all non-zero coefficients are positive or all are zero,
+  # or +nil+ otherwise.
+  def negative?: () -> bool?
+
+  # _@param_ `other`
+  def eql?: (Object other) -> bool
+
+  private
+
+  def type_of_self: () -> Symbol
+
+  # _@param_ `value`
+  def type_of: (Object value) -> Symbol
+
+  # _@param_ `values`
+  def initialize_from: ((::Array[untyped] | ::Hash[Object, Numeric] | VectorNumber)? values) -> void
+
+  # Create +@data+.
+  def initialize_contents: () -> void
+
+  # _@param_ `value`
+  def add_value_to_data: ((VectorNumber | Numeric | Object) value) -> void
+
+  # _@param_ `value`
+  def add_numeric_value_to_data: (Numeric value) -> void
+
+  # _@param_ `vector`
+  def add_vector_to_data: ((VectorNumber | ::Hash[Object, Numeric]) vector) -> void
+
+  def apply_transform: () ?{ (Numeric value) -> Numeric } -> void
+
+  # _@param_ `options`
+  #
+  # _@param_ `safe` — whether options come from another instance of this class
+  def save_options: (::Hash[Symbol, Object]? options, ?safe: bool) -> void
+
+  # Compact coefficients, calculate size and freeze data.
+  def finalize_contents: () -> void
+
+  # _@param_ `value`
+  def real_number?: (Object value) -> bool
+
+  attr_reader data: ::Hash[Object, Numeric]
 end

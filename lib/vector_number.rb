@@ -16,6 +16,7 @@ class VectorNumber < Numeric
   # @return [Complex]
   I = 1.i
 
+  # @return [Integer]
   attr_reader :size
   # @return [Hash{Symbol => Object}]
   attr_reader :options
@@ -44,10 +45,15 @@ class VectorNumber < Numeric
     freeze
   end
 
+  # Iterate through every pair of unit and coefficient.
+  # Returns {::Enumerator} if no block is given.
+  # @yieldparam unit [Object]
+  # @yieldparam coefficient [Numeric]
+  # @yieldreturn [void]
   def each
     return to_enum(__method__, size) unless block_given?
 
-    @data.each { |unit, value| yield [unit, value] if value.nonzero? }
+    @data.each { |unit, value| yield unit, value if value.nonzero? }
   end
 
   alias each_pair each
