@@ -1,12 +1,12 @@
 # A class to add together anything.
 class VectorNumber < Numeric
   include _BaseMethods
-  include _Each[each_value_type]
-  include Enumerable[each_value_type]
   include VectorNumber::Initializing
+  include VectorNumber::Enumerating
   include VectorNumber::Comparing
   include VectorNumber::Querying
   include VectorNumber::Stringifying
+
   I: Complex
   VERSION: String
 
@@ -39,8 +39,12 @@ class VectorNumber < Numeric
           | ...
 
   def units: () -> values_list_type
+  alias keys units
 
-  def coefficients: () -> ::Array[coefficient_type]
+  def coefficients: () -> coefficients_list_type
+  alias values coefficients
+
+  def to_h: () -> plain_vector_type
 
   # _@param_ `other`
   def <=>: (Object other) -> Integer?
@@ -49,13 +53,6 @@ class VectorNumber < Numeric
   def to_s: (?mult: (Symbol | String)) -> String
 
   def inspect: () -> String
-
-  # _@param_ `unit`
-  #
-  # _@param_ `coefficient`
-  #
-  # _@param_ `mult`
-  def value_to_s: (unit_type unit, coefficient_type coefficient, mult: (Symbol | String)) -> String
 
   # Always returns +false+.
   def real?: () -> bool
@@ -85,6 +82,8 @@ class VectorNumber < Numeric
   # _@param_ `other`
   def eql?: (Object other) -> bool
 
+  private
+
   # _@param_ `values`
   def initialize_from: ((values_list_type | plain_vector_type | vector_type)? values) -> void
 
@@ -113,44 +112,18 @@ class VectorNumber < Numeric
   # _@param_ `value`
   def real_number?: (Object value) -> bool
 
+  # _@param_ `unit`
+  #
+  # _@param_ `coefficient`
+  #
+  # _@param_ `mult`
+  def value_to_s: (unit_type unit, coefficient_type coefficient, mult: (Symbol | String)) -> String
+
   @size: Integer
 
   @options: options_type
 
   @data: plain_vector_type
-
-  # Methods for querying state of the number.
-  # Mostly modeled after {::Complex}.
-  module Querying
-    include _BaseMethods
-    include _Each[each_value_type]
-    include Enumerable[each_value_type]
-
-    # Always returns +false+.
-    def real?: () -> bool
-
-    # Returns +true+ if all coefficients are finite, +false+ otherwise.
-    def finite?: () -> bool
-
-    # Returns +1+ if any coefficients are infinite, +nil+ otherwise.
-    def infinite?: () -> Integer?
-
-    # Returns +true+ if there are no non-zero coefficients, +false+ otherwise.
-    def zero?: () -> bool
-
-    # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
-    def nonzero?: () -> vector_type?
-
-    # Returns +true+ if all non-zero coefficients are positive,
-    # +false+ if all non-zero coefficients are negative or all are zero,
-    # or +nil+ otherwise.
-    def positive?: () -> bool?
-
-    # Returns +true+ if all non-zero coefficients are negative,
-    # +false+ if all non-zero coefficients are positive or all are zero,
-    # or +nil+ otherwise.
-    def negative?: () -> bool?
-  end
 
   # Methods for comparing with other numbers.
   module Comparing
@@ -160,12 +133,37 @@ class VectorNumber < Numeric
     def eql?: (Object other) -> bool
   end
 
+  module Enumerating
+    include _BaseMethods
+    include _Each[each_value_type]
+    include Enumerable[each_value_type]
+
+    # Iterate through every pair of unit and coefficient.
+    # Returns {::Enumerator} if no block is given.
+    #
+    # _@return_ — self
+    def each: () { (unit_type unit, coefficient_type coefficient) -> void } -> vector_type
+            | () -> Enumerator[each_value_type, Integer]
+            | ...
+    alias each_pair each
+
+    def units: () -> values_list_type
+    alias keys units
+
+    def coefficients: () -> coefficients_list_type
+    alias values coefficients
+
+    def to_h: () -> plain_vector_type
+  end
+
   # Private methods for initializing vector numbers.
   module Initializing
     include _BaseMethods
 
-    KNOWN_OPTIONS: ::Array[Symbol]
+    KNOWN_OPTIONS: list[Symbol]
     DEFAULT_OPTIONS: options_type
+
+    private
 
     # _@param_ `values`
     def initialize_from: ((values_list_type | plain_vector_type | vector_type)? values) -> void
@@ -196,9 +194,39 @@ class VectorNumber < Numeric
     def real_number?: (Object value) -> bool
   end
 
+  # Methods for querying state of the number.
+  # Mostly modeled after {::Complex}.
+  module Querying
+    include Enumerating
+
+    # Always returns +false+.
+    def real?: () -> bool
+
+    # Returns +true+ if all coefficients are finite, +false+ otherwise.
+    def finite?: () -> bool
+
+    # Returns +1+ if any coefficients are infinite, +nil+ otherwise.
+    def infinite?: () -> Integer?
+
+    # Returns +true+ if there are no non-zero coefficients, +false+ otherwise.
+    def zero?: () -> bool
+
+    # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
+    def nonzero?: () -> vector_type?
+
+    # Returns +true+ if all non-zero coefficients are positive,
+    # +false+ if all non-zero coefficients are negative or all are zero,
+    # or +nil+ otherwise.
+    def positive?: () -> bool?
+
+    # Returns +true+ if all non-zero coefficients are negative,
+    # +false+ if all non-zero coefficients are positive or all are zero,
+    # or +nil+ otherwise.
+    def negative?: () -> bool?
+  end
+
   # Methods and options for string representation.
   module Stringifying
-    include _BaseMethods
     include Querying
 
     MULT_STRINGS: ::Hash[Symbol, String]
@@ -207,6 +235,8 @@ class VectorNumber < Numeric
     def to_s: (?mult: (Symbol | String)) -> String
 
     def inspect: () -> String
+
+    private
 
     # _@param_ `unit`
     #

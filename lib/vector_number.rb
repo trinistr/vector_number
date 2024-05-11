@@ -2,15 +2,15 @@
 
 require_relative "vector_number/version"
 require_relative "vector_number/initializing"
+require_relative "vector_number/enumerating"
 require_relative "vector_number/comparing"
 require_relative "vector_number/querying"
 require_relative "vector_number/stringifying"
 
 # A class to add together anything.
 class VectorNumber < Numeric
-  include Enumerable
-
   include Initializing
+  include Enumerating
   include Comparing
   include Querying
   include Stringifying
@@ -54,24 +54,6 @@ class VectorNumber < Numeric
     @data.freeze
     freeze
   end
-
-  # Iterate through every pair of unit and coefficient.
-  # Returns {::Enumerator} if no block is given.
-  # @overload each
-  #   @yieldparam unit [Object]
-  #   @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
-  #   @yieldreturn [void]
-  #   @return [VectorNumber] self
-  # @overload each
-  #   @return [Enumerator]
-  def each
-    return to_enum { size } unless block_given?
-
-    @data.each { |u, c| yield u, c if c.nonzero? }
-    self
-  end
-
-  alias each_pair each
 
   protected
 

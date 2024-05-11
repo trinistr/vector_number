@@ -3,8 +3,11 @@ type vector_type = VectorNumber
 type unit_type = ::Object
 type coefficient_type = (::Integer | ::Float | ::Rational | ::BigDecimal)
 
+type list[T] = ::Array[T]
+
 type plain_vector_type = ::Hash[unit_type, coefficient_type]
-type values_list_type = ::Array[unit_type]
+type values_list_type = list[unit_type]
+type coefficients_list_type = list[coefficient_type]
 type each_value_type = [unit_type, coefficient_type]
 
 type options_type = ::Hash[Symbol, Object]
