@@ -1,0 +1,22 @@
+type vector_type = VectorNumber
+
+type unit_type = ::Object
+type coefficient_type = (::Integer | ::Float | ::Rational | ::BigDecimal)
+
+type plain_vector_type = ::Hash[unit_type, coefficient_type]
+type values_list_type = ::Array[unit_type]
+type each_value_type = [unit_type, coefficient_type]
+
+type options_type = ::Hash[Symbol, Object]
+
+interface _BaseMethods
+  def size: -> Integer
+  def options: -> options_type
+
+  # protected
+  def data: -> plain_vector_type
+  def type_of_self: -> Symbol
+
+  # private
+  def type_of: (unit_type) -> Symbol
+end

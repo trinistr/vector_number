@@ -13,7 +13,7 @@ class VectorNumber < Numeric
 
     private
 
-    # @param values [Array, Hash{Object => Numeric}, VectorNumber, nil]
+    # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber, nil]
     # @return [void]
     def initialize_from(values)
       initialize_contents unless values.is_a?(self.class)
@@ -54,7 +54,7 @@ class VectorNumber < Numeric
       @data[I] += value.imaginary
     end
 
-    # @param vector [VectorNumber, Hash{Object => Numeric}]
+    # @param vector [VectorNumber, Hash{Object => Integer, Float, Rational, BigDecimal}]
     # @return [void]
     def add_vector_to_data(vector)
       vector.each do |unit, coefficient|
@@ -64,10 +64,13 @@ class VectorNumber < Numeric
       end
     end
 
-    # @yieldparam value [Numeric]
-    # @yieldreturn [Numeric]
+    # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
+    # @yieldreturn [Integer, Float, Rational, BigDecimal]
     # @return [void]
+    # @raise [RangeError]
     def apply_transform(&block)
+      return unless block
+
       @data.transform_values! do |coefficient|
         new_value = block[coefficient]
         next new_value if real_number?(new_value)
@@ -93,7 +96,7 @@ class VectorNumber < Numeric
     # Compact coefficients, calculate size and freeze data.
     # @return [void]
     def finalize_contents
-      @data.delete_if { |_unit, coefficient| coefficient.zero? }
+      @data.delete_if { |_u, c| c.zero? }
       @data.freeze
       @size = @data.size
     end

@@ -35,20 +35,20 @@ class VectorNumber < Numeric
     new(values, options)
   end
 
-  # @param values [Array, Hash{Object => Numeric}, VectorNumber]
+  # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber]
   #   values for this number, hashes are treated like plain vector numbers
   # @param options [Hash{Symbol => Object}]
   #   if +values+ is a VectorNumber, this argument is ignored
-  #   and +options+ are copied directly
+  #   and +options+ are copied directly from +values+
   # @option options [Symbol, String] :mult
   #   text to use between unit and coefficient, see {Stringifying#to_s} for explanation
-  # @yieldparam coefficient [Numeric]
-  # @yieldreturn [Numeric] new coefficient, must be a real number
+  # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
+  # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
   # @raise [RangeError] if any pesky non-reals get where they shouldn't
   def initialize(values = nil, options = {}, &)
     super()
     initialize_from(values)
-    apply_transform(&) if block_given?
+    apply_transform(&)
     finalize_contents
     values.is_a?(self.class) ? save_options(values.options, safe: true) : save_options(options)
     @data.freeze
@@ -57,20 +57,25 @@ class VectorNumber < Numeric
 
   # Iterate through every pair of unit and coefficient.
   # Returns {::Enumerator} if no block is given.
-  # @yieldparam unit [Object]
-  # @yieldparam coefficient [Numeric]
-  # @yieldreturn [void]
+  # @overload each
+  #   @yieldparam unit [Object]
+  #   @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
+  #   @yieldreturn [void]
+  #   @return [VectorNumber] self
+  # @overload each
+  #   @return [Enumerator]
   def each
-    return to_enum(__method__, size) unless block_given?
+    return to_enum { size } unless block_given?
 
-    @data.each { |unit, value| yield unit, value if value.nonzero? }
+    @data.each { |u, c| yield u, c if c.nonzero? }
+    self
   end
 
   alias each_pair each
 
   protected
 
-  # @return [Hash{Object => Numeric}]
+  # @return [Hash{Object => Integer, Float, Rational, BigDecimal}]
   attr_reader :data
 
   # @return [Symbol]

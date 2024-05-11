@@ -18,6 +18,7 @@ class VectorNumber
     #   text to use between coefficient and unit,
     #   can be one of the keys in {MULT_STRINGS} or an arbitrary string
     # @return [String]
+    # @raise [ArgumentError] if +mult+ is not in {MULT_STRINGS}'s keys
     def to_s(mult: options[:mult])
       return "0" if zero?
 
@@ -44,7 +45,10 @@ class VectorNumber
     # @param coefficient [Numeric]
     # @param mult [Symbol, String]
     # @return [String]
+    # @raise [ArgumentError] if +mult+ is not in {MULT_STRINGS}'s keys
     def value_to_s(unit, coefficient, mult:)
+      raise ArgumentError, "unknown key :#{mult}", caller if mult.is_a?(Symbol) && !MULT_STRINGS.key?(mult)
+
       case unit
       when 1
         return coefficient.to_s
@@ -53,7 +57,8 @@ class VectorNumber
       end
 
       unit = "'#{unit}'" if unit.is_a?(String)
-      "#{coefficient}#{MULT_STRINGS[mult] || mult}#{unit}"
+      operator = mult.is_a?(String) ? mult : MULT_STRINGS[mult]
+      "#{coefficient}#{operator}#{unit}"
     end
   end
 end

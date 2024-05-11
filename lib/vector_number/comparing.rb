@@ -7,9 +7,12 @@ class VectorNumber < Numeric
     # @return [Boolean]
     def eql?(other)
       return true if equal?(other)
-      return false unless other.class == self.class
 
-      other.size == size && other.data == @data
+      if other.is_a?(self.class)
+        other.size == size && other.data == @data
+      else
+        false
+      end
     end
   end
 end

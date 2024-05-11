@@ -1,26 +1,61 @@
 # A class to add together anything.
 class VectorNumber < Numeric
-  include _Each[[Object, Numeric]]
-  include Enumerable[[Object, Numeric]]
-  # include VectorNumber::Initializing
-  # include VectorNumber::Comparing
-  # include VectorNumber::Querying
+  include _BaseMethods
+  include _Each[each_value_type]
+  include Enumerable[each_value_type]
+  include VectorNumber::Initializing
+  include VectorNumber::Comparing
+  include VectorNumber::Querying
+  include VectorNumber::Stringifying
   I: Complex
   VERSION: String
 
-  attr_reader size: Integer
-
-  attr_reader options: ::Hash[Symbol, Object]
-
+  # Create new VectorNumber from +values+.
+  #
   # _@param_ `values` — values to put in the number
   #
   # _@param_ `options` — options for the number
-  def self.[]: (*::Array[Object] values, **::Hash[Symbol, Object] options) -> VectorNumber
+  #
+  # ```ruby
+  # VectorNumber[1, 2, 3] #=> (6)
+  # VectorNumber
+  # ```
+  def self.[]: (*values_list_type values, **options_type options) -> vector_type
 
   # _@param_ `values` — values for this number, hashes are treated like plain vector numbers
   #
-  # _@param_ `options` — ignored if +values+ is a VectorNumber
-  def initialize: (?(::Array[untyped] | ::Hash[Object, Numeric] | VectorNumber)? values, ?::Hash[Symbol, Object] options) ?{ (Numeric coefficient) -> Numeric } -> void
+  # _@param_ `options` — if +values+ is a VectorNumber, this argument is ignored and +options+ are copied directly
+  def initialize:
+    (?(values_list_type | plain_vector_type | vector_type)? values, ?options_type options)
+    ?{ (coefficient_type coefficient) -> coefficient_type }
+    -> void
+
+  # Iterate through every pair of unit and coefficient.
+  # Returns {::Enumerator} if no block is given.
+  #
+  # _@return_ — self
+  def each: () { (unit_type unit, coefficient_type coefficient) -> void } -> vector_type
+          | () -> Enumerator[each_value_type, Integer]
+          | ...
+
+  def units: () -> values_list_type
+
+  def coefficients: () -> ::Array[coefficient_type]
+
+  # _@param_ `other`
+  def <=>: (Object other) -> Integer?
+
+  # _@param_ `mult` — text to use between coefficient and unit, can be one of the keys in {MULT_STRINGS} or an arbitrary string
+  def to_s: (?mult: (Symbol | String)) -> String
+
+  def inspect: () -> String
+
+  # _@param_ `unit`
+  #
+  # _@param_ `coefficient`
+  #
+  # _@param_ `mult`
+  def value_to_s: (unit_type unit, coefficient_type coefficient, mult: (Symbol | String)) -> String
 
   # Always returns +false+.
   def real?: () -> bool
@@ -35,7 +70,7 @@ class VectorNumber < Numeric
   def zero?: () -> bool
 
   # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
-  def nonzero?: () -> VectorNumber?
+  def nonzero?: () -> vector_type?
 
   # Returns +true+ if all non-zero coefficients are positive,
   # +false+ if all non-zero coefficients are negative or all are zero,
@@ -50,34 +85,27 @@ class VectorNumber < Numeric
   # _@param_ `other`
   def eql?: (Object other) -> bool
 
-  private
-
-  def type_of_self: () -> Symbol
-
-  # _@param_ `value`
-  def type_of: (Object value) -> Symbol
-
   # _@param_ `values`
-  def initialize_from: ((::Array[untyped] | ::Hash[Object, Numeric] | VectorNumber)? values) -> void
+  def initialize_from: ((values_list_type | plain_vector_type | vector_type)? values) -> void
 
   # Create +@data+.
   def initialize_contents: () -> void
 
   # _@param_ `value`
-  def add_value_to_data: ((VectorNumber | Numeric | Object) value) -> void
+  def add_value_to_data: ((vector_type | Numeric | unit_type) value) -> void
 
   # _@param_ `value`
   def add_numeric_value_to_data: (Numeric value) -> void
 
   # _@param_ `vector`
-  def add_vector_to_data: ((VectorNumber | ::Hash[Object, Numeric]) vector) -> void
+  def add_vector_to_data: ((vector_type | plain_vector_type) vector) -> void
 
-  def apply_transform: () ?{ (Numeric value) -> Numeric } -> void
+  def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
 
   # _@param_ `options`
   #
   # _@param_ `safe` — whether options come from another instance of this class
-  def save_options: (::Hash[Symbol, Object]? options, ?safe: bool) -> void
+  def save_options: (options_type? options, ?safe: bool) -> void
 
   # Compact coefficients, calculate size and freeze data.
   def finalize_contents: () -> void
@@ -85,5 +113,106 @@ class VectorNumber < Numeric
   # _@param_ `value`
   def real_number?: (Object value) -> bool
 
-  attr_reader data: ::Hash[Object, Numeric]
+  @size: Integer
+
+  @options: options_type
+
+  @data: plain_vector_type
+
+  # Methods for querying state of the number.
+  # Mostly modeled after {::Complex}.
+  module Querying
+    include _BaseMethods
+    include _Each[each_value_type]
+    include Enumerable[each_value_type]
+
+    # Always returns +false+.
+    def real?: () -> bool
+
+    # Returns +true+ if all coefficients are finite, +false+ otherwise.
+    def finite?: () -> bool
+
+    # Returns +1+ if any coefficients are infinite, +nil+ otherwise.
+    def infinite?: () -> Integer?
+
+    # Returns +true+ if there are no non-zero coefficients, +false+ otherwise.
+    def zero?: () -> bool
+
+    # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
+    def nonzero?: () -> vector_type?
+
+    # Returns +true+ if all non-zero coefficients are positive,
+    # +false+ if all non-zero coefficients are negative or all are zero,
+    # or +nil+ otherwise.
+    def positive?: () -> bool?
+
+    # Returns +true+ if all non-zero coefficients are negative,
+    # +false+ if all non-zero coefficients are positive or all are zero,
+    # or +nil+ otherwise.
+    def negative?: () -> bool?
+  end
+
+  # Methods for comparing with other numbers.
+  module Comparing
+    include _BaseMethods
+
+    # _@param_ `other`
+    def eql?: (Object other) -> bool
+  end
+
+  # Private methods for initializing vector numbers.
+  module Initializing
+    include _BaseMethods
+
+    KNOWN_OPTIONS: ::Array[Symbol]
+    DEFAULT_OPTIONS: options_type
+
+    # _@param_ `values`
+    def initialize_from: ((values_list_type | plain_vector_type | vector_type)? values) -> void
+
+    # Create +@data+.
+    def initialize_contents: () -> void
+
+    # _@param_ `value`
+    def add_value_to_data: ((vector_type | Numeric | unit_type) value) -> void
+
+    # _@param_ `value`
+    def add_numeric_value_to_data: (Numeric value) -> void
+
+    # _@param_ `vector`
+    def add_vector_to_data: ((vector_type | plain_vector_type) vector) -> void
+
+    def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
+
+    # _@param_ `options`
+    #
+    # _@param_ `safe` — whether options come from another instance of this class
+    def save_options: (options_type? options, ?safe: bool) -> void
+
+    # Compact coefficients, calculate size and freeze data.
+    def finalize_contents: () -> void
+
+    # _@param_ `value`
+    def real_number?: (Object value) -> bool
+  end
+
+  # Methods and options for string representation.
+  module Stringifying
+    include _BaseMethods
+    include Querying
+
+    MULT_STRINGS: ::Hash[Symbol, String]
+
+    # _@param_ `mult` — text to use between coefficient and unit, can be one of the keys in {MULT_STRINGS} or an arbitrary string
+    def to_s: (?mult: (Symbol | String)) -> String
+
+    def inspect: () -> String
+
+    # _@param_ `unit`
+    #
+    # _@param_ `coefficient`
+    #
+    # _@param_ `mult`
+    def value_to_s: (unit_type unit, coefficient_type coefficient, mult: (Symbol | String)) -> String
+  end
 end

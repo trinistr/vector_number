@@ -38,9 +38,9 @@ class VectorNumber < Numeric
     # or +nil+ otherwise.
     # @return [Boolean, nil]
     def positive?
-      if nonzero? && all? { |_u, v| v.positive? }
+      if nonzero? && all? { |_u, c| c.positive? }
         true
-      elsif zero? || all? { |_u, v| v.negative? }
+      elsif zero? || all? { |_u, c| c.negative? }
         false
       end
     end
@@ -50,9 +50,9 @@ class VectorNumber < Numeric
     # or +nil+ otherwise.
     # @return [Boolean, nil]
     def negative?
-      if nonzero? && all? { |_u, v| v.negative? }
+      if nonzero? && all? { |_u, c| c.negative? }
         true
-      elsif zero? || all? { |_u, v| v.positive? }
+      elsif zero? || all? { |_u, c| c.positive? }
         false
       end
     end
