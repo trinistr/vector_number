@@ -38,8 +38,12 @@ class VectorNumber < Numeric
     alias values coefficients
 
     # @return [Hash{Object => Integer, Float, Rational, BigDecimal}]
-    def to_h
-      @data.dup
+    def to_h(&)
+      if block_given?
+        @data.to_h(&)
+      else
+        @data.dup
+      end
     end
   end
 end

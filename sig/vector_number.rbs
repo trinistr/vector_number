@@ -154,6 +154,7 @@ class VectorNumber < Numeric
     alias values coefficients
 
     def to_h: () -> plain_vector_type
+            | () { (unit_type, coefficient_type) -> each_value_type } -> plain_vector_type
   end
 
   # Private methods for initializing vector numbers.

@@ -103,13 +103,24 @@ RSpec.describe VectorNumber::Enumerating, :aggregate_failures do
   end
 
   describe "#to_h" do
-    subject(:hash) { number.to_h }
+    subject(:hash) { number.to_h(&block) }
 
     let(:number) { composite_number }
+    let(:block) { nil }
 
-    it "returns plain vector representation without calling #each" do
-      # Can't actually test for not calling #each, as objects are frozen and can't be mocked.
-      expect(hash).to eq(1 => 5, "y" => 1, :a => 1)
+    context "without a block" do
+      it "returns plain vector representation without calling #each" do
+        # Can't actually test for not calling #each, as objects are frozen and can't be mocked.
+        expect(hash).to eq(1 => 5, "y" => 1, :a => 1)
+      end
+    end
+
+    context "with a block" do
+      let(:block) { ->(u, v) { [u, u.is_a?(Numeric) ? v : v * 0.5] } }
+
+      it "returns transformed plain vector representation" do
+        expect(hash).to eq(1 => 5, "y" => 0.5, :a => 0.5)
+      end
     end
   end
 end
