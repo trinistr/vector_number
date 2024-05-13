@@ -34,6 +34,8 @@ class VectorNumber
       result
     end
 
+    alias to_str to_s
+
     # @return [String]
     def inspect
       "(#{self})"
