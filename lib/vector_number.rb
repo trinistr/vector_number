@@ -3,6 +3,7 @@
 require_relative "vector_number/version"
 require_relative "vector_number/initializing"
 require_relative "vector_number/enumerating"
+require_relative "vector_number/converting"
 require_relative "vector_number/comparing"
 require_relative "vector_number/querying"
 require_relative "vector_number/stringifying"
@@ -11,6 +12,7 @@ require_relative "vector_number/stringifying"
 class VectorNumber < Numeric
   include Initializing
   include Enumerating
+  include Converting
   include Comparing
   include Querying
   include Stringifying

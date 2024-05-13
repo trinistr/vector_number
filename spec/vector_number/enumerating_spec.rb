@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe VectorNumber::Enumerating, :aggregate_failures do
+RSpec.describe VectorNumber::Enumerating do
   let(:zero_number) { num(Complex(0, 0), 0.0, 1, -1) }
   let(:real_number) { num(1.5r) }
   let(:composite_number) { num("y", :a, 5) }
@@ -10,7 +10,7 @@ RSpec.describe VectorNumber::Enumerating, :aggregate_failures do
   end
 
   describe "#each" do
-    context "when called without block" do
+    context "when called without block", :aggregate_failures do
       subject(:enum) { number.each }
 
       shared_examples "returns Enumerator" do |for_number:, size:|

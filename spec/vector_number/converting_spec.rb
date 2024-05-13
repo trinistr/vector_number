@@ -1,0 +1,235 @@
+# frozen_string_literal: true
+
+require "bigdecimal"
+require "bigdecimal/util"
+
+RSpec.describe VectorNumber::Converting do
+  let(:zero_number) { num }
+  let(:real_number) { num(999.13) }
+  let(:complex_number) { num(Complex(0.1, -13.4)) }
+  let(:composite_number) { num("y", :a, 5, Complex(3, 5), 1.3.i) }
+
+  describe "#real" do
+    subject(:real_part) { number.real }
+
+    shared_examples "returns real part" do |for_number:, value:|
+      context "with #{for_number.to_s.tr("_", " ")}" do
+        let(:number) { public_send(for_number) }
+
+        it "returns real part of the number" do
+          expect(real_part).to eq value
+        end
+      end
+    end
+
+    include_examples "returns real part", for_number: :zero_number, value: 0
+    include_examples "returns real part", for_number: :real_number, value: 999.13
+    include_examples "returns real part", for_number: :complex_number, value: 0.1
+    include_examples "returns real part", for_number: :composite_number, value: 8
+  end
+
+  describe "#imaginary" do
+    subject(:imaginary_part) { number.imaginary }
+
+    shared_examples "returns imaginary part" do |for_number:, value:|
+      context "with #{for_number.to_s.tr("_", " ")}" do
+        let(:number) { public_send(for_number) }
+
+        it "returns imaginary part of the number" do
+          expect(imaginary_part).to eq value
+        end
+      end
+    end
+
+    include_examples "returns imaginary part", for_number: :zero_number, value: 0
+    include_examples "returns imaginary part", for_number: :real_number, value: 0
+    include_examples "returns imaginary part", for_number: :complex_number, value: -13.4
+    include_examples "returns imaginary part", for_number: :composite_number, value: 6.3
+  end
+
+  describe "#to_i" do
+    subject(:conversion) { number.to_i }
+
+    context "with zero" do
+      let(:number) { zero_number }
+
+      it "returns value truncated to integer" do
+        expect(conversion).to be 0
+      end
+    end
+
+    context "with real number" do
+      let(:number) { real_number }
+
+      it "returns value truncated to integer" do
+        expect(conversion).to be 999
+      end
+    end
+
+    context "with complex number" do
+      let(:number) { complex_number }
+
+      it "raises RangeError" do
+        expect { conversion }.to raise_error RangeError
+      end
+    end
+
+    context "with composite number" do
+      let(:number) { composite_number }
+
+      it "raises RangeError" do
+        expect { conversion }.to raise_error RangeError
+      end
+    end
+  end
+
+  describe "#to_int" do
+    it "is an alias of #to_i" do
+      expect(described_class.instance_method(:to_int).original_name).to be :to_i
+    end
+  end
+
+  describe "#to_f" do
+    subject(:conversion) { number.to_f }
+
+    context "with zero" do
+      let(:number) { zero_number }
+
+      it "returns value as a Float" do
+        expect(conversion).to be 0.0
+      end
+    end
+
+    context "with real number" do
+      let(:number) { real_number }
+
+      it "returns value as a Float" do
+        expect(conversion).to be 999.13
+      end
+    end
+
+    context "with complex number" do
+      let(:number) { complex_number }
+
+      it "raises RangeError" do
+        expect { conversion }.to raise_error RangeError
+      end
+    end
+
+    context "with composite number" do
+      let(:number) { composite_number }
+
+      it "raises RangeError" do
+        expect { conversion }.to raise_error RangeError
+      end
+    end
+  end
+
+  describe "#to_r" do
+    subject(:conversion) { number.to_r }
+
+    context "with zero" do
+      let(:number) { zero_number }
+
+      it "returns value as a Rational" do
+        expect(conversion).to eql 0r
+      end
+    end
+
+    context "with real number" do
+      let(:number) { real_number }
+
+      it "returns value as a Rational" do
+        expect(conversion).to eql 999.13.to_r
+      end
+    end
+
+    context "with complex number" do
+      let(:number) { complex_number }
+
+      it "raises RangeError" do
+        expect { conversion }.to raise_error RangeError
+      end
+    end
+
+    context "with composite number" do
+      let(:number) { composite_number }
+
+      it "raises RangeError" do
+        expect { conversion }.to raise_error RangeError
+      end
+    end
+  end
+
+  describe "#to_d" do
+    subject(:conversion) { number.to_d }
+
+    context "with zero" do
+      let(:number) { zero_number }
+
+      it "returns value as a BigDecimal" do
+        expect(conversion).to eql BigDecimal("0")
+      end
+    end
+
+    context "with real number" do
+      let(:number) { real_number }
+
+      it "returns value as a BigDecimal" do
+        expect(conversion).to eql BigDecimal("999.13")
+      end
+    end
+
+    context "with complex number" do
+      let(:number) { complex_number }
+
+      it "raises RangeError" do
+        expect { conversion }.to raise_error RangeError
+      end
+    end
+
+    context "with composite number" do
+      let(:number) { composite_number }
+
+      it "raises RangeError" do
+        expect { conversion }.to raise_error RangeError
+      end
+    end
+  end
+
+  describe "#to_c" do
+    subject(:conversion) { number.to_c }
+
+    context "with zero" do
+      let(:number) { zero_number }
+
+      it "returns value as a Complex" do
+        expect(conversion).to eql Complex(0, 0)
+      end
+    end
+
+    context "with real number" do
+      let(:number) { real_number }
+
+      it "returns value as a Complex" do
+        expect(conversion).to eql Complex(999.13, 0)
+      end
+    end
+
+    context "with complex number" do
+      let(:number) { complex_number }
+
+      it "returns value as a Complex" do
+        expect(conversion).to eql Complex(0.1, -13.4)
+      end
+    end
+
+    context "with composite number" do
+      let(:number) { composite_number }
+
+      it "raises RangeError" do
+        expect { conversion }.to raise_error RangeError
+      end
+    end
+  end
+end

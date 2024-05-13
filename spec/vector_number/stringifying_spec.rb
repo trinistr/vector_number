@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe VectorNumber::Stringifying, :aggregate_failures do
+RSpec.describe VectorNumber::Stringifying do
   let(:zero_number) { num(13.i, -10.5ri, -2.5i) }
   let(:real_number) { num(567/123r) }
   let(:negative_number) { num(Complex(0, -3), -5) }

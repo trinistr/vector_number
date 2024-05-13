@@ -4,6 +4,7 @@ class VectorNumber < Numeric
   include VectorNumber::Initializing
   include VectorNumber::Enumerating
   include VectorNumber::Comparing
+  include VectorNumber::Converting
   include VectorNumber::Querying
   include VectorNumber::Stringifying
 
@@ -45,9 +46,30 @@ class VectorNumber < Numeric
   alias values coefficients
 
   def to_h: () -> plain_vector_type
+          | () { (unit_type, coefficient_type) -> each_value_type } -> plain_vector_type
 
   # _@param_ `other`
   def <=>: (Object other) -> Integer?
+
+  def real: () -> coefficient_type
+
+  def imaginary: () -> coefficient_type
+
+  def to_i: () -> Integer
+          | () -> void
+  alias to_int to_i
+
+  def to_f: () -> Float
+          | () -> void
+
+  def to_r: () -> Rational
+          | () -> void
+
+  def to_d: () -> BigDecimal
+          | () -> void
+
+  def to_c: () -> Complex
+          | () -> void
 
   # _@param_ `mult` — text to use between coefficient and unit, can be one of the keys in {MULT_STRINGS} or an arbitrary string
   def to_s: (?mult: (Symbol | String)) -> String
@@ -112,6 +134,12 @@ class VectorNumber < Numeric
   # _@param_ `value`
   def real_number?: (Object value) -> bool
 
+  def convertible_to_real?: () -> boolish
+
+  def convertible_to_complex?: () -> boolish
+
+  def raise_convert_error: (Class) -> void
+
   # _@param_ `unit`
   #
   # _@param_ `coefficient`
@@ -131,6 +159,39 @@ class VectorNumber < Numeric
 
     # _@param_ `other`
     def eql?: (Object other) -> bool
+  end
+
+  # Methods for converting to different number classes.
+  module Converting
+    include _BaseMethods
+
+    def real: () -> coefficient_type
+
+    def imaginary: () -> coefficient_type
+
+    def to_i: () -> Integer
+            | () -> void
+    alias to_int to_i
+
+    def to_f: () -> Float
+            | () -> void
+
+    def to_r: () -> Rational
+            | () -> void
+
+    def to_d: () -> BigDecimal
+            | () -> void
+
+    def to_c: () -> Complex
+            | () -> void
+
+    private
+
+    def convertible_to_real?: () -> boolish
+
+    def convertible_to_complex?: () -> boolish
+
+    def raise_convert_error: (Class) -> void
   end
 
   module Enumerating
