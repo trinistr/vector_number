@@ -9,7 +9,7 @@ require_relative "vector_number/querying"
 require_relative "vector_number/stringifying"
 
 # A class to add together anything.
-class VectorNumber < Numeric
+class VectorNumber
   include Initializing
   include Enumerating
   include Converting

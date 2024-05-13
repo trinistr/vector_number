@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class VectorNumber < Numeric
+class VectorNumber
   # Methods for converting to different number classes.
   module Converting
     # Return real part of the number.

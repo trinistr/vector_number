@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class VectorNumber < Numeric
+class VectorNumber
   # Methods for comparing with other numbers.
   module Comparing
     # @param other [Object]

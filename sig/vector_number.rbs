@@ -89,7 +89,7 @@ class VectorNumber < Numeric
   def zero?: () -> bool
 
   # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
-  def nonzero?: () -> vector_type?
+  def nonzero?: () -> self?
 
   # Returns +true+ if all non-zero coefficients are positive,
   # +false+ if all non-zero coefficients are negative or all are zero,
@@ -274,7 +274,7 @@ class VectorNumber < Numeric
     def zero?: () -> bool
 
     # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
-    def nonzero?: () -> vector_type?
+    def nonzero?: () -> self?
 
     # Returns +true+ if all non-zero coefficients are positive,
     # +false+ if all non-zero coefficients are negative or all are zero,

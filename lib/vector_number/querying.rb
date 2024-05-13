@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class VectorNumber < Numeric
+class VectorNumber
   # Methods for querying state of the number.
   # Mostly modeled after {::Complex}.
   module Querying
@@ -28,10 +28,11 @@ class VectorNumber < Numeric
       size.zero?
     end
 
-    # @!parse
-    #   # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
-    #   # @return [VectorNumber, nil]
-    #   def nonzero?; end
+    # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
+    # @return [VectorNumber, nil]
+    def nonzero?
+      zero? ? nil : self
+    end
 
     # Returns +true+ if all non-zero coefficients are positive,
     # +false+ if all non-zero coefficients are negative or all are zero,

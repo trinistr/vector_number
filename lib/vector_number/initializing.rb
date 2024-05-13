@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class VectorNumber < Numeric
+class VectorNumber
   # Private methods for initializing vector numbers.
   module Initializing
     # @return [Array<Symbol>]
