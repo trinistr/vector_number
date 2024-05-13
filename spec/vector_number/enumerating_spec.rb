@@ -14,49 +14,37 @@ RSpec.describe VectorNumber::Enumerating, :aggregate_failures do
       subject(:enum) { number.each }
 
       shared_examples "returns Enumerator" do |for_number:, size:|
-        let(:number) { public_send(for_number) }
+        context "with #{for_number.to_s.tr("_", " ")}" do
+          let(:number) { public_send(for_number) }
 
-        it "returns Enumerator with expected size" do
-          expect(enum).to be_a Enumerator
-          expect(enum.size).to be size
+          it "returns Enumerator with expected size" do
+            expect(enum).to be_a Enumerator
+            expect(enum.size).to be size
+          end
         end
       end
 
-      context "with zero" do
-        include_examples "returns Enumerator", for_number: :zero_number, size: 0
-      end
-
-      context "with simple number" do
-        include_examples "returns Enumerator", for_number: :real_number, size: 1
-      end
-
-      context "with composite number" do
-        include_examples "returns Enumerator", for_number: :composite_number, size: 3
-      end
+      include_examples "returns Enumerator", for_number: :zero_number, size: 0
+      include_examples "returns Enumerator", for_number: :real_number, size: 1
+      include_examples "returns Enumerator", for_number: :composite_number, size: 3
     end
 
     context "when called with block" do
       subject(:each_call) { ->(b) { number.each(&b) } }
 
       shared_examples "yields values" do |for_number:, values:|
-        let(:number) { public_send(for_number) }
+        context "with #{for_number.to_s.tr("_", " ")}" do
+          let(:number) { public_send(for_number) }
 
-        it "yields each unit and coefficient pair in arbitrary order" do
-          expect(&each_call).to yield_successive_args(*values)
+          it "yields each unit and coefficient pair in arbitrary order" do
+            expect(&each_call).to yield_successive_args(*values)
+          end
         end
       end
 
-      context "with zero" do
-        include_examples "yields values", for_number: :zero_number, values: []
-      end
-
-      context "with simple number" do
-        include_examples "yields values", for_number: :real_number, values: [[1, 1.5r]]
-      end
-
-      context "with composite number" do
-        include_examples "yields values", for_number: :composite_number, values: [["y", 1], [:a, 1], [1, 5]]
-      end
+      include_examples "yields values", for_number: :zero_number, values: []
+      include_examples "yields values", for_number: :real_number, values: [[1, 1.5r]]
+      include_examples "yields values", for_number: :composite_number, values: [["y", 1], [:a, 1], [1, 5]]
     end
   end
 
@@ -70,24 +58,18 @@ RSpec.describe VectorNumber::Enumerating, :aggregate_failures do
     subject(:units) { number.units }
 
     shared_examples "returns units" do |for_number:, values:|
-      let(:number) { public_send(for_number) }
+      context "with #{for_number.to_s.tr("_", " ")}" do
+        let(:number) { public_send(for_number) }
 
-      it "returns array of number's units in arbitrary order" do
-        expect(units).to match_array values
+        it "returns array of number's units in arbitrary order" do
+          expect(units).to match_array values
+        end
       end
     end
 
-    context "with zero" do
-      include_examples "returns units", for_number: :zero_number, values: []
-    end
-
-    context "with simple number" do
-      include_examples "returns units", for_number: :real_number, values: [1]
-    end
-
-    context "with composite number" do
-      include_examples "returns units", for_number: :composite_number, values: [1, "y", :a]
-    end
+    include_examples "returns units", for_number: :zero_number, values: []
+    include_examples "returns units", for_number: :real_number, values: [1]
+    include_examples "returns units", for_number: :composite_number, values: [1, "y", :a]
   end
 
   describe "#keys" do
@@ -100,24 +82,18 @@ RSpec.describe VectorNumber::Enumerating, :aggregate_failures do
     subject(:coefficients) { number.coefficients }
 
     shared_examples "returns coefficients" do |for_number:, values:|
-      let(:number) { public_send(for_number) }
+      context "with #{for_number.to_s.tr("_", " ")}" do
+        let(:number) { public_send(for_number) }
 
-      it "returns array of number's coefficients in arbitrary order" do
-        expect(coefficients).to match_array values
+        it "returns array of number's coefficients in arbitrary order" do
+          expect(coefficients).to match_array values
+        end
       end
     end
 
-    context "with zero" do
-      include_examples "returns coefficients", for_number: :zero_number, values: []
-    end
-
-    context "with simple number" do
-      include_examples "returns coefficients", for_number: :real_number, values: [1.5r]
-    end
-
-    context "with composite number" do
-      include_examples "returns coefficients", for_number: :composite_number, values: [5, 1, 1]
-    end
+    include_examples "returns coefficients", for_number: :zero_number, values: []
+    include_examples "returns coefficients", for_number: :real_number, values: [1.5r]
+    include_examples "returns coefficients", for_number: :composite_number, values: [5, 1, 1]
   end
 
   describe "#values" do
