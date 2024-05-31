@@ -2,6 +2,25 @@
 
 require "bigdecimal"
 
+# Starting with Ruby 3.2, Integer() behavior changed, and #to_str is called before #to_int.
+ruby_3_2_test_object = Object.new
+class << ruby_3_2_test_object
+  def to_int
+    raise RangeError
+  end
+  alias to_i to_int
+
+  def to_str
+    "abcd"
+  end
+end
+integer_exception_class =
+  begin
+    Integer(ruby_3_2_test_object)
+  rescue RangeError, ArgumentError => e
+    e.class
+  end
+
 RSpec.describe Kernel do
   let(:zero_number) { num }
   let(:real_number) { num(999.13) }
@@ -30,16 +49,16 @@ RSpec.describe Kernel do
     context "with complex number" do
       let(:number) { complex_number }
 
-      it "raises RangeError" do
-        expect { conversion }.to raise_error RangeError
+      it "raises #{integer_exception_class}" do
+        expect { conversion }.to raise_error integer_exception_class
       end
     end
 
     context "with composite number" do
       let(:number) { composite_number }
 
-      it "raises RangeError" do
-        expect { conversion }.to raise_error RangeError
+      it "raises #{integer_exception_class}" do
+        expect { conversion }.to raise_error integer_exception_class
       end
     end
   end
