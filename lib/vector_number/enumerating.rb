@@ -3,7 +3,7 @@
 class VectorNumber
   # Methods for enumerating values of the number.
   module Enumerating
-    include Enumerable
+    include ::Enumerable
 
     # Iterate through every pair of unit and coefficient.
     # Returns {::Enumerator} if no block is given.
@@ -14,10 +14,10 @@ class VectorNumber
     #   @return [VectorNumber] self
     # @overload each
     #   @return [Enumerator]
-    def each
+    def each(&)
       return to_enum { size } unless block_given?
 
-      @data.each { |u, c| yield u, c if c.nonzero? }
+      @data.each(&)
       self
     end
 
