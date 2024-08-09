@@ -50,7 +50,7 @@ class VectorNumber
     # @param value [Numeric]
     # @return [void]
     def add_numeric_value_to_data(value)
-      @data[1] += value.real
+      @data[R] += value.real
       @data[I] += value.imaginary
     end
 

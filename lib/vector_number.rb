@@ -17,8 +17,12 @@ class VectorNumber
   include Querying
   include Stringifying
 
-  # @return [Complex]
-  I = 1.i
+  # Get a unit for +n+th numeric dimension, where 1 is real, 2 is imaginary.
+  UNIT = ->(n) { (n - 1).i }.freeze
+  # Constant for real unit.
+  R = UNIT[1]
+  # Constant for imaginary unit.
+  I = UNIT[2]
 
   # @return [Integer]
   attr_reader :size

@@ -72,7 +72,7 @@ RSpec.describe VectorNumber::Initializing, :aggregate_failures do
 
     it "applies transformation before compaction" do
       expect(new_number.size).to eq 3
-      expect(new_number).to contain_exactly [1, 1.5r], [1.i, 1], ["s", 2]
+      expect(new_number).to contain_exactly [0.i, 1.5r], [1.i, 1], ["s", 2]
     end
 
     context "when transformation returns non-real number" do

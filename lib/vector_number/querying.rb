@@ -10,6 +10,19 @@ class VectorNumber
       false
     end
 
+    # Whether this VectorNumber can be considered strictly numeric, e.g. real or complex.
+    # @param dimensions [Integer] number of dimensions to consider "numeric"
+    #   - 0 — zero
+    #   - 1 — real number
+    #   - 2 — complex number, etc.
+    # @return [Boolean]
+    # @raise [ArgumentError] if +dimensions+ is negative
+    def numeric?(dimensions = 2)
+      raise ArgumentError, "`dimensions` must be non-negative" unless dimensions >= 0
+
+      size <= dimensions && (1..dimensions).count { @data[UNIT[_1]].nonzero? } == size
+    end
+
     # Returns +true+ if all coefficients are finite, +false+ otherwise.
     # @return [Boolean]
     def finite?

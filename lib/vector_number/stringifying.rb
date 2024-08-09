@@ -52,7 +52,7 @@ class VectorNumber
       raise ArgumentError, "unknown key :#{mult}", caller if mult.is_a?(Symbol) && !MULT_STRINGS.key?(mult)
 
       case unit
-      when 1
+      when R
         return coefficient.to_s
       when I
         return "#{coefficient}i"

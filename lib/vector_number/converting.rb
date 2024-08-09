@@ -6,7 +6,7 @@ class VectorNumber
     # Return real part of the number.
     # @return [Integer, Float, Rational, BigDecimal]
     def real
-      @data[1]
+      @data[R]
     end
 
     # Return imaginary part of the number.
