@@ -17,6 +17,14 @@ class VectorNumber
   include Querying
   include Stringifying
 
+  # @return [Array<Symbol>]
+  KNOWN_OPTIONS = %i[mult].freeze
+
+  # @return [Hash{Symbol => Object}]
+  DEFAULT_OPTIONS = {
+    mult: :dot
+  }.freeze
+
   # Get a unit for +n+th numeric dimension, where 1 is real, 2 is imaginary.
   UNIT = ->(n) { (n - 1).i }.freeze
   # Constant for real unit.
@@ -61,8 +69,13 @@ class VectorNumber
     freeze
   end
 
-  protected
+  private
 
-  # @return [Hash{Object => Integer, Float, Rational, BigDecimal}]
-  attr_reader :data
+  def default_options
+    DEFAULT_OPTIONS
+  end
+
+  def known_options
+    KNOWN_OPTIONS
+  end
 end

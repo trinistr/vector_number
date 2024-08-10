@@ -1,21 +1,19 @@
 type vector_type = VectorNumber
+type real_number = (Integer | Float | Rational | BigDecimal)
 
-type unit_type = ::Object
-type coefficient_type = (::Integer | ::Float | ::Rational | ::BigDecimal)
+type unit_type = Object
+type coefficient_type = real_number
 
-type list[T] = ::Array[T]
+type list[T] = Array[T]
 
-type plain_vector_type = ::Hash[unit_type, coefficient_type]
-type values_list_type = list[unit_type]
+type plain_vector_type = Hash[unit_type, coefficient_type]
+type units_list_type = list[unit_type]
 type coefficients_list_type = list[coefficient_type]
 type each_value_type = [unit_type, coefficient_type]
 
-type options_type = ::Hash[Symbol, Object]
+type options_type = Hash[Symbol, Object]
 
 interface _BaseMethods
   def size: -> Integer
   def options: -> options_type
-
-  # protected
-  def data: -> plain_vector_type
 end

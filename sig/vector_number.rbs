@@ -10,14 +10,17 @@ class VectorNumber < Numeric
 
   VERSION: String
 
+  KNOWN_OPTIONS: list[Symbol]
+  DEFAULT_OPTIONS: options_type
+
   UNIT: ^(Integer) -> Complex
   R: Complex
   I: Complex
 
-  def self.[]: (*values_list_type values, **options_type options) -> vector_type
+  def self.[]: (*unit_type values, **options_type options) -> vector_type
 
   def initialize:
-    (?(values_list_type | plain_vector_type | vector_type)? values, ?options_type options)
+    (?(units_list_type | plain_vector_type | vector_type)? values, ?options_type options)
     ?{ (coefficient_type coefficient) -> coefficient_type }
     -> void
 
@@ -25,18 +28,53 @@ class VectorNumber < Numeric
   @options: options_type
   @data: plain_vector_type
 
-  # Methods for comparing with other numbers.
-  module Comparing
+  # Private methods for initializing vector numbers.
+  module Initializing
     include _BaseMethods
     include Enumerating
-    include Converting
-    include Querying
 
-    def ==: (Object other) -> bool
+    private
 
-    def eql?: (Object other) -> bool
+    def initialize_from: ((units_list_type | plain_vector_type | vector_type)? values) -> void
 
-    def <=>: (Object other) -> Integer?
+    def initialize_contents: () -> void
+
+    def add_value_to_data: ((vector_type | Numeric | unit_type) value) -> void
+
+    def add_numeric_value_to_data: (Numeric value) -> void
+
+    def add_vector_to_data: ((vector_type | plain_vector_type) vector) -> void
+
+    def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
+
+    def save_options: (options_type? options, ?safe: bool) -> void
+    def default_options: () -> options_type
+    def known_options: () -> Array[Symbol]
+
+    def finalize_contents: () -> void
+
+    def real_number?: (Object value) -> bool
+  end
+
+  # Methods for enumerating values of the number.
+  module Enumerating
+    include _BaseMethods
+    include _Each[each_value_type]
+    include Enumerable[each_value_type]
+
+    def each: () { (unit_type unit, coefficient_type coefficient) -> void } -> self
+            | () -> Enumerator[each_value_type, Integer]
+            | ...
+    alias each_pair each
+
+    def units: () -> units_list_type
+    alias keys units
+
+    def coefficients: () -> coefficients_list_type
+    alias values coefficients
+
+    def to_h: () -> plain_vector_type
+            | () { (unit_type, coefficient_type) -> each_value_type } -> plain_vector_type
   end
 
   # Methods for converting to different number classes.
@@ -44,9 +82,9 @@ class VectorNumber < Numeric
     include _BaseMethods
     include Querying
 
-    def real: () -> coefficient_type
+    def real: () -> real_number
 
-    def imaginary: () -> coefficient_type
+    def imaginary: () -> real_number
 
     def to_i: () -> Integer
             | () -> void
@@ -69,53 +107,18 @@ class VectorNumber < Numeric
     def raise_convert_error: (Class) -> void
   end
 
-  # Methods for enumerating values of the number.
-  module Enumerating
+  # Methods for comparing with other numbers.
+  module Comparing
     include _BaseMethods
-    include _Each[each_value_type]
-    include Enumerable[each_value_type]
+    include Enumerating
+    include Converting
+    include Querying
 
-    def each: () { (unit_type unit, coefficient_type coefficient) -> void } -> vector_type
-            | () -> Enumerator[each_value_type, Integer]
-            | ...
-    alias each_pair each
+    def ==: (Object other) -> bool
 
-    def units: () -> values_list_type
-    alias keys units
+    def eql?: (Object other) -> bool
 
-    def coefficients: () -> coefficients_list_type
-    alias values coefficients
-
-    def to_h: () -> plain_vector_type
-            | () { (unit_type, coefficient_type) -> each_value_type } -> plain_vector_type
-  end
-
-  # Private methods for initializing vector numbers.
-  module Initializing
-    include _BaseMethods
-
-    KNOWN_OPTIONS: list[Symbol]
-    DEFAULT_OPTIONS: options_type
-
-    private
-
-    def initialize_from: ((values_list_type | plain_vector_type | vector_type)? values) -> void
-
-    def initialize_contents: () -> void
-
-    def add_value_to_data: ((vector_type | Numeric | unit_type) value) -> void
-
-    def add_numeric_value_to_data: (Numeric value) -> void
-
-    def add_vector_to_data: ((vector_type | plain_vector_type) vector) -> void
-
-    def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
-
-    def save_options: (options_type? options, ?safe: bool) -> void
-
-    def finalize_contents: () -> void
-
-    def real_number?: (Object value) -> bool
+    def <=>: (Object other) -> Integer?
   end
 
   # Methods for querying state of the number.
@@ -145,7 +148,7 @@ class VectorNumber < Numeric
   module Stringifying
     include Querying
 
-    MULT_STRINGS: ::Hash[Symbol, String]
+    MULT_STRINGS: Hash[Symbol, String]
 
     def to_s: (?mult: (Symbol | String)) -> String
 

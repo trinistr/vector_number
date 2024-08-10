@@ -3,25 +3,15 @@
 class VectorNumber
   # Private methods for initializing vector numbers.
   module Initializing
-    # @return [Array<Symbol>]
-    KNOWN_OPTIONS = %i[mult].freeze
-
-    # @return [Hash{Symbol => Object}]
-    DEFAULT_OPTIONS = {
-      mult: :dot
-    }.freeze
-
     private
 
     # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber, nil]
     # @return [void]
     def initialize_from(values)
-      initialize_contents unless values.is_a?(VectorNumber)
+      initialize_contents
 
       case values
-      when VectorNumber
-        @data = values.data.dup
-      when Hash
+      when VectorNumber, Hash
         add_vector_to_data(values)
       when Array
         values&.each { |value| add_value_to_data(value) }
@@ -57,7 +47,7 @@ class VectorNumber
     # @param vector [VectorNumber, Hash{Object => Integer, Float, Rational, BigDecimal}]
     # @return [void]
     def add_vector_to_data(vector)
-      vector.each do |unit, coefficient|
+      vector.each_pair do |unit, coefficient|
         raise RangeError, "#{coefficient} is not a real number" unless real_number?(coefficient)
 
         @data[unit] += coefficient
@@ -87,10 +77,18 @@ class VectorNumber
         if safe
           options
         elsif options.is_a?(Hash)
-          DEFAULT_OPTIONS.merge(options.slice(*KNOWN_OPTIONS)).freeze
+          default_options.merge(options.slice(*known_options)).freeze
         else
-          DEFAULT_OPTIONS
+          default_options
         end
+    end
+
+    def default_options
+      raise NotImplementedError
+    end
+
+    def known_options
+      raise NotImplementedError
     end
 
     # Compact coefficients, calculate size and freeze data.
