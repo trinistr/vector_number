@@ -15,6 +15,13 @@ RSpec.configure do |config|
 
   config.order = :random
 
+  config.formatter =
+    if config.files_to_run.size > 1
+      :progress
+    else
+      :documentation
+    end
+
   number_helper = Module.new do
     def num(...)
       VectorNumber.[](...)
