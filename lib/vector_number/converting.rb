@@ -19,7 +19,7 @@ class VectorNumber
     # @return [Integer]
     # @raise [RangeError] if any non-real part is non-zero
     def to_i
-      convertible_to_real? ? real.to_i : raise_convert_error(Integer)
+      numeric?(1) ? real.to_i : raise_convert_error(Integer)
     end
 
     alias to_int to_i
@@ -28,40 +28,40 @@ class VectorNumber
     # @return [Float]
     # @raise [RangeError] if any non-real part is non-zero
     def to_f
-      convertible_to_real? ? real.to_f : raise_convert_error(Float)
+      numeric?(1) ? real.to_f : raise_convert_error(Float)
     end
 
     # Return value as a Rational if only real part is non-zero.
     # @return [Rational]
     # @raise [RangeError] if any non-real part is non-zero
     def to_r
-      convertible_to_real? ? real.to_r : raise_convert_error(Rational)
+      numeric?(1) ? real.to_r : raise_convert_error(Rational)
     end
 
     # Return value as a BigDecimal if only real part is non-zero.
+    # @param ndigits [Integer] precision
     # @return [BigDecimal]
     # @raise [RangeError] if any non-real part is non-zero
     # @raise [NoMethodError] if 'bigdecimal/util' was not required
-    def to_d
-      convertible_to_real? ? real.to_d : raise_convert_error(BigDecimal)
+    def to_d(ndigits = nil)
+      if numeric?(1)
+        return BigDecimal(real, ndigits) if ndigits
+        return BigDecimal(real, Float::DIG) if real.is_a?(Float)
+
+        BigDecimal(real)
+      else
+        raise_convert_error(BigDecimal)
+      end
     end
 
     # Return value as a Complex if only real and/or imaginary parts are non-zero.
     # @return [Complex]
     # @raise [RangeError] if any non-real, non-imaginary part is non-zero
     def to_c
-      convertible_to_complex? ? Complex(real, imaginary) : raise_convert_error(Complex)
+      numeric?(2) ? Complex(real, imaginary) : raise_convert_error(Complex)
     end
 
     private
-
-    def convertible_to_real?
-      size.zero? || (size == 1 && real.nonzero?)
-    end
-
-    def convertible_to_complex?
-      convertible_to_real? || (size == 1 && imaginary.nonzero?) || (size == 2 && real.nonzero? && imaginary.nonzero?)
-    end
 
     def raise_convert_error(klass)
       raise RangeError, "can't convert #{self} into #{klass}", caller

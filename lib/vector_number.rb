@@ -56,7 +56,7 @@ class VectorNumber
     initialize_from(values)
     apply_transform(&)
     finalize_contents
-    values.is_a?(self.class) ? save_options(values.options, safe: true) : save_options(options)
+    values.is_a?(VectorNumber) ? save_options(values.options, safe: true) : save_options(options)
     @data.freeze
     freeze
   end
@@ -65,26 +65,4 @@ class VectorNumber
 
   # @return [Hash{Object => Integer, Float, Rational, BigDecimal}]
   attr_reader :data
-
-  # @return [Symbol]
-  def type_of_self
-    :vector
-  end
-
-  private
-
-  # @param value [Object]
-  # @return [Symbol]
-  def type_of(value)
-    case value
-    when self.class
-      value.type_of_self
-    when Complex
-      value.imaginary.nonzero? ? :complex : :real
-    when Numeric
-      value.real? ? :real : :itself
-    else
-      :itself
-    end
-  end
 end

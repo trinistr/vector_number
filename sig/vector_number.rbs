@@ -8,162 +8,41 @@ class VectorNumber < Numeric
   include VectorNumber::Querying
   include VectorNumber::Stringifying
 
-  I: Complex
   VERSION: String
 
-  # Create new VectorNumber from +values+.
-  #
-  # _@param_ `values` — values to put in the number
-  #
-  # _@param_ `options` — options for the number
-  #
-  # ```ruby
-  # VectorNumber[1, 2, 3] #=> (6)
-  # VectorNumber
-  # ```
+  UNIT: ^(Integer) -> Complex
+  R: Complex
+  I: Complex
+
   def self.[]: (*values_list_type values, **options_type options) -> vector_type
 
-  # _@param_ `values` — values for this number, hashes are treated like plain vector numbers
-  #
-  # _@param_ `options` — if +values+ is a VectorNumber, this argument is ignored and +options+ are copied directly
   def initialize:
     (?(values_list_type | plain_vector_type | vector_type)? values, ?options_type options)
     ?{ (coefficient_type coefficient) -> coefficient_type }
     -> void
 
-  # Iterate through every pair of unit and coefficient.
-  # Returns {::Enumerator} if no block is given.
-  #
-  # _@return_ — self
-  def each: () { (unit_type unit, coefficient_type coefficient) -> void } -> vector_type
-          | () -> Enumerator[each_value_type, Integer]
-          | ...
-
-  def units: () -> values_list_type
-  alias keys units
-
-  def coefficients: () -> coefficients_list_type
-  alias values coefficients
-
-  def to_h: () -> plain_vector_type
-          | () { (unit_type, coefficient_type) -> each_value_type } -> plain_vector_type
-
-  # _@param_ `other`
-  def <=>: (Object other) -> Integer?
-
-  def real: () -> coefficient_type
-
-  def imaginary: () -> coefficient_type
-
-  def to_i: () -> Integer
-          | () -> void
-  alias to_int to_i
-
-  def to_f: () -> Float
-          | () -> void
-
-  def to_r: () -> Rational
-          | () -> void
-
-  def to_d: () -> BigDecimal
-          | () -> void
-
-  def to_c: () -> Complex
-          | () -> void
-
-  # _@param_ `mult` — text to use between coefficient and unit, can be one of the keys in {MULT_STRINGS} or an arbitrary string
-  def to_s: (?mult: (Symbol | String)) -> String
-
-  def inspect: () -> String
-
-  # Always returns +false+.
-  def real?: () -> bool
-
-  # Returns +true+ if all coefficients are finite, +false+ otherwise.
-  def finite?: () -> bool
-
-  # Returns +1+ if any coefficients are infinite, +nil+ otherwise.
-  def infinite?: () -> Integer?
-
-  # Returns +true+ if there are no non-zero coefficients, +false+ otherwise.
-  def zero?: () -> bool
-
-  # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
-  def nonzero?: () -> self?
-
-  # Returns +true+ if all non-zero coefficients are positive,
-  # +false+ if all non-zero coefficients are negative or all are zero,
-  # or +nil+ otherwise.
-  def positive?: () -> bool?
-
-  # Returns +true+ if all non-zero coefficients are negative,
-  # +false+ if all non-zero coefficients are positive or all are zero,
-  # or +nil+ otherwise.
-  def negative?: () -> bool?
-
-  # _@param_ `other`
-  def eql?: (Object other) -> bool
-
-  private
-
-  # _@param_ `values`
-  def initialize_from: ((values_list_type | plain_vector_type | vector_type)? values) -> void
-
-  # Create +@data+.
-  def initialize_contents: () -> void
-
-  # _@param_ `value`
-  def add_value_to_data: ((vector_type | Numeric | unit_type) value) -> void
-
-  # _@param_ `value`
-  def add_numeric_value_to_data: (Numeric value) -> void
-
-  # _@param_ `vector`
-  def add_vector_to_data: ((vector_type | plain_vector_type) vector) -> void
-
-  def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
-
-  # _@param_ `options`
-  #
-  # _@param_ `safe` — whether options come from another instance of this class
-  def save_options: (options_type? options, ?safe: bool) -> void
-
-  # Compact coefficients, calculate size and freeze data.
-  def finalize_contents: () -> void
-
-  # _@param_ `value`
-  def real_number?: (Object value) -> bool
-
-  def convertible_to_real?: () -> boolish
-
-  def convertible_to_complex?: () -> boolish
-
-  def raise_convert_error: (Class) -> void
-
-  # _@param_ `unit`
-  #
-  # _@param_ `coefficient`
-  #
-  # _@param_ `mult`
-  def value_to_s: (unit_type unit, coefficient_type coefficient, mult: (Symbol | String)) -> String
-
   @size: Integer
-
   @options: options_type
-
   @data: plain_vector_type
 
   # Methods for comparing with other numbers.
   module Comparing
     include _BaseMethods
+    include Enumerating
+    include Converting
+    include Querying
 
-    # _@param_ `other`
+    def ==: (Object other) -> bool
+
     def eql?: (Object other) -> bool
+
+    def <=>: (Object other) -> Integer?
   end
 
   # Methods for converting to different number classes.
   module Converting
     include _BaseMethods
+    include Querying
 
     def real: () -> coefficient_type
 
@@ -179,30 +58,23 @@ class VectorNumber < Numeric
     def to_r: () -> Rational
             | () -> void
 
-    def to_d: () -> BigDecimal
-            | () -> void
+    def to_d: (Integer?) -> BigDecimal
+            | (Integer?) -> void
 
     def to_c: () -> Complex
             | () -> void
 
     private
 
-    def convertible_to_real?: () -> boolish
-
-    def convertible_to_complex?: () -> boolish
-
     def raise_convert_error: (Class) -> void
   end
 
+  # Methods for enumerating values of the number.
   module Enumerating
     include _BaseMethods
     include _Each[each_value_type]
     include Enumerable[each_value_type]
 
-    # Iterate through every pair of unit and coefficient.
-    # Returns {::Enumerator} if no block is given.
-    #
-    # _@return_ — self
     def each: () { (unit_type unit, coefficient_type coefficient) -> void } -> vector_type
             | () -> Enumerator[each_value_type, Integer]
             | ...
@@ -227,32 +99,22 @@ class VectorNumber < Numeric
 
     private
 
-    # _@param_ `values`
     def initialize_from: ((values_list_type | plain_vector_type | vector_type)? values) -> void
 
-    # Create +@data+.
     def initialize_contents: () -> void
 
-    # _@param_ `value`
     def add_value_to_data: ((vector_type | Numeric | unit_type) value) -> void
 
-    # _@param_ `value`
     def add_numeric_value_to_data: (Numeric value) -> void
 
-    # _@param_ `vector`
     def add_vector_to_data: ((vector_type | plain_vector_type) vector) -> void
 
     def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
 
-    # _@param_ `options`
-    #
-    # _@param_ `safe` — whether options come from another instance of this class
     def save_options: (options_type? options, ?safe: bool) -> void
 
-    # Compact coefficients, calculate size and freeze data.
     def finalize_contents: () -> void
 
-    # _@param_ `value`
     def real_number?: (Object value) -> bool
   end
 
@@ -261,29 +123,21 @@ class VectorNumber < Numeric
   module Querying
     include Enumerating
 
-    # Always returns +false+.
     def real?: () -> bool
 
-    # Returns +true+ if all coefficients are finite, +false+ otherwise.
+    def numeric?: (Integer) -> bool
+                | (Integer) -> void
+
     def finite?: () -> bool
 
-    # Returns +1+ if any coefficients are infinite, +nil+ otherwise.
     def infinite?: () -> Integer?
 
-    # Returns +true+ if there are no non-zero coefficients, +false+ otherwise.
     def zero?: () -> bool
 
-    # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
     def nonzero?: () -> self?
 
-    # Returns +true+ if all non-zero coefficients are positive,
-    # +false+ if all non-zero coefficients are negative or all are zero,
-    # or +nil+ otherwise.
     def positive?: () -> bool?
 
-    # Returns +true+ if all non-zero coefficients are negative,
-    # +false+ if all non-zero coefficients are positive or all are zero,
-    # or +nil+ otherwise.
     def negative?: () -> bool?
   end
 
@@ -293,18 +147,17 @@ class VectorNumber < Numeric
 
     MULT_STRINGS: ::Hash[Symbol, String]
 
-    # _@param_ `mult` — text to use between coefficient and unit, can be one of the keys in {MULT_STRINGS} or an arbitrary string
     def to_s: (?mult: (Symbol | String)) -> String
 
     def inspect: () -> String
 
     private
 
-    # _@param_ `unit`
-    #
-    # _@param_ `coefficient`
-    #
-    # _@param_ `mult`
     def value_to_s: (unit_type unit, coefficient_type coefficient, mult: (Symbol | String)) -> String
+  end
+
+  # Refinements of Numeric classes to better work with VectorNumber and similar classes.
+  module NumericRefinements
+    def <=>: (Object other) -> Integer?
   end
 end

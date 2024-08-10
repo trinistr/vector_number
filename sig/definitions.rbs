@@ -18,8 +18,4 @@ interface _BaseMethods
 
   # protected
   def data: -> plain_vector_type
-  def type_of_self: -> Symbol
-
-  # private
-  def type_of: (unit_type) -> Symbol
 end

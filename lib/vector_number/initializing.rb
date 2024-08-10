@@ -16,10 +16,10 @@ class VectorNumber
     # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber, nil]
     # @return [void]
     def initialize_from(values)
-      initialize_contents unless values.is_a?(self.class)
+      initialize_contents unless values.is_a?(VectorNumber)
 
       case values
-      when self.class
+      when VectorNumber
         @data = values.data.dup
       when Hash
         add_vector_to_data(values)
@@ -37,12 +37,12 @@ class VectorNumber
     # @param value [VectorNumber, Numeric, Object]
     # @return [void]
     def add_value_to_data(value)
-      case type_of(value)
-      when :complex, :real
+      case value
+      when Numeric
         add_numeric_value_to_data(value)
-      when :vector
+      when VectorNumber
         add_vector_to_data(value)
-      when :itself
+      else
         @data[value] += 1
       end
     end
