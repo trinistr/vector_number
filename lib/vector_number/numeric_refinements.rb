@@ -2,7 +2,7 @@
 
 class VectorNumber
   # Refinements of Numeric classes to better work with VectorNumber and similar classes.
-  # @note This file must be required after "bigdecimal" to refine {BigDecimal}.
+  # @note This file must be required after "bigdecimal" to refine BigDecimal.
   module NumericRefinements
     # Associative +<=>+.
     # @example without refinements

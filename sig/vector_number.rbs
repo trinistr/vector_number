@@ -1,7 +1,19 @@
+interface _BaseMethods
+  def size: -> Integer
+  def options: -> options_type
+
+  # private
+  def new: () ?{ (coefficient_type value) -> coefficient_type } -> vector_type
+         | (in_value_type) ?{ (coefficient_type value) -> coefficient_type } -> vector_type
+  def real_number?: (real_number value) -> true
+                  | (in_value_type value) -> false
+end
+
 # A class to add together anything.
 class VectorNumber < Numeric
   include _BaseMethods
   include VectorNumber::Initializing
+  include VectorNumber::Mathing
   include VectorNumber::Enumerating
   include VectorNumber::Comparing
   include VectorNumber::Converting
@@ -52,8 +64,27 @@ class VectorNumber < Numeric
     def known_options: () -> Array[Symbol]
 
     def finalize_contents: () -> void
+  end
 
-    def real_number?: (Object value) -> bool
+  # Methods for performing actual math.
+  module Mathing
+    include _BaseMethods
+
+    def coerce: (in_value_type) -> [vector_type, self]
+
+    def +@: () -> self
+
+    def -@: () -> vector_type
+
+    def +: (in_value_type) -> vector_type
+
+    def -: (in_value_type) -> vector_type
+
+    def *: (real_number) -> vector_type
+         | (in_value_type) -> void
+
+    def /: (real_number) -> vector_type
+         | (in_value_type) -> void
   end
 
   # Methods for enumerating values of the number.
@@ -114,11 +145,11 @@ class VectorNumber < Numeric
     include Converting
     include Querying
 
-    def ==: (Object other) -> bool
+    def ==: (in_value_type other) -> bool
 
-    def eql?: (Object other) -> bool
+    def eql?: (in_value_type other) -> bool
 
-    def <=>: (Object other) -> Integer?
+    def <=>: (in_value_type other) -> Integer?
   end
 
   # Methods for querying state of the number.
@@ -161,6 +192,6 @@ class VectorNumber < Numeric
 
   # Refinements of Numeric classes to better work with VectorNumber and similar classes.
   module NumericRefinements
-    def <=>: (Object other) -> Integer?
+    def <=>: (in_value_type other) -> Integer?
   end
 end

@@ -148,7 +148,13 @@ RSpec.describe VectorNumber::Comparing do
         it { is_expected.to be true }
       end
 
-      context "when every value is the same but specified in a different order" do
+      context "when every value is the same but the order is different" do
+        let(:other) { num(*["y", :a, 5].shuffle) }
+
+        it { is_expected.to be true }
+      end
+
+      context "when numbers are initialized with different units, but extra coefficients are 0" do
         let(:other) { num(:a, 5, "y", 0.i) }
 
         it { is_expected.to be true }
@@ -156,6 +162,18 @@ RSpec.describe VectorNumber::Comparing do
 
       context "when some values are not the same" do
         let(:other) { num("y", "a", 5) }
+
+        it { is_expected.to be false }
+      end
+
+      context "when there are extra values" do
+        let(:other) { num("y", "a", 5, "5") }
+
+        it { is_expected.to be false }
+      end
+
+      context "when there are less values" do
+        let(:other) { num("y", "a") }
 
         it { is_expected.to be false }
       end

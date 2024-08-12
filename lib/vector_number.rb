@@ -2,6 +2,7 @@
 
 require_relative "vector_number/version"
 require_relative "vector_number/initializing"
+require_relative "vector_number/mathing"
 require_relative "vector_number/enumerating"
 require_relative "vector_number/converting"
 require_relative "vector_number/comparing"
@@ -11,6 +12,7 @@ require_relative "vector_number/stringifying"
 # A class to add together anything.
 class VectorNumber
   include Initializing
+  include Mathing
   include Enumerating
   include Converting
   include Comparing
@@ -41,6 +43,7 @@ class VectorNumber
   #
   # @example
   #   VectorNumber[1, 2, 3] #=> (6)
+  #   VectorNumber[[1, 2, 3]] #=> (1⋅[1, 2, 3])
   #   VectorNumber['b', VectorNumber::I, mult: :asterisk] #=> (1*'b' + 1i)
   # @param values [Array<Object>] values to put in the number
   # @param options [Hash{Symbol => Object}] options for the number
@@ -71,11 +74,30 @@ class VectorNumber
 
   private
 
+  NONE = Object.new
+  private_constant :NONE
+
+  # Create new VectorNumber from a value or self, optionally applying a transform.
+  # @param from [Object] self if not specified
+  # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
+  # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
+  # @return [VectorNumber]
+  def new(from = NONE, &)
+    from = self if from == NONE
+    self.class.new(from, &)
+  end
+
   def default_options
     DEFAULT_OPTIONS
   end
 
   def known_options
     KNOWN_OPTIONS
+  end
+
+  # @param value [Object]
+  # @return [Boolean]
+  def real_number?(value)
+    value.is_a?(Numeric) && value.real?
   end
 end

@@ -98,11 +98,5 @@ class VectorNumber
       @data.freeze
       @size = @data.size
     end
-
-    # @param value [Object]
-    # @return [Boolean]
-    def real_number?(value)
-      value.is_a?(Numeric) && value.real?
-    end
   end
 end

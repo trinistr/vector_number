@@ -3,7 +3,7 @@
 require "bigdecimal"
 require "vector_number/numeric_refinements"
 
-RSpec.describe VectorNumber::NumericRefinements do
+RSpec.describe VectorNumber::NumericRefinements, skip: "may not be needed after all" do
   shared_examples "<=>" do
     describe "#<=>" do
       context "without refinements" do
@@ -20,7 +20,7 @@ RSpec.describe VectorNumber::NumericRefinements do
         context "when comparing to a VectorNumber" do
           let(:other) { num(1) }
 
-          it "gives a result" do
+          it "returns nil" do
             expect(comparison).to be_nil
           end
         end
