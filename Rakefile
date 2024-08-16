@@ -2,15 +2,12 @@
 
 require "English"
 require "bundler/gem_tasks"
-require "rspec/core/rake_task"
 
+require "rspec/core/rake_task"
 RSpec::Core::RakeTask.new(:spec)
 
 require "rubocop/rake_task"
-
 RuboCop::RakeTask.new
-
-task default: %i[spec rubocop steep]
 
 desc "Validate signatures with RBS"
 task :rbs do
@@ -23,7 +20,9 @@ task :rbs do
   end
 end
 
-desc "Validate code typing with steep"
+desc "Validate code typing with Steep"
 task steep: :rbs do
   exit $CHILD_STATUS.exitstatus || 1 unless system "steep", "check"
 end
+
+task default: %i[spec rubocop steep]

@@ -90,28 +90,30 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) do
         [rand(1.0..2.0), rand(1..10_000), rand(1r..100r), rand(BigDecimal("-100")..BigDecimal("-10"))].sample
       end
+      let(:result_array) do
+        values = number.to_a
+        (value = values.assoc(VectorNumber::R)) ? value[1] += other.real : values << [VectorNumber::R, other.real]
+        values
+      end
 
       it "creates a new number, adding real number to real part" do
         expect(result.units).to match_array(number.units | [VectorNumber::R])
-        values = number.to_a
-        (value = values.assoc(VectorNumber::R)) ? value[1] += other : values << [VectorNumber::R, other]
-        expect(result.to_a).to match_array values
+        expect(result.to_a).to match_array result_array
       end
     end
 
     context "when adding a complex number" do
       let(:other) { Complex(rand(-1000..-8), rand(10.0..1000.0)) }
+      let(:result_array) do
+        values = number.to_a
+        (value = values.assoc(VectorNumber::R)) ? value[1] += other.real : values << [VectorNumber::R, other.real]
+        (value = values.assoc(VectorNumber::I)) ? value[1] += other.imag : values << [VectorNumber::I, other.imag]
+        values
+      end
 
       it "creates a new number, adding real part to real part and imaginary part to imaginary part" do
         expect(result.units).to match_array(number.units | [VectorNumber::R, VectorNumber::I])
-        values = number.to_a
-        (value = values.assoc(VectorNumber::R)) ? value[1] += other.real : values << [VectorNumber::R, other.real]
-        if (value = values.assoc(VectorNumber::I))
-          value[1] += other.imaginary
-        else
-          values << [VectorNumber::I, other.imaginary]
-        end
-        expect(result.to_a).to match_array values
+        expect(result.to_a).to match_array result_array
       end
     end
 
@@ -170,28 +172,30 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) do
         [rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(BigDecimal("-100")..BigDecimal("-10"))].sample
       end
+      let(:result_array) do
+        values = number.to_a
+        (value = values.assoc(VectorNumber::R)) ? value[1] -= other.real : values << [VectorNumber::R, -other.real]
+        values
+      end
 
       it "creates a new number, subtracting real number from real part" do
         expect(result.units).to match_array(number.units | [VectorNumber::R])
-        values = number.to_a
-        (value = values.assoc(VectorNumber::R)) ? value[1] -= other : values << [VectorNumber::R, -other]
-        expect(result.to_a).to match_array values
+        expect(result.to_a).to match_array result_array
       end
     end
 
     context "when subtracting a complex number" do
       let(:other) { Complex(rand(31..32), rand(0.5..555.5)) }
+      let(:result_array) do
+        values = number.to_a
+        (value = values.assoc(VectorNumber::R)) ? value[1] -= other.real : values << [VectorNumber::R, -other.real]
+        (value = values.assoc(VectorNumber::I)) ? value[1] -= other.imag : values << [VectorNumber::I, -other.imag]
+        values
+      end
 
       it "creates a new number, subtracting real part from real part and imaginary part from imaginary part" do
         expect(result.units).to match_array(number.units | [VectorNumber::R, VectorNumber::I])
-        values = number.to_a
-        (value = values.assoc(VectorNumber::R)) ? value[1] -= other.real : values << [VectorNumber::R, -other.real]
-        if (value = values.assoc(VectorNumber::I))
-          value[1] -= other.imaginary
-        else
-          values << [VectorNumber::I, -other.imaginary]
-        end
-        expect(result.to_a).to match_array values
+        expect(result.to_a).to match_array result_array
       end
     end
 
@@ -248,51 +252,51 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     end
   end
 
-  describe "#*" do
-    subject(:result) { number * other }
-
-    let(:number) { [zero_number, real_number, composite_number, f_number].sample }
-
-    context "when multiplying by a real number" do
-      let(:other) do
-        [rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(BigDecimal("-100")..BigDecimal("-10"))].sample
-      end
-
-      it "creates a new number, multiplying all coefficients by the other number" do
-        expect(result.units).to eq number.units
-        expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v * other] })
-      end
-    end
-
-    context "when multiplying by any other value" do
-      let(:other) { [Complex(rand, rand(1..5)), num(3), Object.new, Class, VectorNumber, :foo, binding, [1]].sample }
-
-      it "raises RangeError" do
-        expect { result }.to raise_error RangeError
-      end
-    end
-  end
-
-  describe "#/" do
-    subject(:result) { number / other }
-
-    let(:number) { [zero_number, real_number, composite_number, f_number].sample }
-
-    context "when dividing by a real number" do
-      let(:other) { [rand(6.0..7.0), rand(10r..100r), rand(BigDecimal("-100")..BigDecimal("-10"))].sample }
-
-      it "creates a new number, dividing all coefficients by the other number" do
-        expect(result.units).to eq number.units
-        expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v / other] })
-      end
-    end
-
-    context "when dividing by any other value" do
-      let(:other) { [Complex(rand, rand(1..5)), num(3), Object.new, Class, VectorNumber, :foo, binding, [1]].sample }
-
-      it "raises RangeError" do
-        expect { result }.to raise_error RangeError
-      end
-    end
-  end
+  # describe "#*" do
+  #   subject(:result) { number * other }
+  #
+  #   let(:number) { [zero_number, real_number, composite_number, f_number].sample }
+  #
+  #   context "when multiplying by a real number" do
+  #     let(:other) do
+  #       [rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(BigDecimal("-100")..BigDecimal("-10"))].sample
+  #     end
+  #
+  #     it "creates a new number, multiplying all coefficients by the other number" do
+  #       expect(result.units).to eq number.units
+  #       expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v * other] })
+  #     end
+  #   end
+  #
+  #   context "when multiplying by any other value" do
+  #     let(:other) { [Complex(rand, rand(1..5)), num(3), Object.new, Class, VectorNumber, :foo, binding, [1]].sample }
+  #
+  #     it "raises RangeError" do
+  #       expect { result }.to raise_error RangeError
+  #     end
+  #   end
+  # end
+  #
+  # describe "#/" do
+  #   subject(:result) { number / other }
+  #
+  #   let(:number) { [zero_number, real_number, composite_number, f_number].sample }
+  #
+  #   context "when dividing by a real number" do
+  #     let(:other) { [rand(6.0..7.0), rand(10r..100r), rand(BigDecimal("-100")..BigDecimal("-10"))].sample }
+  #
+  #     it "creates a new number, dividing all coefficients by the other number" do
+  #       expect(result.units).to eq number.units
+  #       expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v / other] })
+  #     end
+  #   end
+  #
+  #   context "when dividing by any other value" do
+  #     let(:other) { [Complex(rand, rand(1..5)), num(3), Object.new, Class, VectorNumber, :foo, binding, [1]].sample }
+  #
+  #     it "raises RangeError" do
+  #       expect { result }.to raise_error RangeError
+  #     end
+  #   end
+  # end
 end

@@ -3,8 +3,10 @@ interface _BaseMethods
   def options: -> options_type
 
   # private
-  def new: () ?{ (coefficient_type value) -> coefficient_type } -> vector_type
-         | (in_value_type) ?{ (coefficient_type value) -> coefficient_type } -> vector_type
+  def new: () { (coefficient_type value) -> coefficient_type } -> vector_type
+         | (in_value_type) { (coefficient_type value) -> coefficient_type } -> vector_type
+         | () -> vector_type
+         | (in_value_type) -> vector_type
   def real_number?: (real_number value) -> true
                   | (in_value_type value) -> false
 end
@@ -35,6 +37,10 @@ class VectorNumber < Numeric
     (?(units_list_type | plain_vector_type | vector_type)? values, ?options_type options)
     ?{ (coefficient_type coefficient) -> coefficient_type }
     -> void
+
+  private
+
+  NONE: Object
 
   @size: Integer
   @options: options_type

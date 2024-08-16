@@ -45,27 +45,27 @@ class VectorNumber
       self + new([other], &:-@)
     end
 
-    # Multiply all coefficients by a real number, returning new vector.
-    # This effectively multiplies magnitude by the specified factor.
-    # @param other [Numeric]
-    # @return [VectorNumber]
-    # @raise [RangeError] if +other+ is not a number or is not a real number
-    def *(other)
-      raise RangeError, "can't multiply #{self} and #{other}" unless real_number?(other)
-
-      new { _1 * other }
-    end
-
-    # Divide all coefficients by a real number, returning new vector.
-    # This effectively multiplies magnitude by reciprocal of the specified factor.
-    # @note Be aware that the usual integer division still applies.
-    # @param other [Numeric]
-    # @return [VectorNumber]
-    # @raise [RangeError] if +other+ is not a number or is not a real number
-    def /(other)
-      raise RangeError, "can't divide #{self} by #{other}" unless real_number?(other)
-
-      new { _1 / other }
-    end
+    # # Multiply all coefficients by a real number, returning new vector.
+    # # This effectively multiplies magnitude by the specified factor.
+    # # @param other [Integer, Float, Rational, BigDecimal]
+    # # @return [VectorNumber]
+    # # @raise [RangeError] if +other+ is not a number or is not a real number
+    # def *(other)
+    #   raise RangeError, "can't multiply #{self} and #{other}" unless real_number?(other)
+    #
+    #   new { _1 * other }
+    # end
+    #
+    # # Divide all coefficients by a real number, returning new vector.
+    # # This effectively multiplies magnitude by reciprocal of the specified factor.
+    # # @note Be aware that the usual integer division still applies.
+    # # @param other [Integer, Float, Rational, BigDecimal]
+    # # @return [VectorNumber]
+    # # @raise [RangeError] if +other+ is not a number or is not a real number
+    # def /(other)
+    #   raise RangeError, "can't divide #{self} by #{other}" unless real_number?(other)
+    #
+    #   new { _1 / other }
+    # end
   end
 end
