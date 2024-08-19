@@ -5,7 +5,7 @@ require "vector_number/numeric_refinements"
 
 RSpec.describe VectorNumber::NumericRefinements do
   describe Complex, "#<=>" do
-    let(:number) { rand(Complex(-100, 0)..Complex(100, 0)) }
+    let(:number) { rand(Complex(-100, 0)..Complex(0, 0)) }
 
     context "with refinements" do
       using VectorNumber::NumericRefinements
@@ -13,10 +13,10 @@ RSpec.describe VectorNumber::NumericRefinements do
       subject(:comparison) { number <=> other }
 
       context "when comparing to a comparable core number" do
-        let(:other) { [15, -23.23, 0.3r, BigDecimal("5"), Complex(37r, 0)].sample }
+        let(:other) { [15, 23.23, 0.3r, BigDecimal("5"), Complex(37r, 0)].sample }
 
         it "gives a result" do
-          expect(comparison).to be_an Integer
+          expect(comparison).to eq(-1)
         end
       end
 
@@ -24,7 +24,7 @@ RSpec.describe VectorNumber::NumericRefinements do
         let(:other) { num(1) }
 
         it "gives a result" do
-          expect(comparison).to be_an Integer
+          expect(comparison).to eq(-1)
         end
       end
 

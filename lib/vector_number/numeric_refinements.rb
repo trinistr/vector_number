@@ -4,6 +4,8 @@ class VectorNumber
   # Refinements of Numeric classes to better work with VectorNumber and similar classes.
   module NumericRefinements
     # Refinement module to provide a +#<=>+ method that can work backwards.
+    # @note Currently only applies to Complex on *3.1*,
+    #   as other numeric classes rely on +#coerce+.
     module CommutativeShuttle
       # Commutative +#<=>+.
       # @example without refinements
@@ -14,10 +16,12 @@ class VectorNumber
       #   using VectorNumber::NumericRefinements
       #   Complex(1, 0) <=> VectorNumber[2] # => -1
       #   VectorNumber[2] <=> Complex(1, 0) # => 1
-      # @note Currently only applies to Complex on *3.1*,
-      #   as other numeric classes rely on +#coerce+.
       def <=>(other)
-        super || (other <=> self if other.respond_to?(:<=>))
+        comparison = super
+        return comparison if comparison || !other.respond_to?(:<=>)
+
+        comparison = other <=> self
+        -comparison if comparison
       end
     end
 
