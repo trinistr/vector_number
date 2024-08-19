@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require "bigdecimal"
 require "vector_number/numeric_refinements"
 
-RSpec.describe VectorNumber::NumericRefinements, skip: "may not be needed after all" do
+RSpec.describe VectorNumber::NumericRefinements do
   shared_examples "<=>" do
     describe "#<=>" do
       context "without refinements" do
@@ -64,30 +63,6 @@ RSpec.describe VectorNumber::NumericRefinements, skip: "may not be needed after 
         end
       end
     end
-  end
-
-  describe "Integer" do
-    let(:number) { rand(-100..100) }
-
-    include_examples "<=>"
-  end
-
-  describe "Float" do
-    let(:number) { rand(-100.0..100.0) }
-
-    include_examples "<=>"
-  end
-
-  describe "Rational" do
-    let(:number) { rand(-100r..100r) }
-
-    include_examples "<=>"
-  end
-
-  describe "BigDecimal" do
-    let(:number) { rand(BigDecimal("-100")..BigDecimal("100")) }
-
-    include_examples "<=>"
   end
 
   describe "Complex" do

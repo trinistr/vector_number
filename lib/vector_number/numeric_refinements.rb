@@ -2,7 +2,6 @@
 
 class VectorNumber
   # Refinements of Numeric classes to better work with VectorNumber and similar classes.
-  # @note This file must be required after "bigdecimal" to refine BigDecimal.
   module NumericRefinements
     # Associative +<=>+.
     # @example without refinements
@@ -13,20 +12,11 @@ class VectorNumber
     #   using VectorNumber::NumericRefinements
     #   1 <=> VectorNumber[2] # => -1
     #   VectorNumber[2] <=> 1 # => 1
+    # @note Currently only applies to Complex, as other numeric classes rely on +#coerce+.
     def <=>(other)
       super || (other <=> self if other.respond_to?(:<=>))
     end
 
-    [Numeric, Integer, Float, Rational, Complex].each do |klass|
-      refine klass do
-        import_methods NumericRefinements
-      end
-    end
-
-    if defined?(BigDecimal)
-      refine BigDecimal do
-        import_methods NumericRefinements
-      end
-    end
+    [Complex].each { |klass| refine(klass) { import_methods NumericRefinements } }
   end
 end
