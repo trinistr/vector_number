@@ -1,24 +1,2 @@
-require:
-  - rubocop-rspec
-  - rubocop-rake
-  - rubocop-thread_safety
-  - rubocop-performance
-
-AllCops:
-  TargetRubyVersion: 3.1
-  NewCops: enable
-
-Metrics/MethodLength:
-  Max: 15
-
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
-
-Style/StringLiteralsInInterpolation:
-  EnforcedStyle: double_quotes
-
-RSpec/MultipleMemoizedHelpers:
-  Max: 10
-
-RSpec/NestedGroups:
-  Max: 4
+inherit_from:
+  - https://raw.githubusercontent.com/trinistr/rubocop-config/main/rubocop.yml

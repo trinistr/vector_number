@@ -23,9 +23,7 @@ class VectorNumber
   KNOWN_OPTIONS = %i[mult].freeze
 
   # @return [Hash{Symbol => Object}]
-  DEFAULT_OPTIONS = {
-    mult: :dot
-  }.freeze
+  DEFAULT_OPTIONS = { mult: :dot }.freeze
 
   # Get a unit for +n+th numeric dimension, where 1 is real, 2 is imaginary.
   UNIT = ->(n) { (n - 1).i }.freeze

@@ -49,6 +49,8 @@ class VectorNumber
         other.numeric?(1) ? real <=> other.real : nil
       when Numeric
         other.imaginary.zero? ? real <=> other.real : nil
+      else
+        nil
       end
     end
   end

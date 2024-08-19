@@ -62,7 +62,9 @@ RSpec.describe VectorNumber::Initializing, :aggregate_failures do
     let(:value) { { 1 => -123, "u r" => 0xC001, Encoding::UTF_8 => 1.337 } }
 
     it "treats hash as a plain vector and copies values from it" do
-      expect(new_number.to_a).to contain_exactly [1, -123], ["u r", 49_153], [Encoding::UTF_8, 1.337]
+      expect(new_number.to_a).to contain_exactly(
+        [1, -123], ["u r", 49_153], [Encoding::UTF_8, 1.337]
+      )
     end
   end
 

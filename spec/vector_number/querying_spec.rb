@@ -82,11 +82,11 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
   describe "#infinite?" do
     context "when no coefficients are infinite" do
       it "returns nil" do
-        expect(null_number.infinite?).to be_nil
-        expect(zero_number.infinite?).to be_nil
-        expect(real_number.infinite?).to be_nil
-        expect(imaginary_number.infinite?).to be_nil
-        expect(composite_number.infinite?).to be_nil
+        expect(null_number.infinite?).to be nil
+        expect(zero_number.infinite?).to be nil
+        expect(real_number.infinite?).to be nil
+        expect(imaginary_number.infinite?).to be nil
+        expect(composite_number.infinite?).to be nil
       end
     end
 
@@ -119,8 +119,8 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
   describe "#nonzero?" do
     context "when all coefficients are zero" do
       it "returns nil" do
-        expect(null_number.nonzero?).to be_nil
-        expect(zero_number.nonzero?).to be_nil
+        expect(null_number.nonzero?).to be nil
+        expect(zero_number.nonzero?).to be nil
       end
     end
 
@@ -152,7 +152,7 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
 
     context "when coefficients are both positive and negative" do
       it "returns nil" do
-        expect(composite_number.positive?).to be_nil
+        expect(composite_number.positive?).to be nil
       end
     end
   end
@@ -176,7 +176,7 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
 
     context "when coefficients are both positive and negative" do
       it "returns nil" do
-        expect(composite_number.positive?).to be_nil
+        expect(composite_number.positive?).to be nil
       end
     end
   end

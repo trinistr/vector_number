@@ -213,7 +213,7 @@ RSpec.describe VectorNumber::Comparing do
       context "when comparing to an uncomparable value" do
         let(:other) { ["string", nil, num(1i)].sample }
 
-        it { is_expected.to be_nil }
+        it { is_expected.to be nil }
       end
     end
 
@@ -221,14 +221,14 @@ RSpec.describe VectorNumber::Comparing do
       let(:compared_number) { num(1.8, 1ri / 2) }
       let(:other) { [num(1, 0.8, 0.5i), Complex(9r / 5, 0.5), 1, composite_number] }
 
-      it { is_expected.to be_nil }
+      it { is_expected.to be nil }
     end
 
     context "with a composite number" do
       let(:compared_number) { composite_number }
       let(:other) { [num(1, 0.8, 0.5i), Complex(9r / 5, 0.5), 1, real_number] }
 
-      it { is_expected.to be_nil }
+      it { is_expected.to be nil }
     end
   end
 end

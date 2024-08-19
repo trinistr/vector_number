@@ -2,7 +2,7 @@
 
 RSpec.describe VectorNumber, :aggregate_failures do
   it "has a proper version number" do
-    expect(described_class::VERSION).not_to be_nil
+    expect(described_class::VERSION).not_to be nil
     expect { Gem::Version.new(described_class::VERSION) }.not_to raise_error
   end
 
@@ -21,7 +21,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       let(:options) { { mult: :asterisk, wrong: :option } }
 
       it "sets known options" do
-        expect(number.options).to eq(options.keep_if { |k, _v| described_class::KNOWN_OPTIONS.include?(k) })
+        expect(number.options).to eq({ mult: :asterisk })
       end
     end
   end
@@ -42,7 +42,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       let(:options) { { mult: :asterisk, wrong: :option } }
 
       it "sets known options" do
-        expect(number.options).to eq(options.keep_if { |k, _v| described_class::KNOWN_OPTIONS.include?(k) })
+        expect(number.options).to eq({ mult: :asterisk })
       end
     end
   end

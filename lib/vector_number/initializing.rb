@@ -15,6 +15,8 @@ class VectorNumber
         add_vector_to_data(values)
       when Array
         values&.each { |value| add_value_to_data(value) }
+      else
+        # Don't add anything.
       end
     end
 

@@ -44,7 +44,8 @@ RSpec.describe VectorNumber::Enumerating do
 
       include_examples "yields values", for_number: :zero_number, values: []
       include_examples "yields values", for_number: :real_number, values: [[0.i, 1.5r]]
-      include_examples "yields values", for_number: :composite_number, values: [["y", 1], [:a, 1], [0.i, 5]]
+      include_examples "yields values", for_number: :composite_number,
+                                        values: [["y", 1], [:a, 1], [0.i, 5]]
     end
   end
 

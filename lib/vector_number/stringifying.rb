@@ -49,18 +49,20 @@ class VectorNumber
     # @return [String]
     # @raise [ArgumentError] if +mult+ is not in {MULT_STRINGS}'s keys
     def value_to_s(unit, coefficient, mult:)
-      raise ArgumentError, "unknown key :#{mult}", caller if mult.is_a?(Symbol) && !MULT_STRINGS.key?(mult)
+      if mult.is_a?(Symbol) && !MULT_STRINGS.key?(mult)
+        raise ArgumentError, "unknown key :#{mult}", caller
+      end
 
       case unit
       when R
-        return coefficient.to_s
+        coefficient.to_s
       when I
-        return "#{coefficient}i"
+        "#{coefficient}i"
+      else
+        unit = "'#{unit}'" if unit.is_a?(String)
+        operator = mult.is_a?(String) ? mult : MULT_STRINGS[mult]
+        "#{coefficient}#{operator}#{unit}"
       end
-
-      unit = "'#{unit}'" if unit.is_a?(String)
-      operator = mult.is_a?(String) ? mult : MULT_STRINGS[mult]
-      "#{coefficient}#{operator}#{unit}"
     end
   end
 end

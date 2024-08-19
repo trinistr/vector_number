@@ -21,7 +21,7 @@ RSpec.describe VectorNumber::NumericRefinements, skip: "may not be needed after 
           let(:other) { num(1) }
 
           it "returns nil" do
-            expect(comparison).to be_nil
+            expect(comparison).to be nil
           end
         end
 
@@ -29,7 +29,7 @@ RSpec.describe VectorNumber::NumericRefinements, skip: "may not be needed after 
           let(:other) { Object.new }
 
           it "returns nil" do
-            expect(comparison).to be_nil
+            expect(comparison).to be nil
           end
         end
       end
@@ -59,7 +59,7 @@ RSpec.describe VectorNumber::NumericRefinements, skip: "may not be needed after 
           let(:other) { Object.new }
 
           it "returns nil" do
-            expect(comparison).to be_nil
+            expect(comparison).to be nil
           end
         end
       end

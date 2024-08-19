@@ -22,10 +22,11 @@ RSpec.configure do |config|
       :documentation
     end
 
-  number_helper = Module.new do
-    def num(...)
-      VectorNumber.[](...)
+  number_helper =
+    Module.new do
+      def num(...)
+        VectorNumber.[](...)
+      end
     end
-  end
   config.include number_helper
 end
