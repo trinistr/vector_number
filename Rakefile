@@ -9,6 +9,9 @@ RSpec::Core::RakeTask.new(:spec)
 require "rubocop/rake_task"
 RuboCop::RakeTask.new
 
+require "bump/tasks"
+Bump.changelog = true
+
 desc "Validate signatures with RBS"
 task :rbs do
   puts "Checking signatures with RBS..."

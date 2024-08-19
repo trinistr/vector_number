@@ -25,3 +25,6 @@ gem "yard", require: false
 
 # Language server for development
 gem "solargraph", require: false
+
+# Version changes
+gem "bump", require: false
