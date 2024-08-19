@@ -9,7 +9,6 @@ Gem::Specification.new do |spec|
   spec.email = ["6594487+trinistr@users.noreply.github.com"]
 
   spec.summary = "A library to add together anything."
-  # spec.description = "TODO: Write a longer description or delete this line."
   spec.homepage = "https://github.com/trinistr/vector_number"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.1.0"

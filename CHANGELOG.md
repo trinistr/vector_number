@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [Next]
 
-- Initial version.
+- VectorNumbers can be created from any object or collection.
+- Addition and subtraction are supported.
+- VectorNumbers are mostly interoperable with core numbers.
+
+## [v0.1.0]
+
+- Initial work.

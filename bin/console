@@ -11,6 +11,7 @@ require "vector_number"
 V1 = VectorNumber[1]
 Vi = VectorNumber[1.i]
 Va = VectorNumber["a"]
+Vs = VectorNumber[:s]
 
 require "irb"
 IRB.start(__FILE__)
