@@ -198,6 +198,13 @@ class VectorNumber < Numeric
 
   # Refinements of Numeric classes to better work with VectorNumber and similar classes.
   module NumericRefinements
-    def <=>: (in_value_type other) -> Integer?
+    module CommutativeShuttle
+      def <=>: (in_value_type other) -> Integer?
+    end
+
+    module BigDecimalToD
+      def BigDecimal: (untyped value, exception: bool) -> BigDecimal?
+                    | (untyped value, Integer ndigits, exception: bool) -> BigDecimal?
+    end
   end
 end

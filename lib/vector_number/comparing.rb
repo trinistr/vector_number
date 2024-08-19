@@ -37,8 +37,6 @@ class VectorNumber
       end
     end
 
-    # @note This method is not commutative with implementations in various Numeric subclasses,
-    #   unless {NumericRefinements} is used.
     # @param other [Object]
     # @return [Integer, nil]
     def <=>(other)

@@ -210,7 +210,7 @@ RSpec.describe VectorNumber::Comparing do
         it { is_expected.to be 0 }
       end
 
-      context "when comparing to an uncomparable value", skip: "delete #to_str" do
+      context "when comparing to an uncomparable value" do
         let(:other) { ["string", nil, num(1i)].sample }
 
         it { is_expected.to be nil }
