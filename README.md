@@ -1,5 +1,7 @@
 # VectorNumber
 
+![validation workflow](https://github.com/trinistr/vector_number/actions/workflows/validation.yml/badge.svg)
+
 A library to add together anything: be it a number, string or random Object, it can be added together in an infinite-dimensional vector space, with math operations available on results.
 
 This is similar in a sense to hypercomplex numbers, such as quaternions, but with a focus on arbitrary dimensions.
