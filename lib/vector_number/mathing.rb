@@ -59,7 +59,6 @@ class VectorNumber
 
     # Divide all coefficients by a real number, returning new vector.
     # This effectively multiplies magnitude by reciprocal of the specified factor.
-    # @note Be aware that the usual integer division still applies.
     # @param other [Integer, Float, Rational, BigDecimal]
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or is not a real number
@@ -67,6 +66,8 @@ class VectorNumber
       raise RangeError, "can't divide #{self} by #{other}" unless real_number?(other)
 
       other = other.real
+      # Prevent integer division, but without loss of accuracy.
+      other = Rational(other) if other.is_a?(Integer)
       new { _1 / other }
     end
   end

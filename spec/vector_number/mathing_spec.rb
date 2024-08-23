@@ -455,6 +455,20 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
 
+    context "when dividing integer by an integer" do
+      let(:number) { num(real_value, "string") }
+      let(:real_value) { rand(1..10_000) }
+
+      let(:other) { rand(1..10_000) }
+
+      it "stores coefficient as a Rational" do
+        expect(result.to_a).to contain_exactly(
+          [VectorNumber::R, Rational(real_value, other)],
+          ["string", Rational(1, other)]
+        )
+      end
+    end
+
     context "when dividing by a real vector number" do
       let(:other) { num(value) }
       let(:value) { [-rand(6.0..7.0), rand(10r..100r), rand(("-100".to_d)..("-10".to_d))].sample }
