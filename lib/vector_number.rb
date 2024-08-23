@@ -96,6 +96,6 @@ class VectorNumber
   # @param value [Object]
   # @return [Boolean]
   def real_number?(value)
-    value.is_a?(Numeric) && value.real?
+    (value.is_a?(Numeric) && value.real?) || (value.is_a?(self.class) && value.numeric?(1))
   end
 end

@@ -85,8 +85,16 @@ RSpec.describe VectorNumber::Initializing, :aggregate_failures do
       end
     end
 
-    context "when transformation returns vector number" do
-      let(:block) { ->(v) { num(v) } }
+    context "when transformation returns real vector number" do
+      let(:block) { ->(v) { num(v + 1) } }
+
+      it "works exactly the same as with a normal real number" do
+        expect(new_number).to contain_exactly [0.i, 1.5r], [1.i, 1], ["s", 2]
+      end
+    end
+
+    context "when transformation returns non-real vector number" do
+      let(:block) { ->(v) { num(v.to_s) } }
 
       it "raises RangeError" do
         expect { new_number }.to raise_error RangeError

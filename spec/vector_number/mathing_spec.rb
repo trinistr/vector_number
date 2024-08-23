@@ -376,15 +376,14 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     end
   end
 
-  describe "#*", skip: "not implemented" do
+  describe "#*" do
     subject(:result) { number * other }
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
 
     context "when multiplying by a real number" do
       let(:other) do
-        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r),
-         rand(("-100".to_d)..("-10".to_d))].sample
+        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
       end
 
       it "creates a new number, multiplying all coefficients by the other number" do
@@ -393,10 +392,48 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
 
+    context "when multiplying by a real vector number" do
+      let(:other) { num(value) }
+      let(:value) { [-rand(6.0..7.0), rand(10r..100r), rand(("-100".to_d)..("-10".to_d))].sample }
+
+      it "creates a new number, multiplying all coefficients by the value of the other number" do
+        expect(result.units).to eq number.units
+        expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v * value] })
+      end
+    end
+
     context "when multiplying by any other value" do
       let(:other) do
-        [Complex(rand, rand(1..5)), num(3), Object.new, VectorNumber, :foo, binding, [1]].sample
+        [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
       end
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
+    context "when multiplying real number by a real vector number" do
+      let(:number) do
+        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
+      end
+
+      let(:other) { num(value) }
+      let(:value) do
+        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100.0..100.0).to_d].sample
+      end
+
+      it "returns a real result as a vector number" do
+        expect(result).to be_a(VectorNumber)
+        expect(result.to_a).to eq [[VectorNumber::R, number * value]]
+      end
+    end
+
+    context "when multiplying real number by a non-real vector number" do
+      let(:number) do
+        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
+      end
+
+      let(:other) { [num(2i), num(1, 1i), num("s")].sample }
 
       it "raises RangeError" do
         expect { result }.to raise_error RangeError
@@ -404,7 +441,7 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     end
   end
 
-  describe "#/", skip: "not implemented" do
+  describe "#/" do
     subject(:result) { number / other }
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
@@ -418,10 +455,44 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
 
+    context "when dividing by a real vector number" do
+      let(:other) { num(value) }
+      let(:value) { [-rand(6.0..7.0), rand(10r..100r), rand(("-100".to_d)..("-10".to_d))].sample }
+
+      it "creates a new number, dividing all coefficients by the value of the other number" do
+        expect(result.units).to eq number.units
+        expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v / value] })
+      end
+    end
+
     context "when dividing by any other value" do
       let(:other) do
-        [Complex(rand, rand(1..5)), num(3), Object.new, VectorNumber, :foo, binding, [1]].sample
+        [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
       end
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
+    context "when dividing real number by a real vector number" do
+      let(:number) { [-rand(6.0..7.0), rand(10r..100r), rand(-100..-10).to_d].sample }
+
+      let(:other) { num(value) }
+      let(:value) { [-rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample }
+
+      it "returns a real result as a vector number" do
+        expect(result).to be_a(VectorNumber)
+        expect(result.to_a).to eq [[VectorNumber::R, number / value]]
+      end
+    end
+
+    context "when dividing real number by a non-real vector number" do
+      let(:number) do
+        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
+      end
+
+      let(:other) { [num(2i), num(1, 1i), num("s")].sample }
 
       it "raises RangeError" do
         expect { result }.to raise_error RangeError

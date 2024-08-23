@@ -52,7 +52,7 @@ class VectorNumber
       vector.each_pair do |unit, coefficient|
         raise RangeError, "#{coefficient} is not a real number" unless real_number?(coefficient)
 
-        @data[unit] += coefficient
+        @data[unit] += coefficient.real
       end
     end
 
@@ -60,12 +60,12 @@ class VectorNumber
     # @yieldreturn [Integer, Float, Rational, BigDecimal]
     # @return [void]
     # @raise [RangeError]
-    def apply_transform(&block)
-      return unless block
+    def apply_transform
+      return unless block_given?
 
       @data.transform_values! do |coefficient|
-        new_value = block[coefficient]
-        next new_value if real_number?(new_value)
+        new_value = yield coefficient
+        next new_value.real if real_number?(new_value)
 
         raise RangeError, "transform returned non-real value"
       end

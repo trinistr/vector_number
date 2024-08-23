@@ -8,6 +8,7 @@ interface _BaseMethods
          | () -> vector_type
          | (in_value_type) -> vector_type
   def real_number?: (real_number value) -> true
+                  | (vector_type) -> bool
                   | (in_value_type value) -> false
 end
 
@@ -86,10 +87,10 @@ class VectorNumber < Numeric
 
     def -: (in_value_type) -> vector_type
 
-    def *: (real_number) -> vector_type
+    def *: (real_number | vector_type) -> vector_type
          | (in_value_type) -> void
 
-    def /: (real_number) -> vector_type
+    def /: (real_number | vector_type) -> vector_type
          | (in_value_type) -> void
   end
 

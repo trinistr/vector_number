@@ -24,6 +24,7 @@ Usage is pretty simple and intuitive:
 require "vector_number"
 VectorNumber[5] + VectorNumber["string"] - 0.5 # => (4.5 + 1⋅'string')
 VectorNumber["string", "string", "string", "str"] # => (3⋅'string' + 1⋅'str')
+VectorNumber[:s] * 2 + VectorNumber["string"] * 0.3 # => (2⋅s + 0.3⋅'string')
 ```
 
 ## Development
