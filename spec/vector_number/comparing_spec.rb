@@ -187,21 +187,25 @@ RSpec.describe VectorNumber::Comparing do
   end
 
   describe "#<=>" do
-    subject { (rand > 0.5) ? compared_number <=> other : other <=> compared_number }
+    subject { forward_comparison ? compared_number <=> other : other <=> compared_number }
+
+    let(:forward_comparison) { rand > 0.5 }
 
     context "with a simple number" do
       let(:compared_number) { real_number }
 
       context "when comparing to a larger value of the same class" do
         let(:other) { num(567) }
+        let(:result) { forward_comparison ? -1 : 1 }
 
-        it { is_expected.to be(-1).or be(1) }
+        it { is_expected.to be result }
       end
 
       context "when comparing to a smaller value of a different class" do
         let(:other) { BigDecimal("567") / 1200 }
+        let(:result) { forward_comparison ? 1 : -1 }
 
-        it { is_expected.to be(1).or be(-1) }
+        it { is_expected.to be result }
       end
 
       context "when comparing to an equal value" do

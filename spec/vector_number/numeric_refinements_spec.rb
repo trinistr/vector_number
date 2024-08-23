@@ -29,7 +29,7 @@ RSpec.describe VectorNumber::NumericRefinements do
       end
 
       context "when comparing to an uncomparable object" do
-        let(:other) { Object.new }
+        let(:other) { [Object.new, num(2i)] }
 
         it "returns nil" do
           expect(comparison).to be nil
