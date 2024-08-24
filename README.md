@@ -28,6 +28,22 @@ VectorNumber[5] + VectorNumber["string"] - 0.5 # => (4.5 + 1⋅'string')
 VectorNumber["string", "string", "string", "str"] # => (3⋅'string' + 1⋅'str')
 VectorNumber[:s] * 2 + VectorNumber["string"] * 0.3 # => (2⋅s + 0.3⋅'string')
 VectorNumber[:s] / 3 # => (1/3⋅s)
+1/3r * VectorNumber[[]] # => (1/3⋅[])
+```
+
+VectorNumbers are mostly useful for summing up heterogeneous objects:
+```ruby
+sum = [5, "death", "death", 13, nil].reduce(VectorNumber[]) { |result, value| result + value }
+# => (18 + 2⋅'death' + 1⋅)
+sum.to_a # => [[(0+0i), 18], ["death", 2], [nil, 1]]
+sum.to_h # => {(0+0i)=>18, "death"=>2, nil=>1}
+```
+
+Alternatively, the same result can be equivalently (and faster) achieved by
+passing all values to a constructor:
+```ruby
+VectorNumber[5, "death", "death", 13, nil]
+VectorNumber.new([5, "death", "death", 13, nil])
 ```
 
 ## Development
