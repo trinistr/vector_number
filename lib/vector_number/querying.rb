@@ -23,6 +23,16 @@ class VectorNumber
       size <= dimensions && (1..dimensions).count { @data[UNIT[_1]].nonzero? } == size
     end
 
+    # Whether this VectorNumber contains any non-numeric parts.
+    # @param (see #numeric?)
+    # @return (see #numeric?)
+    # @raise (see #numeric?)
+    def nonnumeric?(dimensions = 2)
+      raise ArgumentError, "`dimensions` must be non-negative" unless dimensions >= 0
+
+      !numeric?(dimensions)
+    end
+
     # Returns +true+ if all coefficients are finite, +false+ otherwise.
     # @return [Boolean]
     def finite?

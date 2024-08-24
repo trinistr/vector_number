@@ -17,6 +17,7 @@ Add gem to your Gemfile:
 ```ruby
 gem "vector_number", git: "https://github.com/trinistr/vector_number.git"
 ```
+
 Installation through `gem` is not currently supported.
 
 ## Usage
@@ -33,7 +34,7 @@ VectorNumber[:s] / 3 # => (1/3⋅s)
 
 VectorNumbers are mostly useful for summing up heterogeneous objects:
 ```ruby
-sum = [5, "death", "death", 13, nil].reduce(VectorNumber[]) { |result, value| result + value }
+sum = [5, "death", "death", 13, nil].reduce(VectorNumber[], :+)
 # => (18 + 2⋅'death' + 1⋅)
 sum.to_a # => [[(0+0i), 18], ["death", 2], [nil, 1]]
 sum.to_h # => {(0+0i)=>18, "death"=>2, nil=>1}
@@ -54,7 +55,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/trinistr/vector_number.
+Bug reports and pull requests are welcome on GitHub at [https://github.com/trinistr/vector_number]().
 
 ## License
 

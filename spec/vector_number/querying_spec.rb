@@ -18,16 +18,6 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
   end
 
   describe "#numeric?" do
-    context "with default argument of 2" do
-      it "considers numbers which only contain real and imaginary parts to be numeric" do
-        expect(null_number.numeric?).to be true
-        expect(zero_number.numeric?).to be true
-        expect(real_number.numeric?).to be true
-        expect(imaginary_number.numeric?).to be true
-        expect(composite_number.numeric?).to be false
-      end
-    end
-
     context "when dimensions = 0" do
       it "considers numbers which contain no parts to be numeric" do
         expect(null_number.numeric?(0)).to be true
@@ -48,6 +38,16 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
       end
     end
 
+    context "when dimensions = 2" do
+      it "considers numbers which only contain real and imaginary parts to be numeric" do
+        expect(null_number.numeric?(2)).to be true
+        expect(zero_number.numeric?(2)).to be true
+        expect(real_number.numeric?(2)).to be true
+        expect(imaginary_number.numeric?(2)).to be true
+        expect(composite_number.numeric?(2)).to be false
+      end
+    end
+
     context "when dimensions > 2" do
       it "considers numbers which only contain real and imaginary parts to be numeric" do
         expect(null_number.numeric?(3)).to be true
@@ -56,6 +56,16 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
         expect(imaginary_number.numeric?(3)).to be true
         expect(composite_number.numeric?(3)).to be false
       end
+    end
+  end
+
+  describe "#nonnumeric?" do
+    it "considers number which contain non-numeric units to be non-numeric" do
+      expect(null_number.nonnumeric?).to be false
+      expect(zero_number.nonnumeric?).to be false
+      expect(real_number.nonnumeric?).to be false
+      expect(imaginary_number.nonnumeric?).to be false
+      expect(composite_number.nonnumeric?).to be true
     end
   end
 

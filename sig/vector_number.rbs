@@ -167,7 +167,8 @@ class VectorNumber < Numeric
     def real?: () -> bool
 
     def numeric?: (Integer) -> bool
-                | (Integer) -> void
+
+    def nonnumeric?: (Integer) -> bool
 
     def finite?: () -> bool
 
