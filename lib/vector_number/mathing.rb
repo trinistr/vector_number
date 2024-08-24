@@ -47,14 +47,18 @@ class VectorNumber
 
     # Multiply all coefficients by a real number, returning new vector.
     # This effectively multiplies magnitude by the specified factor.
-    # @param other [Integer, Float, Rational, BigDecimal]
+    # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
-    # @raise [RangeError] if +other+ is not a number or is not a real number
+    # @raise [RangeError] if +other+ is not a number or +other+ can't be multiplied by this one
     def *(other)
-      raise RangeError, "can't multiply #{self} and #{other}" unless real_number?(other)
-
-      other = other.real
-      new { _1 * other }
+      if real_number?(other)
+        other = other.real
+        new { _1 * other }
+      elsif real_number?(self) && other.is_a?(self.class)
+        other * self
+      else
+        raise RangeError, "can't multiply #{self} and #{other}"
+      end
     end
 
     # Divide all coefficients by a real number, returning new vector.

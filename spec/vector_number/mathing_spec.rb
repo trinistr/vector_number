@@ -402,6 +402,15 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
 
+    context "when multiplying non-real by a non-real vector_number" do
+      let(:number) { [composite_number, f_number].sample }
+      let(:other) { [composite_number, f_number].sample }
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
     context "when multiplying by any other value" do
       let(:other) do
         [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
@@ -433,10 +442,11 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
       end
 
-      let(:other) { [num(2i), num(1, 1i), num("s")].sample }
+      let(:other) { [composite_number, f_number, num(1, -15i)].sample }
 
-      it "raises RangeError" do
-        expect { result }.to raise_error RangeError
+      it "returns vector multiplied by the real number" do
+        expect(result).to be_a(VectorNumber)
+        expect(result).to eq other * number
       end
     end
   end
@@ -506,7 +516,7 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
       end
 
-      let(:other) { [num(2i), num(1, 1i), num("s")].sample }
+      let(:other) { [composite_number, f_number, num(1, -15i)].sample }
 
       it "raises RangeError" do
         expect { result }.to raise_error RangeError
