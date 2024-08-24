@@ -11,6 +11,7 @@ RuboCop::RakeTask.new
 
 require "bump/tasks"
 Bump.changelog = true
+Bump.tag_by_default = true
 
 desc "Validate signatures with RBS"
 task :rbs do

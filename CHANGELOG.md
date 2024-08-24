@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix reversed result in refined `#<=>`.
 
 ### Removed
+## [v0.2.1] — 2024-08-24
 - Remove `#to_str`, as VectorNumber is not a String-like object.
 - Due to the above, `Kernel.BigDecimal` no longer works without refinements.
 
