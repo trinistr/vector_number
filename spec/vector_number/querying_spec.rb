@@ -7,16 +7,6 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
   let(:imaginary_number) { num(Math::PI.i) }
   let(:composite_number) { num(-10, nil, Object.new) }
 
-  describe "#real?" do
-    it "is always false" do
-      expect(null_number).not_to be_real
-      expect(zero_number).not_to be_real
-      expect(real_number).not_to be_real
-      expect(imaginary_number).not_to be_real
-      expect(composite_number).not_to be_real
-    end
-  end
-
   describe "#numeric?" do
     context "when dimensions = 0" do
       it "considers numbers which contain no parts to be numeric" do
@@ -188,6 +178,26 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
       it "returns nil" do
         expect(composite_number.positive?).to be nil
       end
+    end
+  end
+
+  describe "#real?" do
+    it "is always false" do
+      expect(null_number).not_to be_real
+      expect(zero_number).not_to be_real
+      expect(real_number).not_to be_real
+      expect(imaginary_number).not_to be_real
+      expect(composite_number).not_to be_real
+    end
+  end
+
+  describe "#integer?" do
+    it "is always false" do
+      expect(null_number).not_to be_integer
+      expect(zero_number).not_to be_integer
+      expect(real_number).not_to be_integer
+      expect(imaginary_number).not_to be_integer
+      expect(composite_number).not_to be_integer
     end
   end
 end

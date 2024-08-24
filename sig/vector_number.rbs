@@ -13,7 +13,7 @@ interface _BaseMethods
 end
 
 # A class to add together anything.
-class VectorNumber < Numeric
+class VectorNumber
   include _BaseMethods
   include VectorNumber::Initializing
   include VectorNumber::Mathing
@@ -88,10 +88,10 @@ class VectorNumber < Numeric
     def -: (in_value_type) -> vector_type
 
     def *: (real_number | vector_type) -> vector_type
-         | (in_value_type) -> void
 
     def /: (real_number | vector_type) -> vector_type
-         | (in_value_type) -> void
+
+    def fdiv: (real_number | vector_type) -> vector_type
   end
 
   # Methods for enumerating values of the number.
@@ -123,6 +123,7 @@ class VectorNumber < Numeric
     def real: () -> real_number
 
     def imaginary: () -> real_number
+    alias imag imaginary
 
     def to_i: () -> Integer
             | () -> void
@@ -134,11 +135,13 @@ class VectorNumber < Numeric
     def to_r: () -> Rational
             | () -> void
 
-    def to_d: (Integer?) -> BigDecimal
-            | (Integer?) -> void
+    def to_d: (?Integer?) -> BigDecimal
+            | (?Integer?) -> void
 
     def to_c: () -> Complex
             | () -> void
+
+    def truncate: (?Integer digits) -> vector_type
 
     private
 
@@ -164,11 +167,9 @@ class VectorNumber < Numeric
   module Querying
     include Enumerating
 
-    def real?: () -> bool
+    def numeric?: (?Integer) -> bool
 
-    def numeric?: (Integer) -> bool
-
-    def nonnumeric?: (Integer) -> bool
+    def nonnumeric?: (?Integer) -> bool
 
     def finite?: () -> bool
 
@@ -181,6 +182,10 @@ class VectorNumber < Numeric
     def positive?: () -> bool?
 
     def negative?: () -> bool?
+
+    def real?: () -> false
+
+    def integer?: () -> false
   end
 
   # Methods and options for string representation.

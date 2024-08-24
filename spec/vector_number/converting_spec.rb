@@ -7,7 +7,7 @@ RSpec.describe VectorNumber::Converting do
   let(:zero_number) { num }
   let(:real_number) { num(999.13) }
   let(:complex_number) { num(Complex(0.1, -13.4)) }
-  let(:composite_number) { num("y", :a, 5, Complex(3, 5), 1.3.i) }
+  let(:composite_number) { num("y", :a, 5, Complex(3, 5), 1.3i) }
 
   describe "#real" do
     subject(:real_part) { number.real }
@@ -45,6 +45,12 @@ RSpec.describe VectorNumber::Converting do
     include_examples "returns imaginary part", for_number: :real_number, value: 0
     include_examples "returns imaginary part", for_number: :complex_number, value: -13.4
     include_examples "returns imaginary part", for_number: :composite_number, value: 6.3
+  end
+
+  describe "#imag" do
+    it "is an alias of #imaginary" do
+      expect(described_class.instance_method(:imag).original_name).to be :imaginary
+    end
   end
 
   describe "#to_i" do
@@ -229,6 +235,30 @@ RSpec.describe VectorNumber::Converting do
 
       it "raises RangeError" do
         expect { conversion }.to raise_error RangeError
+      end
+    end
+  end
+
+  describe "#truncate", :aggregate_failures do
+    context "when `digits` is 0" do
+      it "truncates every coefficient to an Integer" do
+        expect(zero_number.truncate(0)).to eql num
+        expect(real_number.truncate).to eql num(999)
+        expect(complex_number.truncate).to eql num(0, -13i)
+        expect(composite_number.truncate).to eql num("y", :a, 8, 6i)
+        expect((composite_number / 2).truncate).to eql num(4, 3i)
+      end
+    end
+
+    context "when digits is > 0" do
+      it "truncates excess decimal precision" do
+        expect(zero_number.truncate(1)).to eql num
+        expect(real_number.truncate(1)).to eql num(999.1)
+        expect(complex_number.truncate(1)).to eql num(0.1, -13.4i)
+        expect(composite_number.truncate(1)).to eql num("y", :a, 8, 6.3i)
+        expect((composite_number / 3).truncate(1).to_a).to contain_exactly(
+          ["y", 0.3r], [:a, 0.3r], [VectorNumber::R, 2.6], [VectorNumber::I, 2.1]
+        )
       end
     end
   end

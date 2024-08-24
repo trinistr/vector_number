@@ -506,8 +506,98 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:value) { [-rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample }
 
       it "returns a real result as a vector number" do
-        expect(result).to be_a(VectorNumber)
+        expect(result).to be_a VectorNumber
         expect(result.to_a).to eq [[VectorNumber::R, number / value]]
+      end
+    end
+
+    context "when dividing real number by a non-real vector number" do
+      let(:number) do
+        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
+      end
+
+      let(:other) { [composite_number, f_number, num(1, -15i)].sample }
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+  end
+
+  describe "#fdiv" do
+    subject(:result) { number.fdiv(other) }
+
+    let(:number) { [zero_number, real_number, composite_number, f_number].sample }
+
+    context "when dividing by a real number" do
+      let(:other) { [-rand(6.0..7.0), rand(10r..100r), rand(("-100".to_d)..("-10".to_d))].sample }
+
+      it "creates a new number, dividing all coefficients by the other number" do
+        expect(result.units).to eq number.units
+        expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v.fdiv(other)] })
+      end
+    end
+
+    context "when dividing integer by an integer" do
+      let(:number) { num(real_value, "string") }
+      let(:real_value) { rand(1..10_000) }
+
+      let(:other) { rand(1..10_000) }
+
+      it "stores coefficient as a Float" do
+        expect(result.to_a).to contain_exactly(
+          [VectorNumber::R, real_value.fdiv(other)],
+          ["string", 1.0 / other]
+        )
+      end
+    end
+
+    context "when dividing by a real vector number" do
+      let(:other) { num(value) }
+      let(:value) { [-rand(6.0..7.0), rand(10r..100r), rand(("-100".to_d)..("-10".to_d))].sample }
+
+      it "creates a new number, dividing all coefficients by the value of the other number" do
+        expect(result.units).to eq number.units
+        expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v.fdiv(other)] })
+      end
+    end
+
+    context "when dividing by any other value" do
+      let(:other) do
+        [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
+      end
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
+    context "when dividing Float or BigDecimal by a real vector number" do
+      let(:number) { [-rand(6.0..7.0), rand(-100..-10).to_d].sample }
+
+      let(:other) { num(value) }
+      let(:value) do
+        [rand(2..10), -rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample
+      end
+
+      it "returns a real result as a vector number" do
+        expect(result).to be_a VectorNumber
+        expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
+      end
+    end
+
+    context "when dividing Integer or Rational by a real vector number" do
+      let(:number) { [rand(2..10), rand(10r..100r)].sample }
+
+      let(:other) { num(value) }
+      let(:value) do
+        [rand(2..10), -rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample
+      end
+
+      # Integer and Rational call `#to_f` on the result, Float and BigDecimal do not.
+      it "returns a Float result" do
+        expect(result).to be_a Float
+        expect(result).to eq number.fdiv(value)
       end
     end
 

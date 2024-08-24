@@ -53,8 +53,10 @@ class VectorNumber
     def *(other)
       if real_number?(other)
         other = other.real
+        # @type var other: Float
         new { _1 * other }
       elsif real_number?(self) && other.is_a?(self.class)
+        # @type var other: untyped
         other * self
       else
         raise RangeError, "can't multiply #{self} and #{other}"
@@ -63,7 +65,7 @@ class VectorNumber
 
     # Divide all coefficients by a real number, returning new vector.
     # This effectively multiplies magnitude by reciprocal of the specified factor.
-    # @param other [Integer, Float, Rational, BigDecimal]
+    # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or is not a real number
     def /(other)
@@ -72,7 +74,20 @@ class VectorNumber
       other = other.real
       # Prevent integer division, but without loss of accuracy.
       other = Rational(other) if other.is_a?(Integer)
+      # @type var other: Float
       new { _1 / other }
+    end
+
+    # Divide all coefficients by a real number using +fdiv+, returning new vector
+    # with Float coefficients.
+    # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
+    # @return [VectorNumber]
+    # @raise [RangeError] if +other+ is not a number or is not a real number
+    def fdiv(other)
+      raise RangeError, "can't divide #{self} by #{other}" unless real_number?(other)
+
+      other = other.real
+      new { _1.fdiv(other) }
     end
   end
 end

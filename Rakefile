@@ -28,4 +28,4 @@ task steep: :rbs do
   exit $CHILD_STATUS.exitstatus || 1 unless system "steep", "check"
 end
 
-task default: %i[spec rubocop steep]
+task default: %i[spec rubocop rbs]

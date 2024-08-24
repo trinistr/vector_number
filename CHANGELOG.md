@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Next]
 ### Added
 - Add back `#*` and `#/` for working with real numbers.
+- Add `#fdiv`, `#truncate`, `#nonumeric?` and `#integer?`
 
 ### Changed
 - Allow to use fully real VectorNumbers as real numbers.

@@ -4,12 +4,6 @@ class VectorNumber
   # Methods for querying state of the number.
   # Mostly modeled after {::Complex}.
   module Querying
-    # Always returns +false+.
-    # @return [false]
-    def real?
-      false
-    end
-
     # Whether this VectorNumber can be considered strictly numeric, e.g. real or complex.
     # @param dimensions [Integer] number of dimensions to consider "numeric"
     #   - 0 — zero
@@ -79,6 +73,18 @@ class VectorNumber
       elsif zero? || all? { |_u, c| c.positive? }
         false
       end
+    end
+
+    # Always returns +false+.
+    # @return [false]
+    def real?
+      false
+    end
+
+    # Always returns +false+.
+    # @return [false]
+    def integer?
+      false
     end
   end
 end

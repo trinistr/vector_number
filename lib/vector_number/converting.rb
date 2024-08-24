@@ -15,6 +15,8 @@ class VectorNumber
       @data[I]
     end
 
+    alias imag imaginary
+
     # Return value as an Integer, truncating it, if only real part is non-zero.
     # @return [Integer]
     # @raise [RangeError] if any non-real part is non-zero
@@ -59,6 +61,13 @@ class VectorNumber
     # @raise [RangeError] if any non-real, non-imaginary part is non-zero
     def to_c
       numeric?(2) ? Complex(real, imaginary) : raise_convert_error(Complex)
+    end
+
+    # Return a new VectorNumber with every coefficient truncated using their +#truncate+.
+    # @param digits [Integer]
+    # @return [VectorNumber]
+    def truncate(digits = 0)
+      new { _1.truncate(digits) }
     end
 
     private
