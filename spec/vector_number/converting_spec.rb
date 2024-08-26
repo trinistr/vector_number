@@ -47,11 +47,7 @@ RSpec.describe VectorNumber::Converting do
     include_examples "returns imaginary part", for_number: :composite_number, value: 6.3
   end
 
-  describe "#imag" do
-    it "is an alias of #imaginary" do
-      expect(described_class.instance_method(:imag).original_name).to be :imaginary
-    end
-  end
+  include_examples "has an alias", :imag, :imaginary
 
   describe "#to_i" do
     subject(:conversion) { number.to_i }
@@ -89,11 +85,7 @@ RSpec.describe VectorNumber::Converting do
     end
   end
 
-  describe "#to_int" do
-    it "is an alias of #to_i" do
-      expect(described_class.instance_method(:to_int).original_name).to be :to_i
-    end
-  end
+  include_examples "has an alias", :to_int, :to_i
 
   describe "#to_f" do
     subject(:conversion) { number.to_f }
@@ -235,30 +227,6 @@ RSpec.describe VectorNumber::Converting do
 
       it "raises RangeError" do
         expect { conversion }.to raise_error RangeError
-      end
-    end
-  end
-
-  describe "#truncate", :aggregate_failures do
-    context "when `digits` is 0" do
-      it "truncates every coefficient to an Integer" do
-        expect(zero_number.truncate(0)).to eql num
-        expect(real_number.truncate).to eql num(999)
-        expect(complex_number.truncate).to eql num(0, -13i)
-        expect(composite_number.truncate).to eql num("y", :a, 8, 6i)
-        expect((composite_number / 2).truncate).to eql num(4, 3i)
-      end
-    end
-
-    context "when digits is > 0" do
-      it "truncates excess decimal precision" do
-        expect(zero_number.truncate(1)).to eql num
-        expect(real_number.truncate(1)).to eql num(999.1)
-        expect(complex_number.truncate(1)).to eql num(0.1, -13.4i)
-        expect(composite_number.truncate(1)).to eql num("y", :a, 8, 6.3i)
-        expect((composite_number / 3).truncate(1).to_a).to contain_exactly(
-          ["y", 0.3r], [:a, 0.3r], [VectorNumber::R, 2.6], [VectorNumber::I, 2.1]
-        )
       end
     end
   end

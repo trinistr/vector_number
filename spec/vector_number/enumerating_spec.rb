@@ -49,11 +49,7 @@ RSpec.describe VectorNumber::Enumerating do
     end
   end
 
-  describe "#each_pair" do
-    it "is an alias of #each" do
-      expect(described_class.instance_method(:each_pair).original_name).to be :each
-    end
-  end
+  include_examples "has an alias", :each_pair, :each
 
   describe "#units" do
     subject(:units) { number.units }
@@ -73,11 +69,7 @@ RSpec.describe VectorNumber::Enumerating do
     include_examples "returns units", for_number: :composite_number, values: [0.i, "y", :a]
   end
 
-  describe "#keys" do
-    it "is an alias of #units" do
-      expect(described_class.instance_method(:keys).original_name).to be :units
-    end
-  end
+  include_examples "has an alias", :keys, :units
 
   describe "#coefficients" do
     subject(:coefficients) { number.coefficients }
@@ -97,11 +89,7 @@ RSpec.describe VectorNumber::Enumerating do
     include_examples "returns coefficients", for_number: :composite_number, values: [5, 1, 1]
   end
 
-  describe "#values" do
-    it "is an alias of #coefficients" do
-      expect(described_class.instance_method(:values).original_name).to be :coefficients
-    end
-  end
+  include_examples "has an alias", :values, :coefficients
 
   describe "#to_h" do
     subject(:hash) { number.to_h(&block) }

@@ -63,13 +63,6 @@ class VectorNumber
       numeric?(2) ? Complex(real, imaginary) : raise_convert_error(Complex)
     end
 
-    # Return a new VectorNumber with every coefficient truncated using their +#truncate+.
-    # @param digits [Integer]
-    # @return [VectorNumber]
-    def truncate(digits = 0)
-      new { _1.truncate(digits) }
-    end
-
     private
 
     def raise_convert_error(klass)

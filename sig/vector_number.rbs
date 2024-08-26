@@ -17,9 +17,10 @@ class VectorNumber
   include _BaseMethods
   include VectorNumber::Initializing
   include VectorNumber::Mathing
+  include VectorNumber::MathConverting
+  include VectorNumber::Converting
   include VectorNumber::Enumerating
   include VectorNumber::Comparing
-  include VectorNumber::Converting
   include VectorNumber::Querying
   include VectorNumber::Stringifying
 
@@ -94,25 +95,20 @@ class VectorNumber
     def fdiv: (real_number | vector_type) -> vector_type
   end
 
-  # Methods for enumerating values of the number.
-  module Enumerating
+  # Various mathematical operations that are also conversions.
+  module MathConverting
     include _BaseMethods
-    include _Each[each_value_type]
-    include Enumerable[each_value_type]
+    include Enumerating
 
-    def each: () { (unit_type unit, coefficient_type coefficient) -> void } -> self
-            | () -> Enumerator[each_value_type, Integer]
-            | ...
-    alias each_pair each
+    def abs: () -> Float
 
-    def units: () -> units_list_type
-    alias keys units
+    def abs2: () -> Float
 
-    def coefficients: () -> coefficients_list_type
-    alias values coefficients
+    def truncate: (Integer) -> vector_type
 
-    def to_h: () -> plain_vector_type
-            | () { (unit_type, coefficient_type) -> each_value_type } -> plain_vector_type
+    def ceil: (Integer) -> vector_type
+
+    def floor: (Integer) -> vector_type
   end
 
   # Methods for converting to different number classes.
@@ -146,6 +142,27 @@ class VectorNumber
     private
 
     def raise_convert_error: (Class) -> void
+  end
+
+  # Methods for enumerating values of the number.
+  module Enumerating
+    include _BaseMethods
+    include _Each[each_value_type]
+    include Enumerable[each_value_type]
+
+    def each: () { (unit_type unit, coefficient_type coefficient) -> void } -> self
+            | () -> Enumerator[each_value_type, Integer]
+            | ...
+    alias each_pair each
+
+    def units: () -> units_list_type
+    alias keys units
+
+    def coefficients: () -> coefficients_list_type
+    alias values coefficients
+
+    def to_h: () -> plain_vector_type
+            | () { (unit_type, coefficient_type) -> each_value_type } -> plain_vector_type
   end
 
   # Methods for comparing with other numbers.

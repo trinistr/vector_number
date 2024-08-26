@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 ### Added
+- Add `#abs` (`#magnitude`) and `#abs2`.
+- Add `#ceil`, `#floor` and `#round`.
+
+## [v0.2.1] — 2024-08-24
+### Added
 - Add back `#*` and `#/` for working with real numbers.
-- Add `#fdiv`, `#truncate`, `#nonumeric?` and `#integer?`
+- Add `#fdiv`, `#truncate`, `#nonumeric?` and `#integer?`.
 
 ### Changed
 - Allow to use fully real VectorNumbers as real numbers.
@@ -17,7 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix reversed result in refined `#<=>`.
 
 ### Removed
-## [v0.2.1] — 2024-08-24
 - Remove `#to_str`, as VectorNumber is not a String-like object.
 - Due to the above, `Kernel.BigDecimal` no longer works without refinements.
 
