@@ -27,7 +27,18 @@ jobs:
           # Mititage ffi 1.17 fail with binary gem.
           - ruby: '3.1.0'
             rubygems: '3.3.22'
-
+          # Declare all not-officially supported versions as experimental.
+          - ruby: 'head'
+            experimental: true
+          - ruby: 'jruby'
+            experimental: true
+          - ruby: 'jruby-head'
+            experimental: true
+          - ruby: 'truffleruby'
+            experimental: true
+          - ruby: 'truffleruby-head'
+            experimental: true
+    continue-on-error: ${{ matrix.experimental }}
     steps:
     - uses: actions/checkout@v4
     - name: Set up Ruby
