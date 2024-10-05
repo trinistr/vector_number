@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   pull_request:
 
 jobs:
@@ -12,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Ruby ${{ matrix.ruby }}
     strategy:
+      fail-fast: false
       matrix:
-        fail-fast: false
         ruby:
           - '3.1.0'
           - '3.1'
@@ -24,6 +23,10 @@ jobs:
           - jruby-head
           - truffleruby
           - truffleruby-head
+        include:
+          # Mititage ffi 1.17 fail with binary gem.
+          - ruby: '3.1.0'
+            rubygems: '3.3.22'
 
     steps:
     - uses: actions/checkout@v4
@@ -31,8 +34,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-        # Mititage ffi 1.17 fail with binary gem.
-        rubygems: '3.3.22'
+        rubygems: ${{ matrix.rubygems }}
         bundler-cache: true
     - name: Run the default task
       run: bundle exec rake
