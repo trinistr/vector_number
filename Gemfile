@@ -4,6 +4,9 @@ source "https://rubygems.org"
 
 gemspec
 
+# Development and testing use BigDecimal, though it is not required for the gem.
+gem "bigdecimal"
+
 # For running all checks together
 gem "rake", "~> 13.0", require: false
 
