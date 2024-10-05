@@ -23,6 +23,7 @@ jobs:
           - jruby-head
           - truffleruby
           - truffleruby-head
+        experimental: [false]
         include:
           # Mititage ffi 1.17 fail with binary gem.
           - ruby: '3.1.0'
