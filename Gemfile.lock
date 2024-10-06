@@ -147,6 +147,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bigdecimal
   bump
   rake (~> 13.0)
   rbs
