@@ -49,13 +49,7 @@ class VectorNumber
         when :even then :half_even
         else :half_up
         end
-      new do |coefficient|
-        if defined?(BigDecimal) && coefficient.is_a?(BigDecimal)
-          coefficient.round(digits, bd_mode)
-        else
-          coefficient.round(digits, half:)
-        end
-      end
+      new { _1.is_a?(BigDecimal) ? _1.round(digits, bd_mode) : _1.round(digits, half:) }
     end
   end
 end

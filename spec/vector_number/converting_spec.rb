@@ -193,16 +193,6 @@ RSpec.describe VectorNumber::Converting do
         expect { conversion }.to raise_error RangeError
       end
     end
-
-    context "when BigDecimal is not available" do
-      let(:number) { zero_number }
-
-      before { hide_const("BigDecimal") }
-
-      it "raises RuntimeError" do
-        expect { conversion }.to raise_error RuntimeError
-      end
-    end
   end
 
   describe "#to_c" do

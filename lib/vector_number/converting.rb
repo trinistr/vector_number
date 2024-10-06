@@ -46,8 +46,6 @@ class VectorNumber
     # @raise [RangeError] if any non-real part is non-zero
     # @raise [NoMethodError] if 'bigdecimal/util' was not required
     def to_d(ndigits = nil)
-      raise "BigDecimal is not available" unless defined?(BigDecimal)
-
       if numeric?(1)
         return BigDecimal(real, ndigits) if ndigits
         return BigDecimal(real, Float::DIG) if real.is_a?(Float)
