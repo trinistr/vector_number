@@ -51,7 +51,7 @@ RSpec.describe VectorNumber::NumericRefinements do
     # NB: Method must be called after `using` refinements for them to work, even in a block.
     subject(:conversion) { BigDecimal(num(number)) }
 
-    let(:number) { rand(-300..3000) }
+    let(:number) { rand(-300.0..3000.0).round(3) }
 
     context "when converting a vector number" do
       context "without second argument" do
@@ -63,10 +63,10 @@ RSpec.describe VectorNumber::NumericRefinements do
       context "with second argument" do
         subject(:conversion) { BigDecimal(num(number), 2) }
 
-        let(:number) { rand(1.0...2.0) }
+        let(:number) { rand(10.0...20.0) }
 
-        it "returns an equivalent BigDecimal" do
-          expect(conversion).to be_a(BigDecimal).and eq number.round(1)
+        it "returns an equivalent BigDecimal after rounding" do
+          expect(conversion).to be_a(BigDecimal).and eq number.round
         end
       end
     end
@@ -80,13 +80,32 @@ RSpec.describe VectorNumber::NumericRefinements do
         end
       end
 
+      # Second argument is ignored for conversion from String.
       context "with second argument" do
         subject(:conversion) { BigDecimal(number.to_s, 2) }
 
-        let(:number) { rand(1.0...2.0) }
+        it "does not perform rounding" do
+          expect(conversion).to be_a(BigDecimal).and eq number
+        end
+      end
+    end
 
-        it "returns an equivalent BigDecimal", pending: "does not behave as expected" do
-          expect(conversion).to be_a(BigDecimal).and eq number.round(1)
+    context "when converting a Float" do
+      subject(:conversion) { BigDecimal(number) }
+
+      context "without second argument" do
+        it "raises ArgumentError" do
+          expect { conversion }.to raise_error ArgumentError
+        end
+      end
+
+      context "with second argument" do
+        subject(:conversion) { BigDecimal(number, 2) }
+
+        let(:number) { rand(100.0...200.0) }
+
+        it "returns an equivalent BigDecimal after rounding" do
+          expect(conversion).to be_a(BigDecimal).and eq number.round(-1)
         end
       end
     end
