@@ -20,6 +20,9 @@ gem "rubocop-rake", require: false
 gem "rubocop-rspec", require: false
 gem "rubocop-thread_safety", require: false
 
+# Checking type signatures
+gem "rbs", require: false
+
 group :development do
   # Type checking
   gem "steep", require: false

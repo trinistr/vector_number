@@ -150,6 +150,7 @@ DEPENDENCIES
   bigdecimal
   bump
   rake (~> 13.0)
+  rbs
   rspec (~> 3.0)
   rubocop (~> 1.21)
   rubocop-performance
