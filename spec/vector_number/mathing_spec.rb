@@ -572,8 +572,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
 
-    context "when dividing Float or BigDecimal by a real vector number" do
-      let(:number) { [-rand(6.0..7.0), rand(-100..-10).to_d].sample }
+    context "when dividing Float by a real vector number" do
+      let(:number) { -rand(6.0..7.0) }
 
       let(:other) { num(value) }
       let(:value) do
@@ -586,15 +586,42 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
 
-    context "when dividing Integer or Rational by a real vector number" do
-      let(:number) { [rand(2..10), rand(10r..100r)].sample }
+    context "when dividing BigDecimal by a real vector number" do
+      let(:number) { rand(-100..-10).to_d }
 
       let(:other) { num(value) }
       let(:value) do
         [rand(2..10), -rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample
       end
 
-      # Integer and Rational call `#to_f` on the result, Float and BigDecimal do not.
+      it "returns a real result as a vector number" do
+        expect(result).to be_a VectorNumber
+        expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
+      end
+    end
+
+    context "when dividing Integer by a real vector number" do
+      let(:number) { rand(2..10) }
+
+      let(:other) { num(value) }
+      let(:value) do
+        [rand(2..10), -rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample
+      end
+
+      it "returns a Float result" do
+        expect(result).to be_a Float
+        expect(result).to eq number.fdiv(value)
+      end
+    end
+
+    context "when dividing Rational by a real vector number" do
+      let(:number) { rand(10r..100r) }
+
+      let(:other) { num(value) }
+      let(:value) do
+        [rand(2..10), -rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample
+      end
+
       it "returns a Float result" do
         expect(result).to be_a Float
         expect(result).to eq number.fdiv(value)
