@@ -193,6 +193,31 @@ RSpec.describe VectorNumber::Converting do
         expect { conversion }.to raise_error RangeError
       end
     end
+
+    context "when BigDecimal is not available" do
+      context "with a number that could be converted" do
+        let(:number) { test_class[0] }
+
+        # There is no simple way to mock the method,
+        # so we create a class which mocks unavailability.
+        let(:test_class) { Class.new(VectorNumber) { undef_method :BigDecimal } }
+
+        it "raises NoMethodError" do
+          expect { conversion }.to raise_error NoMethodError
+        end
+      end
+
+      context "with a number that could not be converted" do
+        let(:number) { test_class[2i] }
+
+        # Ditto for constant resolution.
+        let(:test_class) { Class.new(VectorNumber) { remove_const :BigDecimal } }
+
+        it "raises NameError" do
+          expect { conversion }.to raise_error NameError
+        end
+      end
+    end
   end
 
   describe "#to_c" do
