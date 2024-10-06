@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+bigdecimal_supported = true
+unless defined?(BigDecimal)
+  begin
+    require "bigdecimal"
+  rescue LoadError
+    bigdecimal_supported = false
+  end
+end
+
 require "vector_number"
 
 require_relative "support/shared_examples"
@@ -24,6 +33,7 @@ RSpec.configure do |config|
       :documentation
     end
 
+  # Include `#num` method in specs for easy generation of VectorNumbers.
   number_helper =
     Module.new do
       def num(...)
@@ -31,4 +41,10 @@ RSpec.configure do |config|
       end
     end
   config.include number_helper
+
+  # Skip tests using BigDecimal if no support is available.
+  unless bigdecimal_supported
+    config.filter_run_excluding(bigdecimal: true)
+    warn "no BigDecimal support detected, BigDecimal tests will not be run"
+  end
 end

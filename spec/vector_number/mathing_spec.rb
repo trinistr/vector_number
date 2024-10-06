@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "bigdecimal/util"
-
 RSpec.describe VectorNumber::Mathing, :aggregate_failures do
   let(:zero_number) { num(Complex(0, 0), 0.0, 1, -1) }
   let(:real_number) { num(-1.5r) }
@@ -89,10 +87,7 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
 
     context "when adding a real number" do
-      let(:other) do
-        [rand(1.0..2.0), rand(1..10_000), rand(1r..100r),
-         rand(BigDecimal("-100")..BigDecimal("-10"))].sample
-      end
+      let(:other) { [rand(1.0..2.0), rand(1..10_000), rand(1r..100r)].sample }
       let(:result_array) do
         values = number.to_a
         if (value = values.assoc(VectorNumber::R))
@@ -106,16 +101,22 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       it "creates a new number, adding real number to real part" do
         expect(result.units).to match_array(number.units | [VectorNumber::R])
         expect(result.to_a).to match_array result_array
+      end
+
+      context "if adding a BigDecimal", :bigdecimal do
+        let(:other) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "creates a new number, adding real number to real part" do
+          expect(result.units).to match_array(number.units | [VectorNumber::R])
+          expect(result.to_a).to match_array result_array
+        end
       end
     end
 
     context "when adding to a real number" do
       subject(:result) { other + number }
 
-      let(:other) do
-        [rand(1.0..2.0), rand(1..10_000), rand(1r..100r),
-         rand(BigDecimal("-100")..BigDecimal("-10"))].sample
-      end
+      let(:other) { [rand(1.0..2.0), rand(1..10_000), rand(1r..100r)].sample }
       let(:result_array) do
         values = number.to_a
         if (value = values.assoc(VectorNumber::R))
@@ -129,6 +130,15 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       it "creates a new number, adding real number to real part" do
         expect(result.units).to match_array(number.units | [VectorNumber::R])
         expect(result.to_a).to match_array result_array
+      end
+
+      context "if adding to a BigDecimal", :bigdecimal do
+        let(:other) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "creates a new number, adding real number to real part" do
+          expect(result.units).to match_array(number.units | [VectorNumber::R])
+          expect(result.to_a).to match_array result_array
+        end
       end
     end
 
@@ -232,10 +242,7 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
 
     context "when subtracting a real number" do
-      let(:other) do
-        [rand(6.0..7.0), rand(13..10_000), rand(10r..100r),
-         rand(BigDecimal("-100")..BigDecimal("-10"))].sample
-      end
+      let(:other) { [rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
       let(:result_array) do
         values = number.to_a
         if (value = values.assoc(VectorNumber::R))
@@ -250,15 +257,21 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         expect(result.units).to match_array(number.units | [VectorNumber::R])
         expect(result.to_a).to match_array result_array
       end
+
+      context "if subtracting a BigDecimal", :bigdecimal do
+        let(:other) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "creates a new number, subtracting real number from real part" do
+          expect(result.units).to match_array(number.units | [VectorNumber::R])
+          expect(result.to_a).to match_array result_array
+        end
+      end
     end
 
     context "when subtracting from a real number" do
       subject(:result) { other - number }
 
-      let(:other) do
-        [rand(6.0..7.0), rand(13..10_000), rand(10r..100r),
-         rand(BigDecimal("-100")..BigDecimal("-10"))].sample
-      end
+      let(:other) { [rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
       let(:result_array) do
         values = number.to_a
         if (value = values.assoc(VectorNumber::R))
@@ -272,6 +285,15 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       it "creates a new number, subtracting real number from real part" do
         expect(result.units).to match_array(number.units | [VectorNumber::R])
         expect(result.to_a).to match_array result_array
+      end
+
+      context "if subtracting from a BigDecimal", :bigdecimal do
+        let(:other) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "creates a new number, subtracting real number from real part" do
+          expect(result.units).to match_array(number.units | [VectorNumber::R])
+          expect(result.to_a).to match_array result_array
+        end
       end
     end
 
@@ -382,23 +404,39 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
 
     context "when multiplying by a real number" do
-      let(:other) do
-        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
-      end
+      let(:other) { [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
 
       it "creates a new number, multiplying all coefficients by the other number" do
         expect(result.units).to eq number.units
         expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v * other] })
       end
+
+      context "if multiplying by a BigDecimal", :bigdecimal do
+        let(:other) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "creates a new number, multiplying all coefficients by the other number" do
+          expect(result.units).to eq number.units
+          expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v * other] })
+        end
+      end
     end
 
     context "when multiplying by a real vector number" do
       let(:other) { num(value) }
-      let(:value) { [-rand(6.0..7.0), rand(10r..100r), rand(("-100".to_d)..("-10".to_d))].sample }
+      let(:value) { [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
 
       it "creates a new number, multiplying all coefficients by the value of the other number" do
         expect(result.units).to eq number.units
         expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v * value] })
+      end
+
+      context "if vector contains a BigDecimal", :bigdecimal do
+        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "creates a new number, multiplying all coefficients by the value of the other number" do
+          expect(result.units).to eq number.units
+          expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v * other] })
+        end
       end
     end
 
@@ -422,31 +460,43 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     end
 
     context "when multiplying real number by a real vector number" do
-      let(:number) do
-        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
-      end
+      let(:number) { [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
 
       let(:other) { num(value) }
-      let(:value) do
-        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100.0..100.0).to_d].sample
-      end
+      let(:value) { [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
 
       it "returns a real result as a vector number" do
         expect(result).to be_a(VectorNumber)
         expect(result.to_a).to eq [[VectorNumber::R, number * value]]
       end
+
+      context "if multiplying a BigDecimal", :bigdecimal do
+        let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "returns a real result as a vector number" do
+          expect(result).to be_a(VectorNumber)
+          expect(result.to_a).to eq [[VectorNumber::R, number * value]]
+        end
+      end
     end
 
     context "when multiplying real number by a non-real vector number" do
-      let(:number) do
-        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
-      end
+      let(:number) { [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
 
       let(:other) { [composite_number, f_number, num(1, -15i)].sample }
 
       it "returns vector multiplied by the real number" do
         expect(result).to be_a(VectorNumber)
         expect(result).to eq other * number
+      end
+
+      context "if multiplying a BigDecimal", :bigdecimal do
+        let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "returns vector multiplied by the real number" do
+          expect(result).to be_a(VectorNumber)
+          expect(result).to eq other * number
+        end
       end
     end
   end
@@ -457,11 +507,20 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
 
     context "when dividing by a real number" do
-      let(:other) { [-rand(6.0..7.0), rand(10r..100r), rand(("-100".to_d)..("-10".to_d))].sample }
+      let(:other) { [-rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "creates a new number, dividing all coefficients by the other number" do
         expect(result.units).to eq number.units
         expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v / other] })
+      end
+
+      context "if dividing by a BigDecimal", :bigdecimal do
+        let(:other) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "creates a new number, dividing all coefficients by the value of the other number" do
+          expect(result).to be_a(VectorNumber)
+          expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v / other] })
+        end
       end
     end
 
@@ -481,11 +540,20 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
 
     context "when dividing by a real vector number" do
       let(:other) { num(value) }
-      let(:value) { [-rand(6.0..7.0), rand(10r..100r), rand(("-100".to_d)..("-10".to_d))].sample }
+      let(:value) { [-rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "creates a new number, dividing all coefficients by the value of the other number" do
         expect(result.units).to eq number.units
         expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v / value] })
+      end
+
+      context "if vector contains a BigDecimal", :bigdecimal do
+        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "creates a new number, dividing all coefficients by the value of the other number" do
+          expect(result).to be_a(VectorNumber)
+          expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v / other] })
+        end
       end
     end
 
@@ -500,26 +568,41 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     end
 
     context "when dividing real number by a real vector number" do
-      let(:number) { [-rand(6.0..7.0), rand(10r..100r), rand(-100..-10).to_d].sample }
+      let(:number) { [-rand(6.0..7.0), rand(10r..100r)].sample }
 
       let(:other) { num(value) }
-      let(:value) { [-rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample }
+      let(:value) { [-rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "returns a real result as a vector number" do
         expect(result).to be_a VectorNumber
         expect(result.to_a).to eq [[VectorNumber::R, number / value]]
       end
+
+      context "if vector contains a BigDecimal", :bigdecimal do
+        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "returns a real result as a vector number" do
+          expect(result).to be_a(VectorNumber)
+          expect(result.to_a).to eq [[VectorNumber::R, number / value]]
+        end
+      end
     end
 
     context "when dividing real number by a non-real vector number" do
-      let(:number) do
-        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
-      end
+      let(:number) { [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
 
       let(:other) { [composite_number, f_number, num(1, -15i)].sample }
 
       it "raises RangeError" do
         expect { result }.to raise_error RangeError
+      end
+
+      context "if dividing a BigDecimal", :bigdecimal do
+        let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "raises RangeError" do
+          expect { result }.to raise_error RangeError
+        end
       end
     end
   end
@@ -530,11 +613,20 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
 
     context "when dividing by a real number" do
-      let(:other) { [-rand(6.0..7.0), rand(10r..100r), rand(("-100".to_d)..("-10".to_d))].sample }
+      let(:other) { [-rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "creates a new number, dividing all coefficients by the other number" do
         expect(result.units).to eq number.units
         expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v.fdiv(other)] })
+      end
+
+      context "if dividing by a BigDecimal", :bigdecimal do
+        let(:other) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "creates a new number, dividing all coefficients by the other number" do
+          expect(result).to be_a(VectorNumber)
+          expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v.fdiv(other)] })
+        end
       end
     end
 
@@ -554,11 +646,20 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
 
     context "when dividing by a real vector number" do
       let(:other) { num(value) }
-      let(:value) { [-rand(6.0..7.0), rand(10r..100r), rand(("-100".to_d)..("-10".to_d))].sample }
+      let(:value) { [-rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "creates a new number, dividing all coefficients by the value of the other number" do
         expect(result.units).to eq number.units
         expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v.fdiv(other)] })
+      end
+
+      context "if vector contains a BigDecimal", :bigdecimal do
+        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "creates a new number, dividing all coefficients by the value of the other number" do
+          expect(result).to be_a(VectorNumber)
+          expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v.fdiv(other)] })
+        end
       end
     end
 
@@ -576,27 +677,41 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:number) { -rand(6.0..7.0) }
 
       let(:other) { num(value) }
-      let(:value) do
-        [rand(2..10), -rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample
-      end
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "returns a real result as a vector number" do
         expect(result).to be_a VectorNumber
         expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
+      end
+
+      context "if vector contains a BigDecimal", :bigdecimal do
+        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "returns a real result as a vector number" do
+          expect(result).to be_a VectorNumber
+          expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
+        end
       end
     end
 
-    context "when dividing BigDecimal by a real vector number" do
-      let(:number) { rand(-100..-10).to_d }
+    context "when dividing BigDecimal by a real vector number", :bigdecimal do
+      let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
       let(:other) { num(value) }
-      let(:value) do
-        [rand(2..10), -rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample
-      end
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "returns a real result as a vector number" do
         expect(result).to be_a VectorNumber
         expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
+      end
+
+      context "if vector contains a BigDecimal", :bigdecimal do
+        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "returns a real result as a vector number" do
+          expect(result).to be_a VectorNumber
+          expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
+        end
       end
     end
 
@@ -604,13 +719,20 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:number) { rand(2..10) }
 
       let(:other) { num(value) }
-      let(:value) do
-        [rand(2..10), -rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample
-      end
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "returns a Float result" do
         expect(result).to be_a Float
         expect(result).to eq number.fdiv(value)
+      end
+
+      context "if vector contains a BigDecimal", :bigdecimal do
+        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "returns a Float result" do
+          expect(result).to be_a Float
+          expect(result).to eq number.fdiv(value)
+        end
       end
     end
 
@@ -618,25 +740,38 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:number) { rand(10r..100r) }
 
       let(:other) { num(value) }
-      let(:value) do
-        [rand(2..10), -rand(6.0..7.0), rand(10r..100r), rand(-100.0..100.0).to_d].sample
-      end
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "returns a Float result" do
         expect(result).to be_a Float
         expect(result).to eq number.fdiv(value)
       end
+
+      context "if vector contains a BigDecimal", :bigdecimal do
+        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "returns a Float result" do
+          expect(result).to be_a Float
+          expect(result).to eq number.fdiv(value)
+        end
+      end
     end
 
     context "when dividing real number by a non-real vector number" do
-      let(:number) do
-        [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r), rand(-100..-10).to_d].sample
-      end
+      let(:number) { [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
 
       let(:other) { [composite_number, f_number, num(1, -15i)].sample }
 
       it "raises RangeError" do
         expect { result }.to raise_error RangeError
+      end
+
+      context "if dividing a BigDecimal", :bigdecimal do
+        let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "raises RangeError" do
+          expect { result }.to raise_error RangeError
+        end
       end
     end
   end

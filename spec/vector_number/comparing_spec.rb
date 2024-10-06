@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "bigdecimal"
-
 RSpec.describe VectorNumber::Comparing do
   let(:real_number) { num(567/120r) }
   let(:composite_number) { num("y", :a, 5) }
@@ -26,6 +24,12 @@ RSpec.describe VectorNumber::Comparing do
       end
 
       context "when comparing to an equal value of a different class" do
+        let(:other) { 567.fdiv(120) }
+
+        it { is_expected.to be true }
+      end
+
+      context "when comparing to BigDecimal of an equal value", :bigdecimal do
         let(:other) { BigDecimal("567") / 120 }
 
         it { is_expected.to be true }
@@ -202,7 +206,7 @@ RSpec.describe VectorNumber::Comparing do
       end
 
       context "when comparing to a smaller value of a different class" do
-        let(:other) { BigDecimal("567") / 1200 }
+        let(:other) { 567.fdiv(1200) }
         let(:result) { forward_comparison ? 1 : -1 }
 
         it { is_expected.to be result }

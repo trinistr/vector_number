@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "bigdecimal"
-
 RSpec.describe Kernel do
   let(:zero_number) { num }
   let(:real_number) { num(999.13) }
@@ -116,7 +114,7 @@ RSpec.describe Kernel do
     end
   end
 
-  describe "#BigDecimal" do
+  describe "#BigDecimal", :bigdecimal do
     let(:conversion) { BigDecimal(number) }
 
     context "with any vector number" do
