@@ -9,9 +9,13 @@ RSpec::Core::RakeTask.new(:spec)
 require "rubocop/rake_task"
 RuboCop::RakeTask.new
 
-require "bump/tasks"
-Bump.changelog = true
-Bump.tag_by_default = true
+begin
+  require "bump/tasks"
+  Bump.changelog = true
+  Bump.tag_by_default = true
+rescue LoadError
+  # skip loading bump (only available in development)
+end
 
 desc "Validate signatures with RBS"
 task :rbs do
