@@ -21,9 +21,6 @@ jobs:
           - 'head'
         experimental: [false]
         include:
-          # Mititage ffi 1.17 fail with binary gem.
-          - ruby: '3.1.0'
-            rubygems: '3.3.22'
           # Declare all not-officially supported versions as experimental.
           - ruby: 'jruby'
             experimental: true
@@ -42,7 +39,6 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-        rubygems: ${{ matrix.rubygems }}
         bundler-cache: true
     - name: Run the default task
       run: bundle exec rake
