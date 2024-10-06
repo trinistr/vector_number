@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `#abs` (`#magnitude`) and `#abs2`.
 - Add `#ceil`, `#floor` and `#round`.
 
+### Changed
+- CI now also runs on ruby 3.1.0, the earliest supported version, and ruby-next (3.4).
+
 ## [v0.2.1] — 2024-08-24
 ### Added
 - Add back `#*` and `#/` for working with real numbers.
