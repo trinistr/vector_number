@@ -10,7 +10,7 @@ This is similar in a sense to hypercomplex numbers, such as quaternions, but wit
 Similar projects:
 - [vector_space](https://github.com/tomstuart/vector_space) aims to provide typed vector spaces with limited dimensions and nice formatting.
 - [named_vector](https://rubygems.org/gems/named_vector) provides simple vectors with named dimensions.
-- Various quaternion libraries.n
+- Various quaternion libraries.
 
 ## Installation
 
