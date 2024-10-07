@@ -1,4 +1,4 @@
-name: CI
+name: CRuby
 
 on:
   push:
@@ -20,16 +20,6 @@ jobs:
           - '3.3'
           - 'head'
         experimental: [false]
-        include:
-          # Declare all not-officially supported versions as experimental.
-          - ruby: 'jruby'
-            experimental: true
-          - ruby: 'jruby-head'
-            experimental: true
-          - ruby: 'truffleruby'
-            experimental: true
-          - ruby: 'truffleruby-head'
-            experimental: true
     continue-on-error: ${{ matrix.experimental }}
     env:
       BUNDLE_WITHOUT: 'development'
