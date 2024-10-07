@@ -1,8 +1,4 @@
-#!/usr/bin/env bash
-set -euo pipefail
-IFS=$'\n\t'
-set -vx
+#!/usr/bin/env ruby
+# frozen_string_literal: true
 
-bundle install
-
-# Do any other automated setup that you need to do here
+system "bundle install"
