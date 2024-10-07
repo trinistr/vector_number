@@ -30,7 +30,7 @@ class VectorNumber
     end
 
     # Refinement module to change Kernel#BigDecimal so it works with +#to_d+.
-    # @note "bigdecimal" needs to be required for this refinement to activate.
+    # @note `BigDecimal` needs to be defined for this refinement to activate.
     module BigDecimalToD
       # BigDecimal() that first tries to use #to_d.
       # @param value [Object]
@@ -44,7 +44,7 @@ class VectorNumber
         if value.respond_to?(:to_d)
           ndigits.nil? ? value.to_d : value.to_d(ndigits)
         else
-          super
+          ndigits.nil? ? super(value, exception:) : super
         end
       end
     end

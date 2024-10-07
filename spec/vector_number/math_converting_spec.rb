@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "bigdecimal"
-require "bigdecimal/util"
-
 RSpec.describe VectorNumber::MathConverting do
   let(:zero_number) { num }
   let(:real_number) { num(999.15) }
@@ -170,29 +167,56 @@ RSpec.describe VectorNumber::MathConverting do
     end
 
     context "with half: :up" do
-      let(:number) { num(BigDecimal("1.5"), 3.65i, :a) }
+      let(:number) { num(3.65i, :a) }
 
       it "rounds up on half" do
-        expect(number.round(half: :up)).to eql num(BigDecimal("2"), 4i, :a)
-        expect(number.round(1, half: :up)).to eql num(BigDecimal("1.5"), 3.7i, :a)
+        expect(number.round(half: :up)).to eql num(4i, :a)
+        expect(number.round(1, half: :up)).to eql num(3.7i, :a)
+      end
+
+      context "if a BigDecimal value is included", :bigdecimal do
+        let(:number) { num(BigDecimal("1.5"), 3.65i, :a) }
+
+        it "rounds up on half, using half_up for BigDecimal" do
+          expect(number.round(half: :up)).to eql num(BigDecimal("2"), 4i, :a)
+          expect(number.round(1, half: :up)).to eql num(BigDecimal("1.5"), 3.7i, :a)
+        end
       end
     end
 
     context "with half: :down" do
-      let(:number) { num(BigDecimal("1.5"), 3.65i, :a) }
+      let(:number) { num(3.65i, :a) }
 
       it "rounds down on half" do
-        expect(number.round(half: :down)).to eql num(BigDecimal("1"), 4i, :a)
-        expect(number.round(1, half: :down)).to eql num(BigDecimal("1.5"), 3.6i, :a)
+        expect(number.round(half: :down)).to eql num(4i, :a)
+        expect(number.round(1, half: :down)).to eql num(3.6i, :a)
+      end
+
+      context "if a BigDecimal value is included", :bigdecimal do
+        let(:number) { num(BigDecimal("1.5"), 3.65i, :a) }
+
+        it "rounds down on half, using half_down for BigDecimal" do
+          expect(number.round(half: :down)).to eql num(BigDecimal("1"), 4i, :a)
+          expect(number.round(1, half: :down)).to eql num(BigDecimal("1.5"), 3.6i, :a)
+        end
       end
     end
 
     context "with half: :even" do
-      let(:number) { num(BigDecimal("1.5"), 3.65i, :a) }
+      let(:number) { num(3.65i, :a) }
 
       it "rounds to even on half" do
-        expect(number.round(half: :even)).to eql num(BigDecimal("2"), 4i, :a)
-        expect(number.round(1, half: :even)).to eql num(BigDecimal("1.5"), 3.6i, :a)
+        expect(number.round(half: :even)).to eql num(4i, :a)
+        expect(number.round(1, half: :even)).to eql num(3.6i, :a)
+      end
+
+      context "if a BigDecimal value is included", :bigdecimal do
+        let(:number) { num(BigDecimal("1.5"), 3.65i, :a) }
+
+        it "rounds to even on half, using half_even for BigDecimal" do
+          expect(number.round(half: :even)).to eql num(BigDecimal("2"), 4i, :a)
+          expect(number.round(1, half: :even)).to eql num(BigDecimal("1.5"), 3.6i, :a)
+        end
       end
     end
   end

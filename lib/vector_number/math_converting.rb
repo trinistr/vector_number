@@ -43,13 +43,17 @@ class VectorNumber
     # @param half [Symbol, nil] one of +:up+, +:down+ or +:even+, see +Float#round+ for meaning
     # @return [VectorNumber]
     def round(digits = 0, half: :up)
-      bd_mode =
-        case half
-        when :down then :half_down
-        when :even then :half_even
-        else :half_up
-        end
-      new { _1.is_a?(BigDecimal) ? _1.round(digits, bd_mode) : _1.round(digits, half:) }
+      if defined?(BigDecimal)
+        bd_mode =
+          case half
+          when :down then :half_down
+          when :even then :half_even
+          else :half_up
+          end
+        new { _1.is_a?(BigDecimal) ? _1.round(digits, bd_mode) : _1.round(digits, half:) }
+      else
+        new { _1.round(digits, half:) }
+      end
     end
   end
 end

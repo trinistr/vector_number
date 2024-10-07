@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "bigdecimal"
-require "bigdecimal/util"
-
 RSpec.describe VectorNumber::Converting do
   let(:zero_number) { num }
   let(:real_number) { num(999.13) }
@@ -159,7 +156,7 @@ RSpec.describe VectorNumber::Converting do
     end
   end
 
-  describe "#to_d" do
+  describe "#to_d", :bigdecimal do
     subject(:conversion) { number.to_d }
 
     context "with zero" do
@@ -191,6 +188,34 @@ RSpec.describe VectorNumber::Converting do
 
       it "raises RangeError" do
         expect { conversion }.to raise_error RangeError
+      end
+    end
+
+    context "when BigDecimal is not available", bigdecimal: false do
+      # There is no simple way to mock the method,
+      # so we create a class which mocks unavailability.
+      # Ditto for constant resolution.
+      let(:test_class) do
+        Class.new(VectorNumber) do
+          undef_method :BigDecimal
+          remove_const :BigDecimal
+        end
+      end
+
+      context "with a number that could be converted" do
+        let(:number) { test_class[0] }
+
+        it "raises NameError" do
+          expect { conversion }.to raise_error NameError
+        end
+      end
+
+      context "with a number that could not be converted" do
+        let(:number) { test_class[2i] }
+
+        it "raises NameError" do
+          expect { conversion }.to raise_error NameError
+        end
       end
     end
   end

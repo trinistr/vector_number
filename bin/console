@@ -1,12 +1,14 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# Bundler
 require "bundler/setup"
-require "bigdecimal/util"
-require "vector_number"
 
-# You can add fixtures and/or initialization code here to make experimenting
-# with your gem easier. You can also use a different console, if you like.
+# Supporting libraries.
+require "bigdecimal/util"
+
+# This gem.
+require "vector_number"
 
 V1 = VectorNumber[1]
 Vi = VectorNumber[1.i]

@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - CI now also runs on ruby 3.1.0, the earliest supported version, and ruby-next (3.4).
+- Tests can now be run even without available 'bigdecimal' gem.
+
+### Fixed
+- `Kernel#BigDecimal` refinement now correctly works without `ndigits` argument.
 
 ## [v0.2.1] — 2024-08-24
 ### Added
