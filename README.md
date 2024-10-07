@@ -1,6 +1,7 @@
 # VectorNumber
 
-![validation workflow](https://github.com/trinistr/vector_number/actions/workflows/ci.yml/badge.svg)
+![CRuby validation](https://github.com/trinistr/vector_number/actions/workflows/cruby.yaml/badge.svg)
+![TruffleRuby validation](https://github.com/trinistr/vector_number/actions/workflows/truffleruby.yaml/badge.svg)
 
 A library to add together anything: be it a number, string or random Object, it can be added together in an infinite-dimensional vector space, with math operations available on results.
 
