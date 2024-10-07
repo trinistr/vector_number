@@ -44,7 +44,7 @@ class VectorNumber
     # @param ndigits [Integer] precision
     # @return [BigDecimal]
     # @raise [RangeError] if any non-real part is non-zero
-    # @raise [NoMethodError, NameError] if BigDecimal is not defined
+    # @raise [NameError] if BigDecimal is not defined
     def to_d(ndigits = nil)
       if numeric?(1)
         return BigDecimal(real, ndigits) if ndigits
