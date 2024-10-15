@@ -3,7 +3,7 @@
 begin
   require "bigdecimal"
 rescue LoadError
-  # Ok, continue wihtout bigecimal tests.
+  # Ok, either there is no bigdecimal, or it is always available.
 end
 
 require "vector_number"
@@ -40,8 +40,7 @@ RSpec.configure do |config|
   config.include number_helper
 
   # Skip tests using BigDecimal if no support is available.
-  unless defined?(BigDecimal)
-    config.filter_run_excluding(bigdecimal: true)
-    warn "no BigDecimal support detected, BigDecimal tests will not be run"
+  config.before(:context, :bigdecimal) do
+    skip "BigDecimal is not defined, test will not be run" unless defined?(BigDecimal)
   end
 end
