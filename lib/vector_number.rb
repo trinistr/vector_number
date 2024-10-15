@@ -55,19 +55,20 @@ class VectorNumber
   # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber]
   #   values for this number, hashes are treated like plain vector numbers
   # @param options [Hash{Symbol => Object}]
-  #   if +values+ is a VectorNumber, this argument is ignored
-  #   and +options+ are copied directly from +values+
+  #   options for this number, if +values+ is a VectorNumber,
+  #   these will be merged with options from +values.options+
   # @option options [Symbol, String] :mult
   #   text to use between unit and coefficient, see {Stringifying#to_s} for explanation
   # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
   # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
   # @raise [RangeError] if any pesky non-reals get where they shouldn't
-  def initialize(values = nil, options = {}, &)
+  def initialize(values = nil, options = {}.freeze, &)
     super()
     initialize_from(values)
     apply_transform(&)
     finalize_contents
-    values.is_a?(VectorNumber) ? save_options(values.options, safe: true) : save_options(options)
+    save_options(options, values:)
+    @options.freeze
     @data.freeze
     freeze
   end

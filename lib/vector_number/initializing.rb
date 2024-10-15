@@ -72,14 +72,18 @@ class VectorNumber
     end
 
     # @param options [Hash{Symbol => Object}, nil]
-    # @param safe [Boolean] whether options come from another instance of this class
+    # @param values [Object] initializing object
     # @return [void]
-    def save_options(options, safe: false)
+    def save_options(options, values:)
       @options =
-        if safe
-          options
-        elsif options.is_a?(Hash)
-          default_options.merge(options.slice(*known_options)).freeze
+        if values.is_a?(VectorNumber)
+          if options.empty?
+            values.options
+          else
+            values.options.merge(options).slice(*known_options)
+          end
+        elsif options.is_a?(Hash) && !options.empty?
+          default_options.merge(options).slice(*known_options)
         else
           default_options
         end

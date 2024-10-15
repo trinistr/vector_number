@@ -63,6 +63,14 @@ RSpec.describe VectorNumber::Stringifying do
           expect(string).to eq "1#{char}'y' + 1#{char}a - 31"
         end
       end
+
+      context "with an object" do
+        let(:mult) { [5, Object.new, num].sample }
+
+        it "raises ArgumentError" do
+          expect { string }.to raise_error ArgumentError
+        end
+      end
     end
   end
 

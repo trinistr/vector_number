@@ -37,12 +37,22 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     context "with explicit options" do
-      subject(:number) { described_class.new(["1.2", Complex(3, 12), :f], options) }
-
       let(:options) { { mult: :asterisk, wrong: :option } }
 
-      it "sets known options" do
-        expect(number.options).to eq({ mult: :asterisk })
+      context "when values are an Array" do
+        subject(:number) { described_class.new(["1.2", Complex(3, 12), :f], options) }
+
+        it "sets known options" do
+          expect(number.options).to eq({ mult: :asterisk })
+        end
+      end
+
+      context "when values are a VectorNumber" do
+        subject(:number) { described_class.new(num("1.2", Complex(3, 12), :f), options) }
+
+        it "sets known options" do
+          expect(number.options).to eq({ mult: :asterisk })
+        end
       end
     end
   end
