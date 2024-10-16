@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Next]
+**Added**
+- Add hash-like methods `#[]` and `#unit?` (aliased as `#key?`).
+
 **Changed**
 - `VectorNumber.new` now accepts options when initializing from a VectorNumber
    instead of only copying. Options will be merged.

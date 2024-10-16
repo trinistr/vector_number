@@ -67,7 +67,7 @@ class VectorNumber
 
     def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
 
-    def save_options: (options_type? options, ?safe: bool) -> void
+    def save_options: (options_type? options, values: in_value_type) -> void
     def default_options: () -> options_type
     def known_options: () -> Array[Symbol]
 
@@ -163,6 +163,11 @@ class VectorNumber
 
     def to_h: () -> plain_vector_type
             | () { (unit_type, coefficient_type) -> each_value_type } -> plain_vector_type
+
+    def []: (unit_type unit) -> coefficient_type
+
+    def unit?: (unit_type unit) -> bool
+    alias key? unit?
   end
 
   # Methods for comparing with other numbers.

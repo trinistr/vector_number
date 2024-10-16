@@ -76,13 +76,12 @@ class VectorNumber
     # @return [void]
     def save_options(options, values:)
       @options =
-        if values.is_a?(VectorNumber)
-          if options.empty?
-            values.options
-          else
-            values.options.merge(options).slice(*known_options)
-          end
-        elsif options.is_a?(Hash) && !options.empty?
+        case [options, values]
+        in Hash, VectorNumber if options.empty?
+          values.options
+        in Hash, VectorNumber unless options.empty?
+          values.options.merge(options).slice(*known_options)
+        in Hash, _ unless options.empty?
           default_options.merge(options).slice(*known_options)
         else
           default_options

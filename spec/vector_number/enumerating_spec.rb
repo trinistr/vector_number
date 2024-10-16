@@ -112,4 +112,60 @@ RSpec.describe VectorNumber::Enumerating do
       end
     end
   end
+
+  describe "#[]" do
+    subject(:value) { number[unit] }
+
+    let(:number) { composite_number * 0.75 }
+
+    context "with an existing unit" do
+      let(:unit) { "y" }
+
+      it "returns the coefficient" do
+        expect(value).to eq 0.75
+      end
+    end
+
+    context "with a numeric unit" do
+      let(:unit) { VectorNumber::R }
+
+      it "returns the numeric coefficient" do
+        expect(value).to eq 3.75
+      end
+    end
+
+    context "with a non-existent unit" do
+      let(:unit) { "x" }
+
+      it "returns 0" do
+        expect(value).to eq 0
+      end
+    end
+  end
+
+  describe "#unit?" do
+    subject(:unit?) { number.unit?(unit) }
+
+    let(:number) { composite_number }
+
+    context "with an existing unit" do
+      let(:unit) { "y" }
+
+      it { is_expected.to be true }
+    end
+
+    context "with a numeric unit" do
+      let(:unit) { VectorNumber::R }
+
+      it { is_expected.to be true }
+    end
+
+    context "with a non-existent unit" do
+      let(:unit) { "x" }
+
+      it { is_expected.to be false }
+    end
+  end
+
+  include_examples "has an alias", :key?, :unit?
 end
