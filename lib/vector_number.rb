@@ -73,6 +73,29 @@ class VectorNumber
     freeze
   end
 
+  # Return self.
+  #
+  # @return [VectorNumber]
+  def dup
+    self
+  end
+
+  # Return self.
+  #
+  # Raises ArgumentError if +freeze+ is not +true+ or +nil+.
+  #
+  # @return [VectorNumber]
+  def clone(freeze: true)
+    case freeze
+    when true, nil
+      self
+    when false
+      raise ArgumentError, "can't unfreeze #{self.class}"
+    else
+      raise ArgumentError, "unexpected value for freeze: #{freeze.class}"
+    end
+  end
+
   private
 
   NONE = Object.new
