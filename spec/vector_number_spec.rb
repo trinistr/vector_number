@@ -56,4 +56,60 @@ RSpec.describe VectorNumber, :aggregate_failures do
       end
     end
   end
+
+  describe "#dup" do
+    subject(:dupe) { number.dup }
+
+    let(:number) { described_class.new([1.2, Complex(3, 12), :f]) }
+
+    it "returns number itself" do
+      expect(dupe.object_id).to eq number.object_id
+    end
+  end
+
+  describe "#clone" do
+    subject(:clone) { number.clone(**args) }
+
+    let(:number) { described_class.new([1.2, Complex(3, 12), :f]) }
+
+    context "when no argument is passed" do
+      let(:args) { {} }
+
+      it "returns number itself" do
+        expect(clone.object_id).to eq number.object_id
+      end
+    end
+
+    context "when true is passed as freeze argument" do
+      let(:args) { { freeze: true } }
+
+      it "returns number itself" do
+        expect(clone.object_id).to eq number.object_id
+      end
+    end
+
+    context "when nil is passed as freeze argument" do
+      let(:args) { { freeze: nil } }
+
+      it "returns number itself" do
+        expect(clone.object_id).to eq number.object_id
+      end
+    end
+
+    context "when false is passed as freeze argument" do
+      let(:args) { { freeze: false } }
+
+      it "raises ArgumentError the same as Numeric" do
+        expect { clone }.to raise_error ArgumentError, "can't unfreeze VectorNumber"
+      end
+    end
+
+    context "when something else is passed as freeze argument" do
+      let(:args) { { freeze: "true" } }
+
+      it "raises ArgumentError the same as Numeric" do
+        expect { clone }.to raise_error ArgumentError, "unexpected value for freeze: String"
+      end
+    end
+  end
 end

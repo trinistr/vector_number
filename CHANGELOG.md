@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `VectorNumber.new` now accepts options when initializing from a VectorNumber
    instead of only copying. Options will be merged.
 
+**Fixed**
+- `#dup` and `#clone` now behave exactly like Numeric versions, preventing unfreezing.
+
 ## [v0.2.3] — 2024-10-15
 **Fixed**
 - BigDecimal tests are now properly skipped when BigDecimal is not available, instead of always.
