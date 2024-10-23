@@ -8,13 +8,13 @@ class VectorNumber
     # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber, nil]
     # @return [void]
     def initialize_from(values)
-      initialize_contents
+      initialize_data
 
       case values
       when VectorNumber, Hash
         add_vector_to_data(values)
       when Array
-        values&.each { |value| add_value_to_data(value) }
+        values.each { |value| add_value_to_data(value) }
       else
         # Don't add anything.
       end
@@ -22,7 +22,7 @@ class VectorNumber
 
     # Create +@data+.
     # @return [void]
-    def initialize_contents
+    def initialize_data
       @data = Hash.new(0)
     end
 
@@ -67,7 +67,7 @@ class VectorNumber
         new_value = yield coefficient
         next new_value.real if real_number?(new_value)
 
-        raise RangeError, "transform returned non-real value"
+        raise RangeError, "transform returned non-real value for #{coefficient}"
       end
     end
 
@@ -86,14 +86,6 @@ class VectorNumber
         else
           default_options
         end
-    end
-
-    def default_options
-      raise NotImplementedError
-    end
-
-    def known_options
-      raise NotImplementedError
     end
 
     # Compact coefficients, calculate size and freeze data.

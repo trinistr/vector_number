@@ -31,6 +31,9 @@ group :development do
   # Type checking
   gem "steep", require: false
 
+  # Code coverage report
+  gem "simplecov", require: false
+
   # Documentation
   gem "yard", require: false
 

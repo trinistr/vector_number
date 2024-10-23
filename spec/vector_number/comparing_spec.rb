@@ -193,50 +193,72 @@ RSpec.describe VectorNumber::Comparing do
   describe "#<=>" do
     subject { forward_comparison ? compared_number <=> other : other <=> compared_number }
 
-    let(:forward_comparison) { rand > 0.5 }
+    let(:forward_comparison) { true }
+
+    shared_examples "comparisons" do |forward, reverse|
+      context "with forward comparison" do
+        it { is_expected.to be forward }
+      end
+
+      context "with reverse comparison" do
+        let(:forward_comparison) { false }
+
+        it { is_expected.to be reverse }
+      end
+    end
 
     context "with a simple number" do
       let(:compared_number) { real_number }
 
       context "when comparing to a larger value of the same class" do
         let(:other) { num(567) }
-        let(:result) { forward_comparison ? -1 : 1 }
 
-        it { is_expected.to be result }
+        include_examples "comparisons", -1, 1
       end
 
       context "when comparing to a smaller value of a different class" do
         let(:other) { 567.fdiv(1200) }
-        let(:result) { forward_comparison ? 1 : -1 }
 
-        it { is_expected.to be result }
+        include_examples "comparisons", 1, -1
       end
 
       context "when comparing to an equal value" do
         let(:other) { [num(567r / 120), 567.0 / 120].sample }
 
-        it { is_expected.to be 0 }
+        include_examples "comparisons", 0, 0
+      end
+
+      context "when comparing to an imaginary value" do
+        let(:other) { 2i }
+
+        include_examples "comparisons", nil, nil
+      end
+
+      context "when comparing to a composite number" do
+        let(:other) { num("eg", :g) }
+
+        include_examples "comparisons", nil, nil
       end
 
       context "when comparing to an uncomparable value" do
-        let(:other) { ["string", nil, num(1i)].sample }
+        let(:other) { ["string", nil, Object.new].sample }
 
-        it { is_expected.to be nil }
+        include_examples "comparisons", nil, nil
       end
     end
 
     context "with a complex number" do
       let(:compared_number) { num(1.8, 1ri / 2) }
-      let(:other) { [num(1, 0.8, 0.5i), Complex(9r / 5, 0.5), 1, composite_number] }
+      let(:other) { [num(1, 0.8, 0.5i), Complex(9r / 5, 0.5), 1, composite_number].sample }
 
-      it { is_expected.to be nil }
+      include_examples "comparisons", nil, nil
     end
 
     context "with a composite number" do
       let(:compared_number) { composite_number }
-      let(:other) { [num(1, 0.8, 0.5i), Complex(9r / 5, 0.5), 1, real_number] }
+      let(:other) { [num(1, 0.8, 0.5i), Complex(9r / 5, 0.5), 1, real_number].sample }
 
-      it { is_expected.to be nil }
+      include_examples "comparisons", nil, nil
     end
   end
 end

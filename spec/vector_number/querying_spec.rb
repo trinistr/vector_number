@@ -47,15 +47,59 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
         expect(composite_number.numeric?(3)).to be false
       end
     end
+
+    context "when dimensions < 0" do
+      it "raises ArgumentError" do
+        expect { real_number.numeric?(-0.1) }.to raise_error ArgumentError
+      end
+    end
   end
 
   describe "#nonnumeric?" do
-    it "considers number which contain non-numeric units to be non-numeric" do
-      expect(null_number.nonnumeric?).to be false
-      expect(zero_number.nonnumeric?).to be false
-      expect(real_number.nonnumeric?).to be false
-      expect(imaginary_number.nonnumeric?).to be false
-      expect(composite_number.nonnumeric?).to be true
+    context "when dimensions = 0" do
+      it "considers numbers which contain any parts to be non-numeric" do
+        expect(null_number.nonnumeric?(0)).to be false
+        expect(zero_number.nonnumeric?(0)).to be false
+        expect(real_number.nonnumeric?(0)).to be true
+        expect(imaginary_number.nonnumeric?(0)).to be true
+        expect(composite_number.nonnumeric?(0)).to be true
+      end
+    end
+
+    context "when dimensions = 1" do
+      it "considers numbers which contain not only real part to be non-numeric" do
+        expect(null_number.nonnumeric?(1)).to be false
+        expect(zero_number.nonnumeric?(1)).to be false
+        expect(real_number.nonnumeric?(1)).to be false
+        expect(imaginary_number.nonnumeric?(1)).to be true
+        expect(composite_number.nonnumeric?(1)).to be true
+      end
+    end
+
+    context "when dimensions = 2" do
+      it "considers number which contain non-numeric units to be non-numeric" do
+        expect(null_number.nonnumeric?(2)).to be false
+        expect(zero_number.nonnumeric?(2)).to be false
+        expect(real_number.nonnumeric?(2)).to be false
+        expect(imaginary_number.nonnumeric?(2)).to be false
+        expect(composite_number.nonnumeric?(2)).to be true
+      end
+    end
+
+    context "when dimensions > 2" do
+      it "considers number which contain non-numeric units to be non-numeric" do
+        expect(null_number.nonnumeric?(3)).to be false
+        expect(zero_number.nonnumeric?(3)).to be false
+        expect(real_number.nonnumeric?(3)).to be false
+        expect(imaginary_number.nonnumeric?(3)).to be false
+        expect(composite_number.nonnumeric?(3)).to be true
+      end
+    end
+
+    context "when dimensions < 0" do
+      it "raises ArgumentError" do
+        expect { real_number.nonnumeric?(-0.1) }.to raise_error ArgumentError
+      end
     end
   end
 
@@ -176,7 +220,7 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
 
     context "when coefficients are both positive and negative" do
       it "returns nil" do
-        expect(composite_number.positive?).to be nil
+        expect(composite_number.negative?).to be nil
       end
     end
   end

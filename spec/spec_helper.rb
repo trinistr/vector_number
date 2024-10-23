@@ -6,6 +6,8 @@ rescue LoadError
   # Ok, either there is no bigdecimal, or it is always available.
 end
 
+require_relative "support/coverage_helper"
+
 require "vector_number"
 
 require_relative "support/shared_examples"

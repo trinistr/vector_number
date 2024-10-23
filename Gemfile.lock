@@ -27,6 +27,7 @@ GEM
     connection_pool (2.4.1)
     csv (3.3.0)
     diff-lcs (1.5.1)
+    docile (1.4.1)
     drb (2.2.1)
     e2mmap (0.1.0)
     ffi (1.17.0)
@@ -103,6 +104,12 @@ GEM
       rubocop (>= 0.90.0)
     ruby-progressbar (1.13.0)
     securerandom (0.3.1)
+    simplecov (0.22.0)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.13.1)
+    simplecov_json_formatter (0.1.4)
     solargraph (0.48.0)
       backport (~> 1.2)
       benchmark
@@ -157,6 +164,7 @@ DEPENDENCIES
   rubocop-rake
   rubocop-rspec
   rubocop-thread_safety
+  simplecov
   solargraph
   steep
   vector_number!

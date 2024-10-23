@@ -66,6 +66,14 @@ RSpec.describe VectorNumber::Initializing, :aggregate_failures do
         [1, -123], ["u r", 49_153], [Encoding::UTF_8, 1.337]
       )
     end
+
+    context "when it contains non-real values" do
+      let(:value) { { 1 => -123i, "u r" => Object.new, Encoding::UTF_8 => num } }
+
+      it "raises RangeError" do
+        expect { new_number }.to raise_error RangeError
+      end
+    end
   end
 
   context "when a transform block is given" do

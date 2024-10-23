@@ -56,6 +56,9 @@ class VectorNumber
     # or +nil+ otherwise.
     # @return [Boolean, nil]
     def positive?
+      # REVIEW: elsif branch is slow because it needs decide on false/nil.
+      #   We could just return false and be done with it.
+      #   User then could test both `postitive?` and `negative?` if they want.
       if nonzero? && all? { |_u, c| c.positive? }
         true
       elsif zero? || all? { |_u, c| c.negative? }

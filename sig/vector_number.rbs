@@ -61,7 +61,7 @@ class VectorNumber
 
     def initialize_from: ((units_list_type | plain_vector_type | vector_type)? values) -> void
 
-    def initialize_contents: () -> void
+    def initialize_data: () -> void
 
     def add_value_to_data: ((vector_type | Numeric | unit_type) value) -> void
 
