@@ -1,2 +1,6 @@
 inherit_from:
   - https://raw.githubusercontent.com/trinistr/rubocop-config/main/rubocop.yml
+
+# This makes no sense for a single-class library.
+Metrics/ClassLength:
+  Enabled: false

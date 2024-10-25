@@ -15,7 +15,6 @@ end
 # A class to add together anything.
 class VectorNumber
   include _BaseMethods
-  include VectorNumber::Initializing
   include VectorNumber::Mathing
   include VectorNumber::MathConverting
   include VectorNumber::Converting
@@ -46,37 +45,25 @@ class VectorNumber
 
   private
 
-  NONE: Object
-
   @size: Integer
   @options: options_type
   @data: plain_vector_type
 
-  # Private methods for initializing vector numbers.
-  module Initializing
-    include _BaseMethods
-    include Enumerating
+  def initialize_from: ((units_list_type | plain_vector_type | vector_type)? values) -> void
 
-    private
+  def add_value_to_data: ((vector_type | Numeric | unit_type) value) -> void
 
-    def initialize_from: ((units_list_type | plain_vector_type | vector_type)? values) -> void
+  def add_numeric_value_to_data: (Numeric value) -> void
 
-    def initialize_data: () -> void
+  def add_vector_to_data: ((vector_type | plain_vector_type) vector) -> void
 
-    def add_value_to_data: ((vector_type | Numeric | unit_type) value) -> void
+  def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
 
-    def add_numeric_value_to_data: (Numeric value) -> void
+  def save_options: (options_type? options, values: in_value_type) -> void
+  def default_options: () -> options_type
+  def known_options: () -> list[Symbol]
 
-    def add_vector_to_data: ((vector_type | plain_vector_type) vector) -> void
-
-    def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
-
-    def save_options: (options_type? options, values: in_value_type) -> void
-    def default_options: () -> options_type
-    def known_options: () -> Array[Symbol]
-
-    def finalize_contents: () -> void
-  end
+  def finalize_contents: () -> void
 
   # Methods for performing actual math.
   module Mathing

@@ -26,34 +26,20 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
   end
 
-  describe ".new" do
-    subject(:number) { described_class.new([1.2, Complex(3, 12), :f]) }
-
-    it "creates a new VectorNumber with default options" do
-      expect(number).to be_a described_class
-      expect(number.to_a).to contain_exactly [0.i, 4.2], [1.i, 12], [:f, 1]
-      expect(number).to be_frozen
-      expect(number.options).to eq described_class::DEFAULT_OPTIONS
+  describe "#size" do
+    it "returns number of non-zero dimensions" do
+      expect(num.size).to be 0
+      expect(num(1, -1).size).to be 0
+      expect(num(4i).size).to be 1
+      expect(num("1", 2, 3, 4).size).to be 2
+      expect(num(*("a".."z").to_a).size).to be 26
     end
+  end
 
-    context "with explicit options" do
-      let(:options) { { mult: :asterisk, wrong: :option } }
-
-      context "when values are an Array" do
-        subject(:number) { described_class.new(["1.2", Complex(3, 12), :f], options) }
-
-        it "sets known options" do
-          expect(number.options).to eq({ mult: :asterisk })
-        end
-      end
-
-      context "when values are a VectorNumber" do
-        subject(:number) { described_class.new(num("1.2", Complex(3, 12), :f), options) }
-
-        it "sets known options" do
-          expect(number.options).to eq({ mult: :asterisk })
-        end
-      end
+  describe "#options" do
+    it "returns options for the number" do
+      expect(num.options).to eq described_class::DEFAULT_OPTIONS
+      expect(num(mult: :space).options).to eq({ mult: :space })
     end
   end
 

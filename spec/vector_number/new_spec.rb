@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe VectorNumber::Initializing, :aggregate_failures do
-  subject(:new_number) { VectorNumber.new(*arguments, &block) }
+RSpec.describe VectorNumber, ".new", :aggregate_failures do
+  subject(:new_number) { described_class.new(*arguments, &block) }
 
   let(:arguments) { [value] }
   let(:value) { nil }
@@ -16,6 +16,13 @@ RSpec.describe VectorNumber::Initializing, :aggregate_failures do
 
   context "when initializing with an array" do
     let(:value) { [1, 0.25r, 2.5ri, "a", "a", :a, 0, -0.5, Complex(1, 2)] }
+
+    it "creates a new VectorNumber with default options" do
+      expect(new_number).to be_a described_class
+      expect(new_number).to be_frozen
+      expect(new_number.to_a).to contain_exactly [0.i, 1.75r], [1.i, 4.5r], [:a, 1], ["a", 2]
+      expect(new_number.options).to eq described_class::DEFAULT_OPTIONS
+    end
 
     it "adds everything together to form a vector" do
       expect(new_number).not_to be_zero
@@ -53,8 +60,11 @@ RSpec.describe VectorNumber::Initializing, :aggregate_failures do
   context "when initializing with a vector number" do
     let(:value) { num("you", "are", "cute") }
 
-    it "copies values from it" do
+    it "copies values and options from it" do
+      expect(new_number).to be_a described_class
+      expect(new_number).to be_frozen
       expect(new_number.to_a).to contain_exactly ["you", 1], ["are", 1], ["cute", 1]
+      expect(new_number.options).to eq value.options
     end
   end
 
@@ -62,9 +72,12 @@ RSpec.describe VectorNumber::Initializing, :aggregate_failures do
     let(:value) { { 1 => -123, "u r" => 0xC001, Encoding::UTF_8 => 1.337 } }
 
     it "treats hash as a plain vector and copies values from it" do
+      expect(new_number).to be_a described_class
+      expect(new_number).to be_frozen
       expect(new_number.to_a).to contain_exactly(
         [1, -123], ["u r", 49_153], [Encoding::UTF_8, 1.337]
       )
+      expect(new_number.options).to eq described_class::DEFAULT_OPTIONS
     end
 
     context "when it contains non-real values" do
@@ -85,19 +98,19 @@ RSpec.describe VectorNumber::Initializing, :aggregate_failures do
       expect(new_number).to contain_exactly [0.i, 1.5r], [1.i, 1], ["s", 2]
     end
 
-    context "when transformation returns non-real number" do
-      let(:block) { ->(v) { Complex(1, v) } }
-
-      it "raises RangeError" do
-        expect { new_number }.to raise_error RangeError
-      end
-    end
-
     context "when transformation returns real vector number" do
       let(:block) { ->(v) { num(v + 1) } }
 
       it "works exactly the same as with a normal real number" do
         expect(new_number).to contain_exactly [0.i, 1.5r], [1.i, 1], ["s", 2]
+      end
+    end
+
+    context "when transformation returns non-real number" do
+      let(:block) { ->(v) { Complex(1, v) } }
+
+      it "raises RangeError" do
+        expect { new_number }.to raise_error RangeError
       end
     end
 
@@ -114,6 +127,28 @@ RSpec.describe VectorNumber::Initializing, :aggregate_failures do
 
       it "raises RangeError" do
         expect { new_number }.to raise_error RangeError
+      end
+    end
+  end
+
+  context "when initializing with explicit options" do
+    subject(:new_number) { described_class.new(value, options) }
+
+    let(:options) { { mult: :asterisk, wrong: :option } }
+
+    context "when values are an Array" do
+      subject(:value) { ["1.2", Complex(3, 12), :f] }
+
+      it "sets known options" do
+        expect(new_number.options).to eq({ mult: :asterisk })
+      end
+    end
+
+    context "when values are a VectorNumber" do
+      subject(:value) { num("1.2", Complex(3, 12), :f) }
+
+      it "sets known options" do
+        expect(new_number.options).to eq({ mult: :asterisk })
       end
     end
   end

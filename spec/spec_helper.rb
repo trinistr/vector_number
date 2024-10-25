@@ -25,12 +25,7 @@ RSpec.configure do |config|
 
   config.order = :random
 
-  config.formatter =
-    if config.files_to_run.size > 1
-      :progress
-    else
-      :documentation
-    end
+  config.formatter = (config.files_to_run.size > 1) ? :progress : :documentation
 
   # Include `#num` method in specs for easy generation of VectorNumbers.
   number_helper =
