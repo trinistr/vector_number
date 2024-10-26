@@ -192,9 +192,9 @@ class VectorNumber
 
     def nonzero?: () -> self?
 
-    def positive?: () -> bool?
+    def positive?: () -> bool
 
-    def negative?: () -> bool?
+    def negative?: () -> bool
 
     def real?: () -> false
 

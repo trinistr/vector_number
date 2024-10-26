@@ -178,49 +178,59 @@ RSpec.describe VectorNumber::Querying, :aggregate_failures do
   end
 
   describe "#positive?" do
-    context "when all coefficients are positive" do
-      it "is true" do
-        expect(real_number).to be_positive
-        expect(imaginary_number).to be_positive
+    context "when all coefficients are zero" do
+      it "is false" do
+        expect(null_number.positive?).to be false
+        expect(zero_number.positive?).to be false
       end
     end
 
-    context "when all coefficients are zero or negative" do
+    context "when all coefficients are positive" do
+      it "is true" do
+        expect(real_number.positive?).to be true
+        expect(imaginary_number.positive?).to be true
+      end
+    end
+
+    context "when all coefficients are negative" do
       it "is false" do
-        expect(null_number).not_to be_positive
-        expect(zero_number).not_to be_positive
-        expect(num(-13)).not_to be_positive
-        expect(num(Complex(-6.1, -0.2))).not_to be_positive
+        expect(num(-13).positive?).to be false
+        expect(num(Complex(-6.1, -0.2)).positive?).to be false
       end
     end
 
     context "when coefficients are both positive and negative" do
-      it "returns nil" do
-        expect(composite_number.positive?).to be nil
+      it "is false" do
+        expect(composite_number.positive?).to be false
       end
     end
   end
 
   describe "#negative?" do
-    context "when all coefficients are zero or positive" do
+    context "when all coefficients are zero" do
       it "is false" do
-        expect(null_number).not_to be_negative
-        expect(zero_number).not_to be_negative
-        expect(real_number).not_to be_negative
-        expect(imaginary_number).not_to be_negative
+        expect(null_number.negative?).to be false
+        expect(zero_number.negative?).to be false
+      end
+    end
+
+    context "when all coefficients are positive" do
+      it "is false" do
+        expect(real_number.negative?).to be false
+        expect(imaginary_number.negative?).to be false
       end
     end
 
     context "when all coefficients are negative" do
       it "is true" do
-        expect(num(-13)).to be_negative
-        expect(num(Complex(-6.1, -0.2))).to be_negative
+        expect(num(-13).negative?).to be true
+        expect(num(Complex(-6.1, -0.2)).negative?).to be true
       end
     end
 
     context "when coefficients are both positive and negative" do
-      it "returns nil" do
-        expect(composite_number.negative?).to be nil
+      it "is false" do
+        expect(composite_number.negative?).to be false
       end
     end
   end

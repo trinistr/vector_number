@@ -39,7 +39,7 @@ class VectorNumber
       finite? ? nil : 1
     end
 
-    # Returns +true+ if there are no non-zero coefficients, +false+ otherwise.
+    # Returns +true+ if there are no non-zero coefficients, and +false+ otherwise.
     # @return [Boolean]
     def zero?
       size.zero?
@@ -51,34 +51,22 @@ class VectorNumber
       zero? ? nil : self
     end
 
-    # Returns +true+ if all non-zero coefficients are positive,
-    # +false+ if all non-zero coefficients are negative or all are zero,
-    # or +nil+ otherwise.
-    # @return [Boolean, nil]
+    # Returns +true+ if number is non-zero and all non-zero coefficients are positive,
+    # and +false+ otherwise.
+    # @return [Boolean]
     def positive?
-      # REVIEW: elsif branch is slow because it needs decide on false/nil.
-      #   We could just return false and be done with it.
-      #   User then could test both `postitive?` and `negative?` if they want.
-      if nonzero? && all? { |_u, c| c.positive? }
-        true
-      elsif zero? || all? { |_u, c| c.negative? }
-        false
-      end
+      !zero? && all? { |_u, c| c.positive? }
     end
 
-    # Returns +true+ if all non-zero coefficients are negative,
-    # +false+ if all non-zero coefficients are positive or all are zero,
-    # or +nil+ otherwise.
-    # @return [Boolean, nil]
+    # Returns +true+ if number is non-zero and all non-zero coefficients are negative,
+    # and +false+ otherwise.
+    # @return [Boolean]
     def negative?
-      if nonzero? && all? { |_u, c| c.negative? }
-        true
-      elsif zero? || all? { |_u, c| c.positive? }
-        false
-      end
+      !zero? && all? { |_u, c| c.negative? }
     end
 
     # Always returns +false+.
+    # @see #numeric?
     # @return [false]
     def real?
       false

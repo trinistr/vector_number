@@ -10,8 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add hash-like methods `#[]` and `#unit?` (aliased as `#key?`).
 
 **Changed**
-- `VectorNumber.new` now accepts options when initializing from a VectorNumber
+- [Breaking] Change `positive?` and `negative?` to no longer return `nil`,
+   those cases will now return `false`.
+- Make `VectorNumber.new` accept options when initializing from a VectorNumber
    instead of only copying. Options will be merged.
+- Remove `Initializing` module, move its methods to the actual class.
 
 **Fixed**
 - `#dup` and `#clone` now behave exactly like Numeric versions, preventing unfreezing.
@@ -26,9 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `#ceil`, `#floor` and `#round`.
 
 **Changed**
-- CI now also runs on ruby 3.1.0, the earliest supported version, and ruby-next (3.4).
-- CI now also runs for JRuby and TruffleRuby.
-- Tests can now be run even without available `bigdecimal` gem.
+- Add ruby 3.1.0, covering the earliest supported version, and ruby-next (3.4) to CI.
+- Add JRuby and TruffleRuby to CI, without full support.
+- Make tests runnable even without available `bigdecimal` gem.
 
 **Fixed**
 - `Kernel#BigDecimal` refinement now correctly works without `ndigits` argument.
