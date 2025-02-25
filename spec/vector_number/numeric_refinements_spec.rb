@@ -20,7 +20,7 @@ RSpec.describe VectorNumber::NumericRefinements do
       end
 
       context "when comparing to a BigDecimal", :bigdecimal do
-        let(:other) { BigDecimal("5") }
+        let(:other) { BigDecimal(5) }
 
         it "gives a result" do
           expect(comparison).to eq(-1)

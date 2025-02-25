@@ -178,7 +178,7 @@ RSpec.describe VectorNumber::MathConverting do
         let(:number) { num(BigDecimal("1.5"), 3.65i, :a) }
 
         it "rounds up on half, using half_up for BigDecimal" do
-          expect(number.round(half: :up)).to eql num(BigDecimal("2"), 4i, :a)
+          expect(number.round(half: :up)).to eql num(BigDecimal(2), 4i, :a)
           expect(number.round(1, half: :up)).to eql num(BigDecimal("1.5"), 3.7i, :a)
         end
       end
@@ -196,7 +196,7 @@ RSpec.describe VectorNumber::MathConverting do
         let(:number) { num(BigDecimal("1.5"), 3.65i, :a) }
 
         it "rounds down on half, using half_down for BigDecimal" do
-          expect(number.round(half: :down)).to eql num(BigDecimal("1"), 4i, :a)
+          expect(number.round(half: :down)).to eql num(BigDecimal(1), 4i, :a)
           expect(number.round(1, half: :down)).to eql num(BigDecimal("1.5"), 3.6i, :a)
         end
       end
@@ -214,7 +214,7 @@ RSpec.describe VectorNumber::MathConverting do
         let(:number) { num(BigDecimal("1.5"), 3.65i, :a) }
 
         it "rounds to even on half, using half_even for BigDecimal" do
-          expect(number.round(half: :even)).to eql num(BigDecimal("2"), 4i, :a)
+          expect(number.round(half: :even)).to eql num(BigDecimal(2), 4i, :a)
           expect(number.round(1, half: :even)).to eql num(BigDecimal("1.5"), 3.6i, :a)
         end
       end

@@ -30,7 +30,7 @@ RSpec.describe VectorNumber::Comparing do
       end
 
       context "when comparing to BigDecimal of an equal value", :bigdecimal do
-        let(:other) { BigDecimal("567") / 120 }
+        let(:other) { BigDecimal(567) / 120 }
 
         it { is_expected.to be true }
       end

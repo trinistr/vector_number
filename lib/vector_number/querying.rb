@@ -36,7 +36,7 @@ class VectorNumber
     # Returns +1+ if any coefficients are infinite, +nil+ otherwise.
     # @return [1, nil]
     def infinite?
-      finite? ? nil : 1
+      finite? ? nil : 1 # rubocop:disable Style/ReturnNilInPredicateMethodDefinition
     end
 
     # Returns +true+ if there are no non-zero coefficients, and +false+ otherwise.
@@ -48,7 +48,7 @@ class VectorNumber
     # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
     # @return [VectorNumber, nil]
     def nonzero?
-      zero? ? nil : self
+      zero? ? nil : self # rubocop:disable Style/ReturnNilInPredicateMethodDefinition
     end
 
     # Returns +true+ if number is non-zero and all non-zero coefficients are positive,

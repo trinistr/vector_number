@@ -163,7 +163,7 @@ RSpec.describe VectorNumber::Converting do
       let(:number) { zero_number }
 
       it "returns value as a BigDecimal" do
-        expect(conversion).to eql BigDecimal("0")
+        expect(conversion).to eql BigDecimal(0)
       end
     end
 
