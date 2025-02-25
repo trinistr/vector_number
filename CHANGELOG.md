@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Next]
+## [v0.2.4] — 2025-02-26
+
 **Added**
 - Add hash-like methods `#[]` and `#unit?` (aliased as `#key?`).
 
@@ -15,15 +17,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make `VectorNumber.new` accept options when initializing from a VectorNumber
    instead of only copying. Options will be merged.
 - Remove `Initializing` module, move its methods to the actual class.
+- Updated development gem versions.
 
 **Fixed**
 - `#dup` and `#clone` now behave exactly like Numeric versions, preventing unfreezing.
 
 ## [v0.2.3] — 2024-10-15
+
 **Fixed**
 - BigDecimal tests are now properly skipped when BigDecimal is not available, instead of always.
 
 ## [v0.2.2] — 2024-10-07
+
 **Added**
 - Add `#abs` (aliased as `#magnitude`) and `#abs2`.
 - Add `#ceil`, `#floor` and `#round`.
@@ -37,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Kernel#BigDecimal` refinement now correctly works without `ndigits` argument.
 
 ## [v0.2.1] — 2024-08-24
+
 **Added**
 - Add back `#*` and `#/` for working with real numbers.
 - Add `#fdiv`, `#truncate`, `#nonnumeric?` and `#integer?`.
@@ -52,10 +58,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Due to the above, `Kernel.BigDecimal` no longer works without refinements.
 
 ## [v0.2.0] — 2024-08-19
+
 **Added**
 - VectorNumbers can be created from any object or collection.
 - Addition and subtraction are supported.
 - VectorNumbers are mostly interoperable with core numbers.
 
 ## [v0.1.0] — 2024-05-09
+
 - Initial work.
