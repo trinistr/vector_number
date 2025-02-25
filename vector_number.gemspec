@@ -6,22 +6,17 @@ Gem::Specification.new do |spec|
   spec.name = "vector_number"
   spec.version = VectorNumber::VERSION
   spec.authors = ["Alexandr Bulancov"]
-  spec.email = ["6594487+trinistr@users.noreply.github.com"]
 
   spec.summary = "A library to add together anything."
   spec.homepage = "https://github.com/trinistr/vector_number"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.1.0"
 
-  # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
-
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
   spec.metadata["changelog_uri"] = "#{spec.homepage}/CHANGELOG.md"
   spec.metadata["rubygems_mfa_required"] = "true"
 
-  # Specify which files should be added to the gem when it is released.
-  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files =
     IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
       ls.each_line("\x0", chomp: true).select { |f| f.start_with?(*%w[ext/ lib/ sig/]) }
@@ -30,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
 
   spec.extra_rdoc_files = ["README.md", "CHANGELOG.md"]
+  spec.rdoc_options << "--main" << "README.md"
 end
