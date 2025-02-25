@@ -16,12 +16,15 @@ Similar projects:
 
 ## Installation
 
-Add gem to your Gemfile:
-```ruby
-gem "vector_number", git: "https://github.com/trinistr/vector_number.git"
+Install with `gem`:
+```sh
+gem install vector_number
 ```
 
-Installation through `gem` is not currently supported.
+If using `bundler`, add gem to your Gemfile:
+```ruby
+gem "vector_number"
+```
 
 ## Usage
 
@@ -63,7 +66,7 @@ VectorNumber is developed on MRI (CRuby) but should work on other engines too.
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests, `rake rubocop` to check code, `rake steep` to check typing or just `rake` to do everything. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, change Next version in `CHANGELOG.md`, commit changes and tag the commit. Alternatively, an appropriate `rake bump:` command can be used.
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, change Next version in `CHANGELOG.md`, commit changes and tag the commit. Alternatively, an appropriate `rake bump:{major|minor|patch}` command can be used.
 
 ## Contributing
 
