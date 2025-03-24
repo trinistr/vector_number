@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Next]
+
+**Added**
+- Add `#div`, `#%` (aliased as `#modulo`), `#divmod` and `#remainder` methods.
+- Add `#quo` alias to `#/`.
+
+**Fixed**
+- `#/`, `#fdiv` as well as new division methods now properly check for division by zero.
+   VectorNumber does not support this as not all Numeric classes do.
+
 ## [v0.2.5] — 2025-02-26
 
 Technical update after release to rubygems.org.
@@ -22,7 +31,7 @@ README was updated to reflect this change.
 - Make `VectorNumber.new` accept options when initializing from a VectorNumber
    instead of only copying. Options will be merged.
 - Remove `Initializing` module, move its methods to the actual class.
-- Updated development gem versions.
+- Update development gems' versions.
 
 **Fixed**
 - `#dup` and `#clone` now behave exactly like Numeric versions, preventing unfreezing.

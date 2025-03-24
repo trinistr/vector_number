@@ -65,14 +65,14 @@ class VectorNumber
       !zero? && all? { |_u, c| c.negative? }
     end
 
-    # Always returns +false+.
+    # Always returns +false+, as vectors are never real numbers.
     # @see #numeric?
     # @return [false]
     def real?
       false
     end
 
-    # Always returns +false+.
+    # Always returns +false+, as vectors are not +Integer+s.
     # @return [false]
     def integer?
       false
