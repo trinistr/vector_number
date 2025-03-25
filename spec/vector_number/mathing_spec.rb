@@ -605,7 +605,25 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         end
       end
     end
+
+    context "when dividing by 0" do
+      let(:other) { [0, 0.0, 0r].sample }
+
+      it "raises ZeroDivisionError" do
+        expect { result }.to raise_error ZeroDivisionError
+      end
+
+      context "when dividing by BigDecimal 0", :bigdecimal do
+        let(:other) { BigDecimal(0) }
+
+        it "raises ZeroDivisionError" do
+          expect { result }.to raise_error ZeroDivisionError
+        end
+      end
+    end
   end
+
+  include_examples "has an alias", :quo, :/
 
   describe "#fdiv" do
     subject(:result) { number.fdiv(other) }
@@ -771,6 +789,198 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
 
         it "raises RangeError" do
           expect { result }.to raise_error RangeError
+        end
+      end
+    end
+
+    context "when dividing by 0" do
+      let(:other) { [0, 0.0, 0r].sample }
+
+      it "raises ZeroDivisionError" do
+        expect { result }.to raise_error ZeroDivisionError
+      end
+
+      context "when dividing by BigDecimal 0", :bigdecimal do
+        let(:other) { BigDecimal(0) }
+
+        it "raises ZeroDivisionError" do
+          expect { result }.to raise_error ZeroDivisionError
+        end
+      end
+    end
+  end
+
+  describe "#div" do
+    let(:result) { number.div(other) }
+
+    let(:number) { num(32.14, -123.45i, 128r / 9, :a, :a) }
+    let(:other) { rand(-10.0..10.0) }
+
+    it "calls #div on each component" do
+      expect(result.to_a).to match_array([
+        [VectorNumber::R, (32.14 + (128r / 9)).div(other)],
+        [VectorNumber::I, -123.45.div(other)],
+        [:a, 2.div(other)]
+      ].reject { |(_u, c)| c.zero? })
+    end
+
+    it "is equal to ⌊a/b⌋" do
+      expect(result).to eq (number / other).floor
+    end
+
+    context "when dividing by any non-real value" do
+      let(:other) do
+        [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
+      end
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
+    context "when dividing by non-real vector number" do
+      let(:other) { num(:s) }
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
+    context "when dividing by 0" do
+      let(:other) { [0, 0.0, 0r].sample }
+
+      it "raises ZeroDivisionError" do
+        expect { result }.to raise_error ZeroDivisionError
+      end
+
+      context "when dividing by BigDecimal 0", :bigdecimal do
+        let(:other) { BigDecimal(0) }
+
+        it "raises ZeroDivisionError" do
+          expect { result }.to raise_error ZeroDivisionError
+        end
+      end
+    end
+  end
+
+  describe "#%" do
+    let(:result) { number % other }
+
+    let(:number) { num(1.5, -1i, "sshshs", :a, :a) * -3.5 }
+    let(:other) { rand(-10.0..10.0) }
+
+    it "calls #% on each component" do
+      expect(result.to_a).to match_array([
+        [VectorNumber::R, -5.25 % other],
+        [VectorNumber::I, 3.5 % other],
+        ["sshshs", -3.5 % other],
+        [:a, -7 % other]
+      ].reject { |(_u, c)| c.zero? })
+    end
+
+    # This test requires smallish numbers, as multiplication is not precise.
+    it "is equal to (a - b⌊a/b⌋)" do
+      expect(result).to eq number - (other * (number / other).floor)
+    end
+
+    context "when dividing by any non-real value" do
+      let(:other) do
+        [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
+      end
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
+    context "when dividing by non-real vector number" do
+      let(:other) { num(:s) }
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
+    context "when dividing by 0" do
+      let(:other) { [0, 0.0, 0r].sample }
+
+      it "raises ZeroDivisionError" do
+        expect { result }.to raise_error ZeroDivisionError
+      end
+
+      context "when dividing by BigDecimal 0", :bigdecimal do
+        let(:other) { BigDecimal(0) }
+
+        it "raises ZeroDivisionError" do
+          expect { result }.to raise_error ZeroDivisionError
+        end
+      end
+    end
+  end
+
+  include_examples "has an alias", :modulo, :%
+
+  describe "#divmod" do
+    let(:result) { number.divmod(other) }
+
+    let(:number) { [zero_number, real_number, composite_number, f_number].sample }
+    let(:other) { rand(-10.0..10.0) }
+
+    it "returns a tuple of #div and #% results" do
+      expect(result).to eq [number.div(other), number % other]
+    end
+  end
+
+  describe "#remainder" do
+    let(:result) { number.remainder(other) }
+
+    let(:number) { num(1.5, -1i, "sshshs", :a, :a) * -3.5 }
+    let(:other) { rand(-10.0..10.0) }
+
+    it "calls #% on each component" do
+      expect(result.to_a).to match_array([
+        [VectorNumber::R, -5.25.remainder(other)],
+        [VectorNumber::I, 3.5.remainder(other)],
+        ["sshshs", -3.5.remainder(other)],
+        [:a, -7.remainder(other)]
+      ].reject { |(_u, c)| c.zero? })
+    end
+
+    # This test requires smallish numbers, as multiplication is not precise.
+    it "is equal to (a - b⌊|a/b|⌋)" do
+      expect(result).to eq number - (other * (number / other).truncate)
+    end
+
+    context "when dividing by any non-real value" do
+      let(:other) do
+        [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
+      end
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
+    context "when dividing by non-real vector number" do
+      let(:other) { num(:s) }
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
+    context "when dividing by 0" do
+      let(:other) { [0, 0.0, 0r].sample }
+
+      it "raises ZeroDivisionError" do
+        expect { result }.to raise_error ZeroDivisionError
+      end
+
+      context "when dividing by BigDecimal 0", :bigdecimal do
+        let(:other) { BigDecimal(0) }
+
+        it "raises ZeroDivisionError" do
+          expect { result }.to raise_error ZeroDivisionError
         end
       end
     end

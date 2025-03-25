@@ -6,7 +6,7 @@ class VectorNumber
     # Return the absolute value of the vector, i.e. its length.
     # @return [Float]
     def abs
-      Math.sqrt(coefficients.sum { _1.abs2 })
+      Math.sqrt(coefficients.sum(&:abs2)) # rubocop:disable Naming/VariableNumber
     end
 
     alias magnitude abs

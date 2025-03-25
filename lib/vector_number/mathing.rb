@@ -121,7 +121,7 @@ class VectorNumber
     def %(other)
       check_divisibility(other)
 
-      new { _1 - other * _1.div(other) }
+      new { _1 % other }
     end
 
     alias modulo %
@@ -149,7 +149,7 @@ class VectorNumber
     def remainder(other)
       check_divisibility(other)
 
-      new { _1 - other * (_1 / other).truncate }
+      new { _1 - (other * (_1 / other).truncate) }
     end
 
     private
