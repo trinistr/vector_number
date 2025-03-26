@@ -152,7 +152,7 @@ class VectorNumber
       check_divisibility(other)
 
       other = other.real
-      new { _1 - (other * (_1 / other).truncate) }
+      new { _1.remainder(other) }
     end
 
     private
