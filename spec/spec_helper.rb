@@ -24,6 +24,7 @@ RSpec.configure do |config|
   end
 
   config.order = :random
+  Kernel.srand(config.seed)
 
   config.formatter = (config.files_to_run.size > 1) ? :progress : :documentation
 

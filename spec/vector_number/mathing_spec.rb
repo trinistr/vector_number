@@ -501,6 +501,42 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     end
   end
 
+  shared_examples "invalid division" do
+    context "when dividing by any non-real-number value" do
+      let(:other) do
+        [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
+      end
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
+    context "when dividing by non-real vector number" do
+      let(:other) { num(:s) }
+
+      it "raises RangeError" do
+        expect { result }.to raise_error RangeError
+      end
+    end
+
+    context "when dividing by 0" do
+      let(:other) { [0, 0.0, 0r].sample }
+
+      it "raises ZeroDivisionError" do
+        expect { result }.to raise_error ZeroDivisionError
+      end
+
+      context "when dividing by BigDecimal 0", :bigdecimal do
+        let(:other) { BigDecimal(0) }
+
+        it "raises ZeroDivisionError" do
+          expect { result }.to raise_error ZeroDivisionError
+        end
+      end
+    end
+  end
+
   describe "#/" do
     subject(:result) { number / other }
 
@@ -557,16 +593,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
 
-    context "when dividing by any other value" do
-      let(:other) do
-        [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
-      end
-
-      it "raises RangeError" do
-        expect { result }.to raise_error RangeError
-      end
-    end
-
     context "when dividing real number by a real vector number" do
       let(:number) { [-rand(6.0..7.0), rand(10r..100r)].sample }
 
@@ -605,7 +631,11 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         end
       end
     end
+
+    include_examples "invalid division"
   end
+
+  include_examples "has an alias", :quo, :/
 
   describe "#fdiv" do
     subject(:result) { number.fdiv(other) }
@@ -663,13 +693,24 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
 
-    context "when dividing by any other value" do
-      let(:other) do
-        [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
+    context "when dividing Integer by a real vector number" do
+      let(:number) { rand(2..10) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns a Float result" do
+        expect(result).to be_a Float
+        expect(result).to eq number.fdiv(value)
       end
 
-      it "raises RangeError" do
-        expect { result }.to raise_error RangeError
+      context "if vector contains a BigDecimal", :bigdecimal do
+        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "returns a Float result" do
+          expect(result).to be_a Float
+          expect(result).to eq number.fdiv(value)
+        end
       end
     end
 
@@ -690,48 +731,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         it "returns a real result as a vector number" do
           expect(result).to be_a VectorNumber
           expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
-        end
-      end
-    end
-
-    context "when dividing BigDecimal by a real vector number", :bigdecimal do
-      let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
-
-      let(:other) { num(value) }
-      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
-
-      it "returns a real result as a vector number" do
-        expect(result).to be_a VectorNumber
-        expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
-      end
-
-      context "if vector contains a BigDecimal", :bigdecimal do
-        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
-
-        it "returns a real result as a vector number" do
-          expect(result).to be_a VectorNumber
-          expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
-        end
-      end
-    end
-
-    context "when dividing Integer by a real vector number" do
-      let(:number) { rand(2..10) }
-
-      let(:other) { num(value) }
-      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
-
-      it "returns a Float result" do
-        expect(result).to be_a Float
-        expect(result).to eq number.fdiv(value)
-      end
-
-      context "if vector contains a BigDecimal", :bigdecimal do
-        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
-
-        it "returns a Float result" do
-          expect(result).to be_a Float
-          expect(result).to eq number.fdiv(value)
         end
       end
     end
@@ -757,6 +756,27 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
 
+    context "when dividing BigDecimal by a real vector number", :bigdecimal do
+      let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns a real result as a vector number" do
+        expect(result).to be_a VectorNumber
+        expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
+      end
+
+      context "if vector contains a BigDecimal", :bigdecimal do
+        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "returns a real result as a vector number" do
+          expect(result).to be_a VectorNumber
+          expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
+        end
+      end
+    end
+
     context "when dividing real number by a non-real vector number" do
       let(:number) { [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
 
@@ -774,5 +794,221 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         end
       end
     end
+
+    include_examples "invalid division"
+  end
+
+  describe "#div" do
+    subject(:result) { number.div(other) }
+
+    let(:number) { num(32.14, -123.45i, 128r / 9, :a, :a) }
+    let(:other) { rand(-10.0..10.0) }
+
+    it "calls #div on each component" do
+      expect(result.to_a).to match_array([
+        [VectorNumber::R, (32.14 + (128r / 9)).div(other)],
+        [VectorNumber::I, -123.45.div(other)],
+        [:a, 2.div(other)]
+      ].reject { |(_u, c)| c.zero? })
+    end
+
+    it "is equal to ⌊a/b⌋" do
+      expect(result).to eq (number / other).floor
+    end
+
+    context "when dividing Integer by a real vector number" do
+      let(:number) { rand(2..10) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns quotient" do
+        expect(result).to eq number.div(value)
+      end
+    end
+
+    context "when dividing Float by a real vector number" do
+      let(:number) { -rand(6.0..7.0) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns quotient" do
+        expect(result).to eq number.div(value)
+      end
+    end
+
+    context "when dividing Rational by a real vector number" do
+      let(:number) { rand(10r..100r) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns quotient" do
+        expect(result).to eq number.div(value)
+      end
+    end
+
+    context "when dividing BigDecimal by a real vector number", :bigdecimal do
+      let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns quotient" do
+        expect(result).to eq number.div(value)
+      end
+    end
+
+    include_examples "invalid division"
+  end
+
+  describe "#%" do
+    subject(:result) { number % other }
+
+    let(:number) { num(1.5, -1i, "sshshs", :a, :a) * -3.5 }
+    let(:other) { rand(-10.0..10.0) }
+
+    it "calls #% on each component" do
+      expect(result.to_a).to match_array([
+        [VectorNumber::R, -5.25 % other],
+        [VectorNumber::I, 3.5 % other],
+        ["sshshs", -3.5 % other],
+        [:a, -7 % other]
+      ].reject { |(_u, c)| c.zero? })
+    end
+
+    # This test requires smallish numbers, as multiplication is not precise.
+    it "is equal to (a - b⌊a/b⌋)" do
+      expect(result).to eq number - (other * (number / other).floor)
+    end
+
+    context "when dividing Integer by a real vector number" do
+      let(:number) { rand(2..10) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns modulus" do
+        expect(result).to eq number % value
+      end
+    end
+
+    context "when dividing Float by a real vector number" do
+      let(:number) { -rand(6.0..7.0) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns modulus" do
+        expect(result).to eq number % value
+      end
+    end
+
+    context "when dividing Rational by a real vector number" do
+      let(:number) { rand(10r..100r) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns modulus" do
+        expect(result).to eq number % value
+      end
+    end
+
+    context "when dividing BigDecimal by a real vector number", :bigdecimal do
+      let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns modulus" do
+        expect(result).to eq number % value
+      end
+    end
+
+    include_examples "invalid division"
+  end
+
+  include_examples "has an alias", :modulo, :%
+
+  describe "#divmod" do
+    subject(:result) { number.divmod(other) }
+
+    let(:number) { [zero_number, real_number, composite_number, f_number].sample }
+    let(:other) { rand(-10.0..10.0) }
+
+    it "returns a tuple of #div and #% results" do
+      expect(result).to eq [number.div(other), number % other]
+    end
+
+    include_examples "invalid division"
+  end
+
+  describe "#remainder" do
+    subject(:result) { number.remainder(other) }
+
+    let(:number) { num(1.5, -1i, "sshshs", :a, :a) * -3.5 }
+    let(:other) { rand(-10.0..10.0) }
+
+    it "calls #% on each component" do
+      expect(result.to_a).to match_array([
+        [VectorNumber::R, -5.25.remainder(other)],
+        [VectorNumber::I, 3.5.remainder(other)],
+        ["sshshs", -3.5.remainder(other)],
+        [:a, -7.remainder(other)]
+      ].reject { |(_u, c)| c.zero? })
+    end
+
+    # This test requires smallish numbers, as multiplication is not precise.
+    it "is equal to (a - b⌊|a/b|⌋)" do
+      expect(result).to eq number - (other * (number / other).truncate)
+    end
+
+    context "when dividing Integer by a real vector number" do
+      let(:number) { rand(2..10) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns remainder" do
+        expect(result).to eq number.remainder(value)
+      end
+    end
+
+    context "when dividing Float by a real vector number" do
+      let(:number) { -rand(6.0..7.0) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns remainder" do
+        expect(result).to eq number.remainder(value)
+      end
+    end
+
+    context "when dividing Rational by a real vector number" do
+      let(:number) { rand(10r..100r) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns remainder" do
+        expect(result).to eq number.remainder(value)
+      end
+    end
+
+    context "when dividing BigDecimal by a real vector number", :bigdecimal do
+      let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns remainder" do
+        expect(result).to eq number.remainder(value)
+      end
+    end
+
+    include_examples "invalid division"
   end
 end

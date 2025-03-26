@@ -10,10 +10,12 @@ require "bigdecimal/util"
 # This gem.
 require "vector_number"
 
+V0 = VectorNumber[0]
 V1 = VectorNumber[1]
 Vi = VectorNumber[1.i]
 Va = VectorNumber["a"]
 Vs = VectorNumber[:s]
+Vpi = VectorNumber[:pi] * Math::PI
 
 require "irb"
 IRB.start(__FILE__)

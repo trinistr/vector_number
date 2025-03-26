@@ -3,10 +3,10 @@
 class VectorNumber
   # Various mathematical operations that are also conversions.
   module MathConverting
-    # Return the absolute value of a vector, i.e. its length.
+    # Return the absolute value of the vector, i.e. its length.
     # @return [Float]
     def abs
-      Math.sqrt(coefficients.reduce(0.0) { |result, coefficient| result + coefficient.abs2 })
+      Math.sqrt(coefficients.sum(&:abs2)) # rubocop:disable Naming/VariableNumber
     end
 
     alias magnitude abs

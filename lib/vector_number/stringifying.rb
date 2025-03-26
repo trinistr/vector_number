@@ -48,7 +48,7 @@ class VectorNumber
     # @raise [ArgumentError] if +mult+ is not in {MULT_STRINGS}'s keys
     def value_to_s(unit, coefficient, mult:)
       if !mult.is_a?(String) && !MULT_STRINGS.key?(mult)
-        raise ArgumentError, "unknown key :#{mult}", caller
+        raise ArgumentError, "unknown key #{mult.inspect}", caller
       end
 
       case unit
