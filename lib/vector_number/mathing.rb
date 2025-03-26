@@ -105,10 +105,11 @@ class VectorNumber
     def div(other)
       check_divisibility(other)
 
+      other = other.real
       new { _1.div(other) }
     end
 
-    # Return the remainder of dividing self by +other+ as a vector.
+    # Return the modulus of dividing self by +other+ as a vector.
     # This is equal to +self - other * (self/other).floor+.
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
@@ -121,12 +122,13 @@ class VectorNumber
     def %(other)
       check_divisibility(other)
 
+      other = other.real
       new { _1 % other }
     end
 
     alias modulo %
 
-    # Return the quotient and remainder of dividing self by +other+.
+    # Return the quotient and modulus of dividing self by +other+.
     # There is no performance benefit compared to calling {#div} and {#%} separately.
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [Array(VectorNumber, VectorNumber)]
@@ -138,7 +140,7 @@ class VectorNumber
       [div(other), modulo(other)]
     end
 
-    # Return the alternative remainder of dividing self by +other+ as a vector.
+    # Return the remainder of dividing self by +other+ as a vector.
     # This is equal to +self - other * (self/other).truncate+.
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
@@ -149,6 +151,7 @@ class VectorNumber
     def remainder(other)
       check_divisibility(other)
 
+      other = other.real
       new { _1 - (other * (_1 / other).truncate) }
     end
 
