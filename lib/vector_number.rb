@@ -62,6 +62,7 @@ class VectorNumber
   # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
   # @raise [RangeError] if any pesky non-reals get where they shouldn't
   def initialize(values = nil, options = {}.freeze, &)
+    # @type var options: Hash[Symbol, Symbol]
     # TODO: propagate options properly.
     #   > (VectorNumber[1, 'a', mult: :invisible] + 2).options
     #   => {:mult=>:dot}
@@ -78,9 +79,7 @@ class VectorNumber
   # Return self.
   #
   # @return [VectorNumber]
-  def dup
-    self
-  end
+  alias dup itself
 
   # Return self.
   #

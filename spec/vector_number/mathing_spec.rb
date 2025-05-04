@@ -81,6 +81,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     end
   end
 
+  include_examples "has an alias", :neg, :-@
+
   describe "#+" do
     subject(:result) { number + other }
 
@@ -235,6 +237,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
   end
+
+  include_examples "has an alias", :add, :+
 
   describe "#-" do
     subject(:result) { number - other }
@@ -398,6 +402,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     end
   end
 
+  include_examples "has an alias", :sub, :-
+
   describe "#*" do
     subject(:result) { number * other }
 
@@ -500,6 +506,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
   end
+
+  include_examples "has an alias", :mult, :*
 
   shared_examples "invalid division" do
     context "when dividing by any non-real-number value" do

@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Next]
+
+**Added**
+- Add aliases to other operators:
+   `#neg` for `#-@`, `#add` for `#+`, `#sub` for `#-`, `#mult` for `#*`.
+   `#+@` was already practically aliased by `#dup`.
+
+**Changed**
+- Both `#+@` and `#dup` are now aliases of `#itself` instead of full methods.
+
 ## [v0.2.6] — 2025-04-30
 
 **Added**
@@ -27,8 +36,9 @@ README was updated to reflect this change.
 - Add hash-like methods `#[]` and `#unit?` (aliased as `#key?`).
 
 **Changed**
-- [Breaking] Change `positive?` and `negative?` to no longer return `nil`,
-   those cases will now return `false`.
+- [Breaking] Change `positive?` and `negative?` to no longer return `nil`
+   when number is neither strictly positive or negative,
+   these cases will now return `false`.
 - Make `VectorNumber.new` accept options when initializing from a VectorNumber
    instead of only copying. Options will be merged.
 - Remove `Initializing` module, move its methods to the actual class.
@@ -59,7 +69,7 @@ README was updated to reflect this change.
 ## [v0.2.1] — 2024-08-24
 
 **Added**
-- Add back `#*` and `#/` for working with real numbers.
+- Add `#*` and `#/` for working with real numbers.
 - Add `#fdiv`, `#truncate`, `#nonnumeric?` and `#integer?`.
 
 **Changed**

@@ -90,12 +90,16 @@ class VectorNumber
     def +@: () -> self
 
     def -@: () -> vector_type
+    alias neg -@
 
     def +: (in_value_type) -> vector_type
+    alias add +
 
     def -: (in_value_type) -> vector_type
+    alias sub -
 
     def *: (real_number | vector_type) -> vector_type
+    alias mult *
 
     def /: (real_number | vector_type) -> vector_type
     alias quo /
@@ -130,6 +134,8 @@ class VectorNumber
     def ceil: (Integer) -> vector_type
 
     def floor: (Integer) -> vector_type
+
+    def round: (Integer, ?half: (:up | :down | :even)) -> vector_type
   end
 
   # Methods for converting to different number classes.

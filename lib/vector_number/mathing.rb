@@ -18,9 +18,7 @@ class VectorNumber
 
     # Return self.
     # @return [VectorNumber]
-    def +@
-      self
-    end
+    alias +@ itself
 
     # Return new vector with negated coefficients.
     # This preserves order of units.
@@ -28,6 +26,8 @@ class VectorNumber
     def -@
       new(&:-@)
     end
+
+    alias neg -@
 
     # Return new vector as a sum of this and other value.
     # This is analogous to {VectorNumber.[]}.
@@ -37,6 +37,8 @@ class VectorNumber
       new([self, other])
     end
 
+    alias add +
+
     # Return new vector as a sum of this and negative of the other value.
     # This is analogous to {VectorNumber.[]}, but allows to negate anything.
     # @param other [Object]
@@ -44,6 +46,8 @@ class VectorNumber
     def -(other)
       self + new([other], &:-@)
     end
+
+    alias sub -
 
     # Multiply all coefficients by a real number, returning new vector.
     # This effectively multiplies magnitude by the specified factor.
@@ -62,6 +66,8 @@ class VectorNumber
         raise RangeError, "can't multiply #{self} and #{other}"
       end
     end
+
+    alias mult *
 
     # Divide all coefficients by a real number, returning new vector.
     # This effectively multiplies magnitude by reciprocal of +other+.
