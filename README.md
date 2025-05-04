@@ -16,7 +16,9 @@ Similar projects:
 
 ## Installation
 
-Install with `gem`:
+VectorNumber does not have any dependencies and does not include extensions.
+
+Install with `gem` (available from 0.2.4):
 ```sh
 gem install vector_number
 ```

@@ -1,0 +1,18 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    cron: '53 4 * * TUE'
+
+jobs:
+  CRuby CI:
+    uses: ./.githib/workflows/cruby.yaml
+  TruffleRuby CI:
+    uses: ./.githib/workflows/truffleruby.yaml
+  JRuby CI:
+    uses: ./.githib/workflows/jruby.yaml

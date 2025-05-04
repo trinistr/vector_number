@@ -25,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `#/`, `#fdiv` as well as new division methods now properly check for division by zero.
    VectorNumber does not support this as not all Numeric classes do.
 
+**Changed**
+- [CI] Add Ruby 3.4 to CI.
+
 ## [v0.2.5] — 2025-02-26
 
 Technical update after release to rubygems.org.
@@ -59,9 +62,9 @@ README was updated to reflect this change.
 - Add `#ceil`, `#floor` and `#round`.
 
 **Changed**
-- Add ruby 3.1.0, covering the earliest supported version, and ruby-next (3.4) to CI.
-- Add JRuby and TruffleRuby to CI, without full support.
-- Make tests runnable even without available `bigdecimal` gem.
+- [CI] Add ruby 3.1.0, covering the earliest supported version, and ruby-next (3.4) to CI.
+- [CI] Add JRuby and TruffleRuby to CI, without full support.
+- [CI] Make tests runnable even without available `bigdecimal` gem.
 
 **Fixed**
 - `Kernel#BigDecimal` refinement now correctly works without `ndigits` argument.
