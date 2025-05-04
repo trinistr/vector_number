@@ -1,9 +1,6 @@
 # VectorNumber
 
-![CRuby validation](https://github.com/trinistr/vector_number/actions/workflows/cruby.yaml/badge.svg)
-<!--
-![TruffleRuby validation](https://github.com/trinistr/vector_number/actions/workflows/truffleruby.yaml/badge.svg)
--->
+[![CI](https://github.com/trinistr/vector_number/actions/workflows/CI.yaml/badge.svg)](https://github.com/trinistr/vector_number/actions/workflows/CI.yaml)
 
 A library to add together anything: be it a number, string or random Object, it can be added together in an infinite-dimensional vector space, with math operations available on results.
 
@@ -16,7 +13,9 @@ Similar projects:
 
 ## Installation
 
-Install with `gem`:
+VectorNumber does not have any dependencies and does not include extensions.
+
+Install with `gem` (available from 0.2.4):
 ```sh
 gem install vector_number
 ```
@@ -58,9 +57,9 @@ VectorNumber.new([4, "death", "death", 13, nil])
 ## Ruby engine support status
 
 VectorNumber is developed on MRI (CRuby) but should work on other engines too.
-- JRuby: should work, but currently CI does not pass.
 - TruffleRuby: works as expected, but there are differences in core Ruby code, so some tests fail.
-- Other engines: untested, but should work.
+- JRuby: significant problems (at least on CI), but may work.
+- Other engines: untested, but should work, depending on compatibility.
 
 ## Development
 

@@ -1,24 +1,21 @@
 name: JRuby
-
+permissions:
+  contents: read
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-
+  workflow_call:
 jobs:
   test:
-    runs-on: ubuntu-latest
     name: ${{ matrix.ruby }}
+    runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
         ruby:
-          - jruby
-          - jruby-head
+        - jruby
+        - jruby-head
         experimental: [true]
     continue-on-error: ${{ matrix.experimental }}
     env:
+      # JRuby complains about loading bigdecimal, but the gem can't be built.
       BUNDLE_WITHOUT: 'linting:optional:development'
     steps:
     - uses: actions/checkout@v4
@@ -27,5 +24,5 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
-    - name: Run the default task
-      run: bundle exec rake
+    - name: Run RSpec
+      run: bundle exec rake spec
