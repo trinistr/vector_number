@@ -1,8 +1,8 @@
 name: CRuby
-
+permissions:
+  contents: read
 on:
   workflow_call:
-
 jobs:
   test:
     name: Ruby ${{ matrix.ruby }}

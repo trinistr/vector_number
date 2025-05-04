@@ -1,5 +1,4 @@
 name: CI
-
 on:
   push:
     branches:
@@ -8,7 +7,6 @@ on:
   workflow_dispatch:
   schedule:
     cron: '53 4 * * TUE'
-
 jobs:
   CRuby CI:
     uses: ./.githib/workflows/cruby.yaml
