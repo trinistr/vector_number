@@ -10,9 +10,9 @@ on:
   schedule:
   - cron: '53 4 * * TUE'
 jobs:
-  CRuby CI:
+  CRuby:
     uses: ./.github/workflows/cruby.yaml
-  TruffleRuby CI:
+  TruffleRuby:
     uses: ./.github/workflows/truffleruby.yaml
-  JRuby CI:
+  JRuby:
     uses: ./.github/workflows/jruby.yaml
