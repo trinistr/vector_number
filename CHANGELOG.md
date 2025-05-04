@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Changed**
 - Both `#+@` and `#dup` are now aliases of `#itself` instead of full methods.
+- [🚀 CI] Refactor workflows to reduce duplication.
 
 ## [v0.2.6] — 2025-04-30
 
@@ -26,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    VectorNumber does not support this as not all Numeric classes do.
 
 **Changed**
-- [CI] Add Ruby 3.4 to CI.
+- [🚀 CI] Add Ruby 3.4 to CI.
 
 ## [v0.2.5] — 2025-02-26
 
@@ -62,9 +63,9 @@ README was updated to reflect this change.
 - Add `#ceil`, `#floor` and `#round`.
 
 **Changed**
-- [CI] Add ruby 3.1.0, covering the earliest supported version, and ruby-next (3.4) to CI.
-- [CI] Add JRuby and TruffleRuby to CI, without full support.
-- [CI] Make tests runnable even without available `bigdecimal` gem.
+- [🚀 CI] Add ruby 3.1.0, covering the earliest supported version, and ruby-next (3.4) to CI.
+- [🚀 CI] Add JRuby and TruffleRuby to CI, without full support.
+- [🚀 CI] Make tests runnable even without available `bigdecimal` gem.
 
 **Fixed**
 - `Kernel#BigDecimal` refinement now correctly works without `ndigits` argument.
@@ -95,3 +96,5 @@ README was updated to reflect this change.
 ## [v0.1.0] — 2024-05-09
 
 - Initial work.
+
+[🚀 CI]: https://github.com/trinistr/vector_number/actions/workflows/CI.yaml
