@@ -11,8 +11,8 @@ on:
   - cron: '53 4 * * TUE'
 jobs:
   CRuby CI:
-    uses: ./.githib/workflows/cruby.yaml
+    uses: ./.github/workflows/cruby.yaml
   TruffleRuby CI:
-    uses: ./.githib/workflows/truffleruby.yaml
+    uses: ./.github/workflows/truffleruby.yaml
   JRuby CI:
-    uses: ./.githib/workflows/jruby.yaml
+    uses: ./.github/workflows/jruby.yaml
