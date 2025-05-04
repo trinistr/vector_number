@@ -15,6 +15,7 @@ jobs:
         experimental: [true]
     continue-on-error: ${{ matrix.experimental }}
     env:
+      # JRuby complains about loading bigdecimal, but the gem can't be built.
       BUNDLE_WITHOUT: 'linting:optional:development'
     steps:
     - uses: actions/checkout@v4
