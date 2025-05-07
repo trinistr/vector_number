@@ -51,7 +51,7 @@ class VectorNumber
   def self.[]: (*unit_type values, **options_type options) -> vector_type
 
   def initialize:
-    (?(units_list_type | plain_vector_type | vector_type)? values, ?options_type options)
+    (?(units_list_type | plain_vector_type | vector_type)? values, ?options_type? options)
     ?{ (coefficient_type coefficient) -> coefficient_type }
     -> void
 

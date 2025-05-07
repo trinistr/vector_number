@@ -36,6 +36,7 @@ class VectorNumber
 
     # @return [String]
     def inspect
+      # TODO: Probably make this independent of options.
       "(#{self})"
     end
 

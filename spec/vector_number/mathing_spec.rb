@@ -92,12 +92,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { [rand(1.0..2.0), rand(1..10_000), rand(1r..100r)].sample }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] += other.real
-        else
-          values << [VectorNumber::R, other.real]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values << [VectorNumber::R, number.real + other.real]
       end
 
       it "creates a new number, adding real number to real part" do
@@ -121,12 +117,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { [rand(1.0..2.0), rand(1..10_000), rand(1r..100r)].sample }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] += other.real
-        else
-          values << [VectorNumber::R, other.real]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values << [VectorNumber::R, number.real + other.real]
       end
 
       it "creates a new number, adding real number to real part" do
@@ -148,17 +140,10 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { Complex(rand(-1000..-8), rand(10.0..1000.0)) }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] += other.real
-        else
-          values << [VectorNumber::R, other.real]
-        end
-        if (value = values.assoc(VectorNumber::I))
-          value[1] += other.imag
-        else
-          values << [VectorNumber::I, other.imag]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values.delete(values.assoc(VectorNumber::I))
+        values << [VectorNumber::R, number.real + other.real]
+        values << [VectorNumber::I, number.imag + other.imag]
       end
 
       it "creates a new number, adding real part and imaginary parts together correspondingly" do
@@ -173,17 +158,10 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { Complex(rand(-1000..-8), rand(10.0..1000.0)) }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] += other.real
-        else
-          values << [VectorNumber::R, other.real]
-        end
-        if (value = values.assoc(VectorNumber::I))
-          value[1] += other.imag
-        else
-          values << [VectorNumber::I, other.imag]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values.delete(values.assoc(VectorNumber::I))
+        values << [VectorNumber::R, number.real + other.real]
+        values << [VectorNumber::I, number.imag + other.imag]
       end
 
       it "creates a new number, adding real part and imaginary parts together correspondingly" do
@@ -249,12 +227,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { [rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] -= other.real
-        else
-          values << [VectorNumber::R, -other.real]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values << [VectorNumber::R, number.real - other.real]
       end
 
       it "creates a new number, subtracting real number from real part" do
@@ -278,11 +252,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { [rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] -= other.real
-        else
-          values << [VectorNumber::R, -other.real]
-        end
+        values.delete(values.assoc(VectorNumber::R))
+        values << [VectorNumber::R, number.real - other.real]
         values.map { |u, c| [u, -c] }
       end
 
@@ -305,17 +276,10 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { Complex(rand(31..32), rand(0.5..555.5)) }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] -= other.real
-        else
-          values << [VectorNumber::R, -other.real]
-        end
-        if (value = values.assoc(VectorNumber::I))
-          value[1] -= other.imag
-        else
-          values << [VectorNumber::I, -other.imag]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values.delete(values.assoc(VectorNumber::I))
+        values << [VectorNumber::R, number.real - other.real]
+        values << [VectorNumber::I, number.imag - other.imag]
       end
 
       it "creates a new number, subtracting real and imaginary parts correspondingly" do
@@ -330,16 +294,10 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { Complex(rand(31..32), rand(0.5..555.5)) }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] -= other.real
-        else
-          values << [VectorNumber::R, -other.real]
-        end
-        if (value = values.assoc(VectorNumber::I))
-          value[1] -= other.imag
-        else
-          values << [VectorNumber::I, -other.imag]
-        end
+        values.delete(values.assoc(VectorNumber::R))
+        values.delete(values.assoc(VectorNumber::I))
+        values << [VectorNumber::R, number.real - other.real]
+        values << [VectorNumber::I, number.imag - other.imag]
         values.map { |u, c| [u, -c] }
       end
 

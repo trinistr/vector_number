@@ -72,6 +72,29 @@ RSpec.describe VectorNumber::Stringifying do
         end
       end
     end
+
+    context "when :mult option is passed to the constructor" do
+      subject(:string) { number.to_s }
+
+      let(:number) { num("y", :a, 5, 3, "y", mult: "!") }
+
+      context "when :mult option is not passed to #to_s" do
+        it "inserts multiplication symbol specified for the number" do
+          expect(string).to eq "2!'y' + 1!a + 8"
+        end
+      end
+
+      context "when :mult option is also passed to #to_s" do
+        subject(:string) { number.to_s(mult: mult) }
+
+        let(:mult) { described_class::MULT_STRINGS.keys.sample }
+        let(:char) { described_class::MULT_STRINGS[mult] }
+
+        it "inserts multiplication symbol passed in the call" do
+          expect(string).to eq "2#{char}'y' + 1#{char}a + 8"
+        end
+      end
+    end
   end
 
   describe "#inspect" do
