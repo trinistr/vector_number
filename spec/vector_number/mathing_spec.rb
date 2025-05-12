@@ -17,7 +17,28 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       it "returns array with other value and self unchanged" do
         # This expectation depends on Comparing#==.
         expect(result).to eq [other, number]
+        # Check that these are actually the same objects, not just equal ones.
         expect(result.first).to be other
+        expect(result.last).to be number
+      end
+    end
+
+    context "when other value is a number" do
+      let(:other) { [5, 55.55, 5/55r].sample }
+
+      it "returns array with vectorized other value and self" do
+        expect(result).to eq [num(other), number]
+        expect(result.first.units).to eq [VectorNumber::R]
+      end
+    end
+
+    context "when other value is NaN" do
+      let(:other) { Float::NAN }
+
+      it "returns array with vectorized NaN and self" do
+        # NaN is not equal to NaN.
+        expect(result.first.units).to eq [VectorNumber::R]
+        expect(result.first.coefficients.first).to be_nan
         expect(result.last).to be number
       end
     end
@@ -40,22 +61,47 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
 
-    context "when other value is anything else" do
-      let(:other) { [Object.new, [1], "myself", Float::DIG].sample }
+    context "when other value is whatever else" do
+      let(:other) { [Object.new, "myself", :vector, 1.upto(2)].sample }
 
       it "returns array with vectorized other value and self" do
         expect(result).to eq [num(other), number]
+        expect(result.first.units).to eq [other]
       end
     end
 
-    context "when other value is NaN" do
-      let(:other) { [Float::NAN].sample }
+    context "if number has non-default options" do
+      let(:number) { num(rand, rand.i, "coerce", mult: :cross) }
 
-      it "returns array with vectorized NaN and self" do
-        # NaN is not equal to NaN.
-        expect(result.first.units.first).to be VectorNumber::R
-        expect(result.first.coefficients.first).to be_nan
-        expect(result.last).to be number
+      context "when other value is a VectorNumber" do
+        let(:other) { num(rand, mult: :blank) }
+
+        it "leaves options as-is for both" do
+          expect(result.first.options).to eq(mult: :blank)
+          expect(result.last.options).to eq(mult: :cross)
+        end
+      end
+
+      context "when other value is anything else" do
+        let(:other) { [-33, Object.new, "myself", :vector, 1.upto(2)].sample }
+
+        it "propagates options to the new vector" do
+          expect(result.first.options).to eq(mult: :cross)
+          expect(result.last.options).to eq(mult: :cross)
+        end
+      end
+    end
+  end
+
+  shared_examples "options propagation" do
+    context "when number has non-default options" do
+      let(:number) { num(rand.i, mult: "mult") }
+      let(:other) { num(rand * rand, mult: "ult") }
+
+      it "propagates first vector's options to the result" do
+        # `eq` would be mostly sufficient,
+        # but we also optimize options to be the same hash.
+        expect(result.options).to be number.options
       end
     end
   end
@@ -75,6 +121,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
 
+    include_examples "options propagation"
+
     it "returns a new number with all coefficients negated" do
       expect(result.units).to eq number.units
       expect(result.coefficients).to eq number.coefficients.map(&:-@)
@@ -88,16 +136,14 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
 
+    include_examples "options propagation"
+
     context "when adding a real number" do
       let(:other) { [rand(1.0..2.0), rand(1..10_000), rand(1r..100r)].sample }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] += other.real
-        else
-          values << [VectorNumber::R, other.real]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values << [VectorNumber::R, number.real + other.real]
       end
 
       it "creates a new number, adding real number to real part" do
@@ -121,12 +167,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { [rand(1.0..2.0), rand(1..10_000), rand(1r..100r)].sample }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] += other.real
-        else
-          values << [VectorNumber::R, other.real]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values << [VectorNumber::R, number.real + other.real]
       end
 
       it "creates a new number, adding real number to real part" do
@@ -148,17 +190,10 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { Complex(rand(-1000..-8), rand(10.0..1000.0)) }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] += other.real
-        else
-          values << [VectorNumber::R, other.real]
-        end
-        if (value = values.assoc(VectorNumber::I))
-          value[1] += other.imag
-        else
-          values << [VectorNumber::I, other.imag]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values.delete(values.assoc(VectorNumber::I))
+        values << [VectorNumber::R, number.real + other.real]
+        values << [VectorNumber::I, number.imag + other.imag]
       end
 
       it "creates a new number, adding real part and imaginary parts together correspondingly" do
@@ -173,17 +208,10 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { Complex(rand(-1000..-8), rand(10.0..1000.0)) }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] += other.real
-        else
-          values << [VectorNumber::R, other.real]
-        end
-        if (value = values.assoc(VectorNumber::I))
-          value[1] += other.imag
-        else
-          values << [VectorNumber::I, other.imag]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values.delete(values.assoc(VectorNumber::I))
+        values << [VectorNumber::R, number.real + other.real]
+        values << [VectorNumber::I, number.imag + other.imag]
       end
 
       it "creates a new number, adding real part and imaginary parts together correspondingly" do
@@ -245,16 +273,14 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
 
+    include_examples "options propagation"
+
     context "when subtracting a real number" do
       let(:other) { [rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] -= other.real
-        else
-          values << [VectorNumber::R, -other.real]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values << [VectorNumber::R, number.real - other.real]
       end
 
       it "creates a new number, subtracting real number from real part" do
@@ -278,11 +304,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { [rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] -= other.real
-        else
-          values << [VectorNumber::R, -other.real]
-        end
+        values.delete(values.assoc(VectorNumber::R))
+        values << [VectorNumber::R, number.real - other.real]
         values.map { |u, c| [u, -c] }
       end
 
@@ -305,17 +328,10 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { Complex(rand(31..32), rand(0.5..555.5)) }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] -= other.real
-        else
-          values << [VectorNumber::R, -other.real]
-        end
-        if (value = values.assoc(VectorNumber::I))
-          value[1] -= other.imag
-        else
-          values << [VectorNumber::I, -other.imag]
-        end
-        values
+        values.delete(values.assoc(VectorNumber::R))
+        values.delete(values.assoc(VectorNumber::I))
+        values << [VectorNumber::R, number.real - other.real]
+        values << [VectorNumber::I, number.imag - other.imag]
       end
 
       it "creates a new number, subtracting real and imaginary parts correspondingly" do
@@ -330,16 +346,10 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:other) { Complex(rand(31..32), rand(0.5..555.5)) }
       let(:result_array) do
         values = number.to_a
-        if (value = values.assoc(VectorNumber::R))
-          value[1] -= other.real
-        else
-          values << [VectorNumber::R, -other.real]
-        end
-        if (value = values.assoc(VectorNumber::I))
-          value[1] -= other.imag
-        else
-          values << [VectorNumber::I, -other.imag]
-        end
+        values.delete(values.assoc(VectorNumber::R))
+        values.delete(values.assoc(VectorNumber::I))
+        values << [VectorNumber::R, number.real - other.real]
+        values << [VectorNumber::I, number.imag - other.imag]
         values.map { |u, c| [u, -c] }
       end
 
@@ -408,6 +418,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     subject(:result) { number * other }
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
+
+    include_examples "options propagation"
 
     context "when multiplying by a real number" do
       let(:other) { [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
@@ -550,6 +562,9 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
 
+    include_examples "options propagation"
+    include_examples "invalid division"
+
     context "when dividing by a real number" do
       let(:other) { [-rand(6.0..7.0), rand(10r..100r)].sample }
 
@@ -639,8 +654,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         end
       end
     end
-
-    include_examples "invalid division"
   end
 
   include_examples "has an alias", :quo, :/
@@ -649,6 +662,9 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     subject(:result) { number.fdiv(other) }
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
+
+    include_examples "options propagation"
+    include_examples "invalid division"
 
     context "when dividing by a real number" do
       let(:other) { [-rand(6.0..7.0), rand(10r..100r)].sample }
@@ -802,8 +818,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         end
       end
     end
-
-    include_examples "invalid division"
   end
 
   describe "#div" do
@@ -811,6 +825,9 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
 
     let(:number) { num(32.14, -123.45i, 128r / 9, :a, :a) }
     let(:other) { rand(-10.0..10.0) }
+
+    include_examples "options propagation"
+    include_examples "invalid division"
 
     it "calls #div on each component" do
       expect(result.to_a).to match_array([
@@ -867,8 +884,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         expect(result).to eq number.div(value)
       end
     end
-
-    include_examples "invalid division"
   end
 
   describe "#%" do
@@ -876,6 +891,9 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
 
     let(:number) { num(1.5, -1i, "sshshs", :a, :a) * -3.5 }
     let(:other) { rand(-10.0..10.0) }
+
+    include_examples "options propagation"
+    include_examples "invalid division"
 
     it "calls #% on each component" do
       expect(result.to_a).to match_array([
@@ -934,8 +952,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         expect(result).to eq number % value
       end
     end
-
-    include_examples "invalid division"
   end
 
   include_examples "has an alias", :modulo, :%
@@ -946,11 +962,11 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
     let(:other) { rand(-10.0..10.0) }
 
+    include_examples "invalid division"
+
     it "returns a tuple of #div and #% results" do
       expect(result).to eq [number.div(other), number % other]
     end
-
-    include_examples "invalid division"
   end
 
   describe "#remainder" do
@@ -958,6 +974,9 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
 
     let(:number) { num(1.5, -1i, "sshshs", :a, :a) * -3.5 }
     let(:other) { rand(-10.0..10.0) }
+
+    include_examples "options propagation"
+    include_examples "invalid division"
 
     it "calls #% on each component" do
       expect(result.to_a).to match_array([
@@ -1016,7 +1035,5 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         expect(result).to eq number.remainder(value)
       end
     end
-
-    include_examples "invalid division"
   end
 end

@@ -54,19 +54,15 @@ class VectorNumber
   # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber]
   #   values for this number, hashes are treated like plain vector numbers
   # @param options [Hash{Symbol => Object}]
-  #   options for this number, if +values+ is a VectorNumber,
-  #   these will be merged with options from +values.options+
+  #   options for this number, if +values+ is a VectorNumber or contains it,
+  #   these will be merged with options from its +options+
   # @option options [Symbol, String] :mult
   #   text to use between unit and coefficient, see {Stringifying#to_s} for explanation
   # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
   # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
   # @raise [RangeError] if any pesky non-reals get where they shouldn't
-  def initialize(values = nil, options = {}.freeze, &)
+  def initialize(values = nil, options = nil, &)
     # @type var options: Hash[Symbol, Symbol]
-    # TODO: propagate options properly.
-    #   > (VectorNumber[1, 'a', mult: :invisible] + 2).options
-    #   => {:mult=>:dot}
-    super()
     initialize_from(values)
     apply_transform(&)
     finalize_contents
@@ -105,7 +101,7 @@ class VectorNumber
   # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
   # @return [VectorNumber]
   def new(from = self, &)
-    self.class.new(from, &)
+    self.class.new(from, options, &)
   end
 
   # @param value [Object]
@@ -182,13 +178,24 @@ class VectorNumber
       case [options, values]
       in [{} | nil, VectorNumber]
         values.options
+      in [{} | nil, [*, VectorNumber => vector, *]]
+        vector.options
       in Hash, VectorNumber
-        values.options.merge(options).slice(*known_options)
+        merge_options(values.options, options)
+      in Hash, [*, VectorNumber => vector, *]
+        merge_options(vector.options, options)
       in Hash, _ unless options.empty?
-        default_options.merge(options).slice(*known_options)
+        merge_options(default_options, options)
       else
         default_options
       end
+  end
+
+  def merge_options(base_options, added_options)
+    # Optimization for the common case of passing options through #new.
+    return base_options if added_options.equal?(base_options)
+
+    base_options.merge(added_options).slice(*known_options)
   end
 
   # Compact coefficients, calculate size and freeze data.
