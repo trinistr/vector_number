@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Next]
+## [v0.3.0] — 2025-05-12
 
 **Added**
 - Add aliases to other operators:
@@ -13,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    `#+@` was already practically aliased by `#dup`.
 
 **Changed**
+- [Breaking] Long-existing but broken options feature is now fixed.
+   When creating new vector through any operation, participating vector's options
+   are copied to the new one. When several vectors are present, only first one matters.
 - Both `#+@` and `#dup` are now aliases of `#itself` instead of full methods.
 - [🚀 CI] Refactor workflows to reduce duplication.
 

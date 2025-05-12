@@ -2,5 +2,5 @@
 
 class VectorNumber # rubocop:disable Style/StaticClass
   # @return [String]
-  VERSION = "0.2.6"
+  VERSION = "0.3.0"
 end
