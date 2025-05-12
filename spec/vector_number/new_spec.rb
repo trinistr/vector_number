@@ -14,6 +14,17 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
     end
   end
 
+  context "when initializing with a vector number" do
+    let(:value) { num("you", "are", "cute") }
+
+    it "copies values and options from it" do
+      expect(new_number).to be_a described_class
+      expect(new_number).to be_frozen
+      expect(new_number.to_a).to contain_exactly ["you", 1], ["are", 1], ["cute", 1]
+      expect(new_number.options).to be value.options
+    end
+  end
+
   context "when initializing with an array" do
     let(:value) { [1, 0.25r, 2.5ri, "a", "a", :a, 0, -0.5, Complex(1, 2)] }
 
@@ -55,16 +66,15 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
         expect(new_number).to eql num(18.25, 4.1i, "s", "s")
       end
     end
-  end
 
-  context "when initializing with a vector number" do
-    let(:value) { num("you", "are", "cute") }
+    context "when array contains vector numbers with options" do
+      let(:value) { [0.25r, num(15r, Complex(3, 4.1), "s", mult: :cross), num("s", mult: "blank")] }
 
-    it "copies values and options from it" do
-      expect(new_number).to be_a described_class
-      expect(new_number).to be_frozen
-      expect(new_number.to_a).to contain_exactly ["you", 1], ["are", 1], ["cute", 1]
-      expect(new_number.options).to eq value.options
+      it "copies options from the first vector encountered" do
+        expect(new_number.size).to eq 3
+        expect(new_number).to eql num(18.25, 4.1i, "s", "s")
+        expect(new_number.options).to eq({ mult: :cross })
+      end
     end
   end
 
