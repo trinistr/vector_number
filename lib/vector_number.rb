@@ -173,13 +173,14 @@ class VectorNumber
   #
   # @since 0.1.0
   def initialize_from(values)
-    @data = Hash.new(0)
+    @data = values.to_h and return if values.is_a?(VectorNumber)
 
+    @data = Hash.new(0)
     case values
-    when VectorNumber, Hash
-      add_vector_to_data(values)
     when Array
       values.each { |value| add_value_to_data(value) }
+    when Hash
+      add_vector_to_data(values)
     else
       # Don't add anything.
     end
@@ -206,7 +207,9 @@ class VectorNumber
   # @since 0.1.0
   def add_numeric_value_to_data(value)
     @data[R] += value.real
-    @data[I] += value.imaginary
+    # Most numbers will be real, and this extra condition appreciably speeds up addition,
+    # while having no noticeable impact on complex numbers.
+    @data[I] += value.imaginary unless value.real?
   end
 
   # @param vector [VectorNumber, Hash{Object => Integer, Float, Rational, BigDecimal}]
@@ -245,19 +248,26 @@ class VectorNumber
   # @since 0.1.0
   def save_options(options, values:)
     @options =
-      case [options, values]
-      in [{} | nil, VectorNumber]
-        values.options
-      in [{} | nil, [*, VectorNumber => vector, *]]
-        vector.options
-      in Hash, VectorNumber
-        merge_options(values.options, options)
-      in Hash, [*, VectorNumber => vector, *]
-        merge_options(vector.options, options)
-      in Hash, _ unless options.empty?
-        merge_options(default_options, options)
+      if !options || options.empty?
+        case values
+        in VectorNumber
+          values.options
+        in [*, VectorNumber => vector, *]
+          vector.options
+        else
+          DEFAULT_OPTIONS
+        end
       else
-        default_options
+        case values
+        in VectorNumber
+          merge_options(values.options, options)
+        in [*, VectorNumber => vector, *]
+          merge_options(vector.options, options)
+        in _ unless options.empty?
+          merge_options(DEFAULT_OPTIONS, options)
+        else
+          DEFAULT_OPTIONS
+        end
       end
   end
 
@@ -270,7 +280,7 @@ class VectorNumber
     # Optimization for the common case of passing options through #new.
     return base_options if added_options.equal?(base_options)
 
-    base_options.merge(added_options).slice(*known_options)
+    base_options.merge(added_options).slice(*KNOWN_OPTIONS)
   end
 
   # Compact coefficients, calculate size and freeze data.
@@ -281,15 +291,5 @@ class VectorNumber
     @data.delete_if { |_u, c| c.zero? }
     @data.freeze
     @size = @data.size
-  end
-
-  # @since 0.2.0
-  def default_options
-    DEFAULT_OPTIONS
-  end
-
-  # @since 0.2.0
-  def known_options
-    KNOWN_OPTIONS
   end
 end
