@@ -1036,4 +1036,47 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       end
     end
   end
+
+  # These tests "prove" that we are actually working with a vector space.
+  # @see https://en.wikipedia.org/wiki/Vector_space#Definition_and_basic_properties
+  describe "vector axioms" do
+    let(:vector_u) { [zero_number, real_number, composite_number, f_number].sample }
+    let(:vector_v) { [zero_number, real_number, composite_number, f_number].sample }
+    let(:vector_w) { [zero_number, real_number, composite_number, f_number].sample }
+    let(:scalar_a) { rand(1.0..100.0) * rand(1.0..100.0) }
+    let(:scalar_b) { rand(1.0..100.0) * rand(1.0..100.0) }
+
+    specify "associativity of vector addition" do
+      expect(vector_u + (vector_v + vector_w)).to eq (vector_u + vector_v) + vector_w
+    end
+
+    specify "commutativity of vector addition" do
+      expect(vector_u + vector_v).to eq vector_v + vector_u
+    end
+
+    specify "identity element of vector addition" do
+      expect(vector_u + num).to eq vector_u
+    end
+
+    specify "inverse elements of vector addition" do
+      expect(vector_u + (-vector_u)).to eq num # rubocop:disable Style/RedundantParentheses
+      expect(vector_u - vector_u).to eq num
+    end
+
+    specify "compatibility of scalar multiplication with field multiplication" do
+      expect(scalar_a * (scalar_b * vector_u)).to eq (scalar_a * scalar_b) * vector_u
+    end
+
+    specify "identity element of scalar multiplication" do
+      expect(1 * vector_v).to eq vector_v
+    end
+
+    specify "distributivity of scalar multiplication with respect to vector addition" do
+      expect(scalar_b * (vector_u + vector_w)).to eq (scalar_b * vector_u) + (scalar_b * vector_w)
+    end
+
+    specify "distributivity of scalar multiplication with respect to field addition" do
+      expect((scalar_a + scalar_b) * vector_v).to eq (scalar_a * vector_v) + (scalar_b * vector_v)
+    end
+  end
 end
