@@ -1043,8 +1043,8 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     let(:vector_u) { [zero_number, real_number, composite_number, f_number].sample }
     let(:vector_v) { [zero_number, real_number, composite_number, f_number].sample }
     let(:vector_w) { [zero_number, real_number, composite_number, f_number].sample }
-    let(:scalar_a) { rand(1.0..100.0) * rand(1.0..100.0) }
-    let(:scalar_b) { rand(1.0..100.0) * rand(1.0..100.0) }
+    let(:scalar_a) { rand(BigDecimal(1)..BigDecimal(100)) * rand(BigDecimal(1)..BigDecimal(100)) }
+    let(:scalar_b) { rand(BigDecimal(1)..BigDecimal(100)) * rand(BigDecimal(1)..BigDecimal(100)) }
 
     specify "associativity of vector addition" do
       expect(vector_u + (vector_v + vector_w)).to eq (vector_u + vector_v) + vector_w
