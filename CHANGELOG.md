@@ -8,10 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Next]
 
 **Changed**
+- Improve method documentation and unify documentation style across the board.
 - Improve gemspec:
   - change source code and changelog links to point to a tagged commit;
-  - add bugtracker and documentation links;
-  - properly add CHANGELOG.md to doc generation and add LICENSE.txt.
+  - add links to bugtracker and documentation (for appropriate version);
+  - properly add CHANGELOG.md to doc generation.
+- Improve documentation for NumericRefinements to include examples and more info.
 
 **Fixed**
 - Correct broken changelog link in gem metadata.
@@ -112,4 +114,13 @@ README was updated to reflect this change.
 
 - Initial work.
 
+[Next]: https://github.com/trinistr/vector_number/compare/v0.3.0...main
+[v0.3.0]: https://github.com/trinistr/vector_number/compare/v0.2.6...v0.3.0
+[v0.2.6]: https://github.com/trinistr/vector_number/compare/v0.2.5...v0.2.6
+[v0.2.5]: https://github.com/trinistr/vector_number/compare/v0.2.4...v0.2.5
+[v0.2.4]: https://github.com/trinistr/vector_number/compare/v0.2.3...v0.2.4
+[v0.2.3]: https://github.com/trinistr/vector_number/compare/v0.2.2...v0.2.3
+[v0.2.2]: https://github.com/trinistr/vector_number/compare/v0.2.1...v0.2.2
+[v0.2.1]: https://github.com/trinistr/vector_number/compare/v0.2.0...v0.2.1
+[v0.2.0]: https://github.com/trinistr/vector_number/compare/v0.1.0...v0.2.0
 [🚀 CI]: https://github.com/trinistr/vector_number/actions/workflows/CI.yaml

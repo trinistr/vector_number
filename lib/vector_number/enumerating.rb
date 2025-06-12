@@ -7,6 +7,7 @@ class VectorNumber
 
     # Iterate through every pair of unit and coefficient.
     # Returns {::Enumerator} if no block is given.
+    #
     # @overload each
     #   @yieldparam unit [Object]
     #   @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
@@ -23,6 +24,8 @@ class VectorNumber
 
     alias each_pair each
 
+    # Get a list of units with non-zero coefficients.
+    #
     # @return [Array<Object>]
     def units
       @data.keys
@@ -30,6 +33,8 @@ class VectorNumber
 
     alias keys units
 
+    # Get a list of non-zero coefficients.
+    #
     # @return [Array<Integer, Float, Rational, BigDecimal>]
     def coefficients
       @data.values
@@ -37,8 +42,13 @@ class VectorNumber
 
     alias values coefficients
 
+    # Get mutable hash with vector's data.
+    #
+    # Returned hash has a default value of 0.
+    #
     # @return [Hash{Object => Integer, Float, Rational, BigDecimal}]
     def to_h(&)
+      # TODO: Remove block argument.
       if block_given?
         @data.to_h(&)
       else

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class VectorNumber # rubocop:disable Style/StaticClass
+class VectorNumber
   # @return [String]
   VERSION = "0.3.0"
 end

@@ -4,7 +4,9 @@ class VectorNumber
   # Methods for performing actual math.
   module Mathing
     # The coerce method provides support for Ruby type coercion.
+    #
     # Unlike most numeric types, VectorNumber can coerce *anything*.
+    #
     # @param other [Object]
     # @return [Array(VectorNumber, VectorNumber)]
     def coerce(other)
@@ -17,11 +19,14 @@ class VectorNumber
     end
 
     # Return self.
+    #
     # @return [VectorNumber]
     alias +@ itself
 
     # Return new vector with negated coefficients.
+    #
     # This preserves order of units.
+    #
     # @return [VectorNumber]
     def -@
       new(&:-@)
@@ -30,7 +35,9 @@ class VectorNumber
     alias neg -@
 
     # Return new vector as a sum of this and other value.
+    #
     # This is analogous to {VectorNumber.[]}.
+    #
     # @param other [Object]
     # @return [VectorNumber]
     def +(other)
@@ -39,8 +46,10 @@ class VectorNumber
 
     alias add +
 
-    # Return new vector as a sum of this and negative of the other value.
-    # This is analogous to {VectorNumber.[]}, but allows to negate anything.
+    # Return new vector as a sum of this and additive inverse of the other value.
+    #
+    # This is implemented through {#+} and {#-@}.
+    #
     # @param other [Object]
     # @return [VectorNumber]
     def -(other)
@@ -50,7 +59,9 @@ class VectorNumber
     alias sub -
 
     # Multiply all coefficients by a real number, returning new vector.
+    #
     # This effectively multiplies magnitude by the specified factor.
+    #
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or +other+ can't be multiplied by this one
@@ -70,7 +81,9 @@ class VectorNumber
     alias mult *
 
     # Divide all coefficients by a real number, returning new vector.
+    #
     # This effectively multiplies magnitude by reciprocal of +other+.
+    #
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or is not a real number
@@ -89,6 +102,7 @@ class VectorNumber
 
     # Divide all coefficients by a real number using +fdiv+, returning new vector
     # with Float coefficients.
+    #
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or is not a real number
@@ -101,13 +115,16 @@ class VectorNumber
     end
 
     # Divide all coefficients by +other+, rounding results with {#floor}.
+    #
     # This is requal to +(self / other).floor+.
+    #
+    # @see #divmod
+    # @see #%
+    #
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or is not a real number
     # @raise [ZeroDivisionError] if +other+ is zero
-    # @see #divmod
-    # @see #%
     def div(other)
       check_divisibility(other)
 
@@ -116,15 +133,18 @@ class VectorNumber
     end
 
     # Return the modulus of dividing self by +other+ as a vector.
+    #
     # This is equal to +self - other * (self/other).floor+.
-    # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
-    # @return [VectorNumber]
-    # @raise [RangeError] if +other+ is not a number or is not a real number
-    # @raise [ZeroDivisionError] if +other+ is zero
+    #
     # @see #divmod
     # @see #div
     # @see #remainder for alternative
     # @see Numeric#% for examples
+    #
+    # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
+    # @return [VectorNumber]
+    # @raise [RangeError] if +other+ is not a number or is not a real number
+    # @raise [ZeroDivisionError] if +other+ is zero
     def %(other)
       check_divisibility(other)
 
@@ -136,24 +156,29 @@ class VectorNumber
 
     # Return the quotient and modulus of dividing self by +other+.
     # There is no performance benefit compared to calling {#div} and {#%} separately.
+    #
+    # @see #div
+    # @see #%
+    #
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [Array(VectorNumber, VectorNumber)]
     # @raise [RangeError] if +other+ is not a number or is not a real number
     # @raise [ZeroDivisionError] if +other+ is zero
-    # @see #div
-    # @see #%
     def divmod(other)
       [div(other), modulo(other)]
     end
 
     # Return the remainder of dividing self by +other+ as a vector.
+    #
     # This is equal to +self - other * (self/other).truncate+.
+    #
+    # @see #% for alternative
+    # @see Numeric#remainder for examples
+    #
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or is not a real number
     # @raise [ZeroDivisionError] if +other+ is zero
-    # @see #% for alternative
-    # @see Numeric#remainder for examples
     def remainder(other)
       check_divisibility(other)
 
@@ -164,7 +189,7 @@ class VectorNumber
     private
 
     def check_divisibility(other)
-      raise RangeError, "can't divide #{self} by #{other}", caller unless real_number?(other)
+      raise RangeError, "can't divide #{self} by #{other.inspect}", caller unless real_number?(other)
       raise ZeroDivisionError, "divided by 0", caller if other.zero?
     end
   end

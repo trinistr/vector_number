@@ -3,7 +3,8 @@
 class VectorNumber
   # Various mathematical operations that are also conversions.
   module MathConverting
-    # Return the absolute value of the vector, i.e. its length.
+    # Calculate the absolute value of the vector, i.e. its length.
+    #
     # @return [Float]
     def abs
       Math.sqrt(coefficients.sum(&:abs2)) # rubocop:disable Naming/VariableNumber
@@ -11,13 +12,15 @@ class VectorNumber
 
     alias magnitude abs
 
-    # Return the square of absolute value.
+    # Calculate the square of absolute value.
+    #
     # @return [Float]
     def abs2 # rubocop:disable Naming/VariableNumber
       abs**2
     end
 
     # Return a new vector with every coefficient truncated using their +#truncate+.
+    #
     # @param digits [Integer]
     # @return [VectorNumber]
     def truncate(digits = 0)
@@ -25,6 +28,7 @@ class VectorNumber
     end
 
     # Return a new vector with every coefficient rounded using their +#ceil+.
+    #
     # @param digits [Integer]
     # @return [VectorNumber]
     def ceil(digits = 0)
@@ -32,6 +36,7 @@ class VectorNumber
     end
 
     # Return a new vector with every coefficient rounded using their +#floor+.
+    #
     # @param digits [Integer]
     # @return [VectorNumber]
     def floor(digits = 0)
@@ -39,8 +44,10 @@ class VectorNumber
     end
 
     # Return a new vector with every coefficient rounded using their +#round+.
+    #
     # @param digits [Integer]
-    # @param half [Symbol, nil] one of +:up+, +:down+ or +:even+, see +Float#round+ for meaning
+    # @param half [Symbol, nil] one of +:up+, +:down+ or +:even+,
+    #   see +Float#round+ for meaning
     # @return [VectorNumber]
     def round(digits = 0, half: :up)
       if defined?(BigDecimal)

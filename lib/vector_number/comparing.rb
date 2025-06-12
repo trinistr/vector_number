@@ -9,7 +9,7 @@ class VectorNumber
     #
     # Values are considered equal if
     # - +other+ is a VectorNumber and it is +eql?+ to this one, or
-    # - +other+ is a Numeric equal in value to this number.
+    # - +other+ is a Numeric equal in value to this (real or complex) number.
     #
     # @param other [Object]
     # @return [Boolean]
@@ -25,6 +25,12 @@ class VectorNumber
       end
     end
 
+    # Compare to +other+ for strict equality.
+    #
+    # Values are considered equal only if +other+ is a VectorNumber
+    # and it has exactly the same units and coefficients,
+    # though possibly in a different order.
+    #
     # @param other [Object]
     # @return [Boolean]
     def eql?(other)
@@ -37,8 +43,12 @@ class VectorNumber
       end
     end
 
+    # Compare to +other+ and return -1, 0, or 1
+    # if +self+ is less than, equal, or larger than +other+.
+    # Returns +nil+ if +self+ or +other+ isn't a real number.
+    #
     # @param other [Object]
-    # @return [Integer, nil]
+    # @return [-1, 0, 1, nil]
     def <=>(other)
       return nil unless numeric?(1)
 

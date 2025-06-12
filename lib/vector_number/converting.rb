@@ -4,12 +4,14 @@ class VectorNumber
   # Methods for converting to different number classes.
   module Converting
     # Return real part of the number.
+    #
     # @return [Integer, Float, Rational, BigDecimal]
     def real
       @data[R]
     end
 
     # Return imaginary part of the number.
+    #
     # @return [Integer, Float, Rational, BigDecimal]
     def imaginary
       @data[I]
@@ -18,6 +20,7 @@ class VectorNumber
     alias imag imaginary
 
     # Return value as an Integer, truncating it, if only real part is non-zero.
+    #
     # @return [Integer]
     # @raise [RangeError] if any non-real part is non-zero
     def to_i
@@ -27,6 +30,7 @@ class VectorNumber
     alias to_int to_i
 
     # Return value as a Float if only real part is non-zero.
+    #
     # @return [Float]
     # @raise [RangeError] if any non-real part is non-zero
     def to_f
@@ -34,6 +38,7 @@ class VectorNumber
     end
 
     # Return value as a Rational if only real part is non-zero.
+    #
     # @return [Rational]
     # @raise [RangeError] if any non-real part is non-zero
     def to_r
@@ -41,6 +46,7 @@ class VectorNumber
     end
 
     # Return value as a BigDecimal if only real part is non-zero.
+    #
     # @param ndigits [Integer] precision
     # @return [BigDecimal]
     # @raise [RangeError] if any non-real part is non-zero
@@ -57,6 +63,7 @@ class VectorNumber
     end
 
     # Return value as a Complex if only real and/or imaginary parts are non-zero.
+    #
     # @return [Complex]
     # @raise [RangeError] if any non-real, non-imaginary part is non-zero
     def to_c

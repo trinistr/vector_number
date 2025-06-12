@@ -19,9 +19,14 @@ class VectorNumber
   include Querying
   include Stringifying
 
+  # Keys for possible options.
+  # Unknown options will be rejected when creating a vector.
+  #
   # @return [Array<Symbol>]
   KNOWN_OPTIONS = %i[mult].freeze
 
+  # Default values for options.
+  #
   # @return [Hash{Symbol => Object}]
   DEFAULT_OPTIONS = { mult: :dot }.freeze
 
@@ -33,19 +38,28 @@ class VectorNumber
   I = UNIT[2]
 
   # Number of non-zero dimensions.
+  #
   # @return [Integer]
   attr_reader :size
+
+  # Options used for this vector.
+  #
+  # @see KNOWN_OPTIONS
+  #
   # @return [Hash{Symbol => Object}]
   attr_reader :options
 
-  # Create new VectorNumber from +values+.
+  # Create new VectorNumber from +values+, possibly specifying +options+.
   #
   # @example
   #   VectorNumber[1, 2, 3] #=> (6)
   #   VectorNumber[[1, 2, 3]] #=> (1⋅[1, 2, 3])
   #   VectorNumber['b', VectorNumber::I, mult: :asterisk] #=> (1*'b' + 1i)
+  #   VectorNumber[] #=> (0)
   # @param values [Array<Object>] values to put in the number
   # @param options [Hash{Symbol => Object}] options for the number
+  # @option options [Symbol, String] :mult Multiplication symbol,
+  #   either a key from {MULT_STRINGS} or a literal string to use
   # @return [VectorNumber]
   def self.[](*values, **options)
     new(values, options)
@@ -62,7 +76,7 @@ class VectorNumber
   # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
   # @raise [RangeError] if any pesky non-reals get where they shouldn't
   def initialize(values = nil, options = nil, &)
-    # @type var options: Hash[Symbol, Symbol]
+    # @type var options: Hash[Symbol, Object]
     initialize_from(values)
     apply_transform(&)
     finalize_contents
@@ -72,9 +86,10 @@ class VectorNumber
     freeze
   end
 
-  # Return self.
+  # @!method dup
+  #   Return self.
   #
-  # @return [VectorNumber]
+  #   @return [VectorNumber]
   alias dup itself
 
   # Return self.
@@ -96,6 +111,7 @@ class VectorNumber
   private
 
   # Create new VectorNumber from a value or self, optionally applying a transform.
+  #
   # @param from [Object] self if not specified
   # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
   # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient

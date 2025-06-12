@@ -4,6 +4,7 @@ class VectorNumber
   # Methods and options for string representation.
   module Stringifying
     # Predefined symbols for multiplication to display between unit and coefficient.
+    #
     # @return [Hash{Symbol => String}]
     MULT_STRINGS = {
       asterisk: "*", # U+002A
@@ -14,6 +15,8 @@ class VectorNumber
       none: ""
     }.freeze
 
+    # Get string representation of the vector.
+    #
     # @param mult [Symbol, String]
     #   text to use between coefficient and unit,
     #   can be one of the keys in {MULT_STRINGS} or an arbitrary string
