@@ -189,7 +189,9 @@ class VectorNumber
     private
 
     def check_divisibility(other)
-      raise RangeError, "can't divide #{self} by #{other.inspect}", caller unless real_number?(other)
+      unless real_number?(other)
+        raise RangeError, "can't divide #{self} by #{other.inspect}", caller
+      end
       raise ZeroDivisionError, "divided by 0", caller if other.zero?
     end
   end
