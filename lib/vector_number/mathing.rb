@@ -83,6 +83,7 @@ class VectorNumber
     # Divide all coefficients by a real number, returning new vector.
     #
     # This effectively multiplies magnitude by reciprocal of +other+.
+    # @note This method never does integer division.
     #
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
@@ -93,15 +94,15 @@ class VectorNumber
 
       other = other.real
       # Prevent integer division, but without loss of accuracy.
-      other = Rational(other) if other.is_a?(Integer)
+      other = Rational(other) if other.integer?
       # @type var other: Float
       new { _1 / other }
     end
 
     alias quo /
 
-    # Divide all coefficients by a real number using +fdiv+, returning new vector
-    # with Float coefficients.
+    # Divide all coefficients by a real number using +fdiv+,
+    # returning new vector with Float coefficients.
     #
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
