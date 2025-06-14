@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve gemspec:
   - change source code and changelog links to point to a tagged commit;
   - add bugtracker and documentation links;
-  - properly add CHANGELOG.md to doc generation.
+  - properly add CHANGELOG.md to doc generation and add LICENSE.txt.
 
 **Fixed**
 - Correct broken changelog link in gem metadata.

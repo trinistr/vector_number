@@ -24,6 +24,6 @@ Gem::Specification.new do |spec|
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
 
-  spec.extra_rdoc_files = ["README.md", "CHANGELOG.md"]
-  spec.rdoc_options << "--main" << "README.md" << "--files" << "CHANGELOG.md"
+  spec.extra_rdoc_files = ["README.md", "CHANGELOG.md", "LICENSE.txt"]
+  spec.rdoc_options << "--main" << "README.md" << "--files" << "CHANGELOG.md,LICENSE.txt"
 end
