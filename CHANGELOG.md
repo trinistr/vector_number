@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Next]
+
+**Changed**
+- Improve gemspec:
+  - change source code and changelog links to point to a tagged commit;
+  - add bugtracker and documentation links;
+  - properly add CHANGELOG.md to doc generation and add LICENSE.txt.
+
+**Fixed**
+- Correct broken changelog link in gem metadata.
+
 ## [v0.3.0] — 2025-05-12
 
 **Added**
@@ -18,7 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    When creating new vector through any operation, participating vector's options
    are copied to the new one. When several vectors are present, only first one matters.
 - Both `#+@` and `#dup` are now aliases of `#itself` instead of full methods.
-- [🚀 CI] Refactor workflows to reduce duplication.
+- [🚀 CI] "CI" workflow now reports status of all checks,
+   excluding allowed-to-fail workflows (currently JRuby and TruffleRuby).
 
 ## [v0.2.6] — 2025-04-30
 
