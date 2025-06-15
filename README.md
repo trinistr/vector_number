@@ -5,7 +5,7 @@ Latest: [![Gem Version](https://badge.fury.io/rb/vector_number.svg?icon=si%3Arub
 
 ---
 
-A library to add together anything: be it a number, string or random Object, it can be added together with math operations available on results in a countably infinite-dimensional real vector space.
+A library to add together anything: be it a number, string or random Object, it can be added together with math operations available on results in a real vector space.
 
 This is similar in a sense to hypercomplex numbers, such as quaternions, but with a focus on arbitrary dimensions.
 
