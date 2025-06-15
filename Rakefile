@@ -39,7 +39,14 @@ end
 
 desc "Validate code typing with Steep"
 task steep: :rbs do
-  exit $CHILD_STATUS.exitstatus || 1 unless system "steep", "check"
+  status = system "steep", "check"
+  exit $CHILD_STATUS.exitstatus || 1 unless status
+end
+
+desc "Generate documentation with YARD"
+task :docs do
+  status = system "yard", "doc", ".", "--main", "README.md", "--files", "CHANGELOG.md"
+  exit $CHILD_STATUS.exitstatus || 1 unless status
 end
 
 task default: %i[spec rubocop rbs]

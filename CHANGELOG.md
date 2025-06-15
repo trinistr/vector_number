@@ -8,13 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Next]
 
 **Changed**
+- Improve method documentation and unify documentation style across the board.
 - Improve gemspec:
   - change source code and changelog links to point to a tagged commit;
-  - add bugtracker and documentation links;
-  - properly add CHANGELOG.md to doc generation and add LICENSE.txt.
+  - add links to bugtracker and documentation (for appropriate version);
+  - properly add CHANGELOG.md to doc generation.
+- Improve documentation for NumericRefinements to include examples and more info.
 
 **Fixed**
 - Correct broken changelog link in gem metadata.
+
+[Compare v0.3.0...main](https://github.com/trinistr/vector_number/compare/v0.3.0...main)
 
 ## [v0.3.0] — 2025-05-12
 
@@ -31,6 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [🚀 CI] "CI" workflow now reports status of all checks,
    excluding allowed-to-fail workflows (currently JRuby and TruffleRuby).
 
+[Compare v0.2.6...v0.3.0](https://github.com/trinistr/vector_number/compare/v0.2.6...v0.3.0)
+
 ## [v0.2.6] — 2025-04-30
 
 **Added**
@@ -44,10 +50,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Changed**
 - [🚀 CI] Add Ruby 3.4 to CI.
 
+[Compare v0.2.5...v0.2.6](https://github.com/trinistr/vector_number/compare/v0.2.5...v0.2.6)
+
 ## [v0.2.5] — 2025-02-26
 
 Technical update after release to rubygems.org.
 README was updated to reflect this change.
+
+[Compare v0.2.4...v0.2.5](https://github.com/trinistr/vector_number/compare/v0.2.4...v0.2.5)
 
 ## [v0.2.4] — 2025-02-26
 
@@ -66,10 +76,14 @@ README was updated to reflect this change.
 **Fixed**
 - `#dup` and `#clone` now behave exactly like Numeric versions, preventing unfreezing.
 
+[Compare v0.2.3...v0.2.4](https://github.com/trinistr/vector_number/compare/v0.2.3...v0.2.4)
+
 ## [v0.2.3] — 2024-10-15
 
 **Fixed**
 - BigDecimal tests are now properly skipped when BigDecimal is not available, instead of always.
+
+[Compare v0.2.2...v0.2.3](https://github.com/trinistr/vector_number/compare/v0.2.2...v0.2.3)
 
 ## [v0.2.2] — 2024-10-07
 
@@ -84,6 +98,8 @@ README was updated to reflect this change.
 
 **Fixed**
 - `Kernel#BigDecimal` refinement now correctly works without `ndigits` argument.
+
+[Compare v0.2.1...v0.2.2](https://github.com/trinistr/vector_number/compare/v0.2.1...v0.2.2)
 
 ## [v0.2.1] — 2024-08-24
 
@@ -101,6 +117,8 @@ README was updated to reflect this change.
 - Remove `#to_str`, as VectorNumber is not a String-like object.
 - Due to the above, `Kernel.BigDecimal` no longer works without refinements.
 
+[Compare v0.2.0...v0.2.1](https://github.com/trinistr/vector_number/compare/v0.2.0...v0.2.1)
+
 ## [v0.2.0] — 2024-08-19
 
 **Added**
@@ -108,8 +126,20 @@ README was updated to reflect this change.
 - Addition and subtraction are supported.
 - VectorNumbers are mostly interoperable with core numbers.
 
+[Compare v0.1.0...v0.2.0](https://github.com/trinistr/vector_number/compare/v0.1.0...v0.2.0)
+
 ## [v0.1.0] — 2024-05-09
 
 - Initial work.
 
+[Next]: https://github.com/trinistr/vector_number/tree/main
+[v0.3.0]: https://github.com/trinistr/vector_number/tree/v0.3.0
+[v0.2.6]: https://github.com/trinistr/vector_number/tree/v0.2.6
+[v0.2.5]: https://github.com/trinistr/vector_number/tree/v0.2.5
+[v0.2.4]: https://github.com/trinistr/vector_number/tree/v0.2.4
+[v0.2.3]: https://github.com/trinistr/vector_number/tree/v0.2.3
+[v0.2.2]: https://github.com/trinistr/vector_number/tree/v0.2.2
+[v0.2.1]: https://github.com/trinistr/vector_number/tree/v0.2.1
+[v0.2.0]: https://github.com/trinistr/vector_number/tree/v0.2.0
+[v0.1.0]: https://github.com/trinistr/vector_number/tree/v0.1.0
 [🚀 CI]: https://github.com/trinistr/vector_number/actions/workflows/CI.yaml

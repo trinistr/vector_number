@@ -19,34 +19,64 @@ class VectorNumber
   include Querying
   include Stringifying
 
+  # Keys for possible options.
+  # Unknown options will be rejected when creating a vector.
+  #
   # @return [Array<Symbol>]
+  #
+  # @since 0.2.0
   KNOWN_OPTIONS = %i[mult].freeze
 
+  # Default values for options.
+  #
   # @return [Hash{Symbol => Object}]
+  #
+  # @since 0.2.0
   DEFAULT_OPTIONS = { mult: :dot }.freeze
 
   # Get a unit for +n+th numeric dimension, where 1 is real, 2 is imaginary.
+  #
+  # @since 0.2.0
   UNIT = ->(n) { (n - 1).i }.freeze
   # Constant for real unit.
+  #
+  # @since 0.2.0
   R = UNIT[1]
   # Constant for imaginary unit.
+  #
+  # @since 0.1.0
   I = UNIT[2]
 
   # Number of non-zero dimensions.
+  #
   # @return [Integer]
+  #
+  # @since 0.1.0
   attr_reader :size
+
+  # Options used for this vector.
+  #
+  # @see KNOWN_OPTIONS
+  #
   # @return [Hash{Symbol => Object}]
+  #
+  # @since 0.1.0
   attr_reader :options
 
-  # Create new VectorNumber from +values+.
+  # Create new VectorNumber from +values+, possibly specifying +options+.
   #
   # @example
   #   VectorNumber[1, 2, 3] #=> (6)
   #   VectorNumber[[1, 2, 3]] #=> (1⋅[1, 2, 3])
   #   VectorNumber['b', VectorNumber::I, mult: :asterisk] #=> (1*'b' + 1i)
+  #   VectorNumber[] #=> (0)
   # @param values [Array<Object>] values to put in the number
   # @param options [Hash{Symbol => Object}] options for the number
+  # @option options [Symbol, String] :mult Multiplication symbol,
+  #   either a key from {MULT_STRINGS} or a literal string to use
   # @return [VectorNumber]
+  #
+  # @since 0.1.0
   def self.[](*values, **options)
     new(values, options)
   end
@@ -62,7 +92,7 @@ class VectorNumber
   # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
   # @raise [RangeError] if any pesky non-reals get where they shouldn't
   def initialize(values = nil, options = nil, &)
-    # @type var options: Hash[Symbol, Symbol]
+    # @type var options: Hash[Symbol, Object]
     initialize_from(values)
     apply_transform(&)
     finalize_contents
@@ -75,13 +105,18 @@ class VectorNumber
   # Return self.
   #
   # @return [VectorNumber]
-  alias dup itself
+  #
+  # @since 0.2.0
+  def +@ = self
+  # @since 0.2.4
+  alias dup +@
 
   # Return self.
   #
-  # Raises ArgumentError if +freeze+ is not +true+ or +nil+.
-  #
   # @return [VectorNumber]
+  # @raise [ArgumentError] if +freeze+ is not +true+ or +nil+.
+  #
+  # @since 0.2.4
   def clone(freeze: true)
     case freeze
     when true, nil
@@ -96,6 +131,7 @@ class VectorNumber
   private
 
   # Create new VectorNumber from a value or self, optionally applying a transform.
+  #
   # @param from [Object] self if not specified
   # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
   # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
@@ -104,14 +140,22 @@ class VectorNumber
     self.class.new(from, options, &)
   end
 
+  # Check if +other+ is a real number.
+  #
+  # Currently this is either a +real?+ Numeric or +numeric?(1)+ VectorNumber.
+  #
   # @param value [Object]
   # @return [Boolean]
+  #
+  # @since 0.1.0
   def real_number?(value)
     (value.is_a?(Numeric) && value.real?) || (value.is_a?(self.class) && value.numeric?(1))
   end
 
   # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber, nil]
   # @return [void]
+  #
+  # @since 0.1.0
   def initialize_from(values)
     @data = Hash.new(0)
 
@@ -127,6 +171,8 @@ class VectorNumber
 
   # @param value [VectorNumber, Numeric, Object]
   # @return [void]
+  #
+  # @since 0.1.0
   def add_value_to_data(value)
     case value
     when Numeric
@@ -140,6 +186,8 @@ class VectorNumber
 
   # @param value [Numeric]
   # @return [void]
+  #
+  # @since 0.1.0
   def add_numeric_value_to_data(value)
     @data[R] += value.real
     @data[I] += value.imaginary
@@ -147,6 +195,8 @@ class VectorNumber
 
   # @param vector [VectorNumber, Hash{Object => Integer, Float, Rational, BigDecimal}]
   # @return [void]
+  #
+  # @since 0.1.0
   def add_vector_to_data(vector)
     vector.each_pair do |unit, coefficient|
       raise RangeError, "#{coefficient} is not a real number" unless real_number?(coefficient)
@@ -159,6 +209,8 @@ class VectorNumber
   # @yieldreturn [Integer, Float, Rational, BigDecimal]
   # @return [void]
   # @raise [RangeError]
+  #
+  # @since 0.1.0
   def apply_transform
     return unless block_given?
 
@@ -173,6 +225,8 @@ class VectorNumber
   # @param options [Hash{Symbol => Object}, nil]
   # @param values [Object] initializing object
   # @return [void]
+  #
+  # @since 0.1.0
   def save_options(options, values:)
     @options =
       case [options, values]
@@ -191,6 +245,11 @@ class VectorNumber
       end
   end
 
+  # @param base_options [Hash{Symbol => Object}]
+  # @param added_options [Hash{Symbol => Object}]
+  # @return [Hash{Symbol => Object}]
+  #
+  # @since 0.3.0
   def merge_options(base_options, added_options)
     # Optimization for the common case of passing options through #new.
     return base_options if added_options.equal?(base_options)
@@ -200,16 +259,20 @@ class VectorNumber
 
   # Compact coefficients, calculate size and freeze data.
   # @return [void]
+  #
+  # @since 0.1.0
   def finalize_contents
     @data.delete_if { |_u, c| c.zero? }
     @data.freeze
     @size = @data.size
   end
 
+  # @since 0.2.0
   def default_options
     DEFAULT_OPTIONS
   end
 
+  # @since 0.2.0
   def known_options
     KNOWN_OPTIONS
   end

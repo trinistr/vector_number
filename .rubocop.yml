@@ -10,3 +10,7 @@ plugins:
 # This makes no sense for a single-class library.
 Metrics/ClassLength:
   Enabled: false
+
+# Cop triggers on subfiles, even though it is wrong.
+Style/StaticClass:
+  Enabled: false
