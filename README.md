@@ -1,29 +1,35 @@
 # VectorNumber
 
-Latest: [![Gem Version](https://badge.fury.io/rb/vector_number.svg?icon=si%3Arubygems)](https://badge.fury.io/rb/vector_number)
+> [!TIP]
+> You may be viewing documentation for an older (or newer) version of the gem.
+> Check badges below to see what the latest released version is.
+> Look at [Changelog](https://github.com/trinistr/vector_number/blob/main/CHANGELOG.md)
+> to see all versions, including unreleased changes!
+
+Latest: [![Gem Version](https://badge.fury.io/rb/vector_number.svg?icon=si%3Arubygems)](https://rubygems.org/gems/vector_number)
 [![CI](https://github.com/trinistr/vector_number/actions/workflows/CI.yaml/badge.svg)](https://github.com/trinistr/vector_number/actions/workflows/CI.yaml)
 
----
+***
 
-A library to add together anything: be it a number, string or random Object, it can be added together with math operations available on results in a real vector space.
-
-This is similar in a sense to hypercomplex numbers, such as quaternions, but with a focus on arbitrary dimensions.
+A library to add together anything: be it a number, string or random Object, it can be added together with math operations available on results in a real vector space, though some operations are modeled on hypercomplex numbers.
 
 Similar projects:
-- [vector_space](https://github.com/tomstuart/vector_space) aims to provide typed vector spaces with limited dimensions and nice formatting.
-- [named_vector](https://rubygems.org/gems/named_vector) provides simple vectors with named dimensions.
-- Various quaternion libraries.
+- [vector_space](https://github.com/tomstuart/vector_space) aims to provide typed vector spaces with limited dimensions and nice formatting;
+- [named_vector](https://rubygems.org/gems/named_vector) provides simple vectors with named dimensions;
+- various quaternion libraries like [quaternion](https://github.com/tanahiro/quaternion) or [rmath3d](https://github.com/vaiorabbit/rmath3d).
+
+However, none of them have been updated in *years*.
 
 ## Installation
 
 VectorNumber does not have any dependencies and does not include extensions.
 
-Install with `gem` (available from 0.2.4):
+Install with `gem` (available from [0.2.4](https://github.com/trinistr/vector_number/tree/v0.2.4)):
 ```sh
 gem install vector_number
 ```
 
-If using `bundler`, add gem to your Gemfile:
+If using Bundler, add gem to your Gemfile:
 ```ruby
 gem "vector_number"
 ```
