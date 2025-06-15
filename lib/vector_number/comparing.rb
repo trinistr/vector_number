@@ -3,6 +3,7 @@
 class VectorNumber
   # Methods for comparing with other numbers.
   module Comparing
+    # @since 0.2.0
     include ::Comparable
 
     # Compare to +other+ for equality.
@@ -13,6 +14,8 @@ class VectorNumber
     #
     # @param other [Object]
     # @return [Boolean]
+    #
+    # @since 0.2.0
     def ==(other)
       return true if eql?(other)
 
@@ -33,6 +36,8 @@ class VectorNumber
     #
     # @param other [Object]
     # @return [Boolean]
+    #
+    # @since 0.1.0
     def eql?(other)
       return true if equal?(other)
 
@@ -45,10 +50,14 @@ class VectorNumber
 
     # Compare to +other+ and return -1, 0, or 1
     # if +self+ is less than, equal, or larger than +other+.
-    # Returns +nil+ if +self+ or +other+ isn't a real number.
     #
     # @param other [Object]
-    # @return [-1, 0, 1, nil]
+    # @return [-1, 0, 1]
+    # @return [nil] if +self+ or +other+ isn't a real number.
+    #
+    # @see Comparable Comparable for comparison methods
+    #
+    # @since 0.2.0
     def <=>(other)
       return nil unless numeric?(1)
 

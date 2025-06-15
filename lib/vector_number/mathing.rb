@@ -9,6 +9,8 @@ class VectorNumber
     #
     # @param other [Object]
     # @return [Array(VectorNumber, VectorNumber)]
+    #
+    # @since 0.2.0
     def coerce(other)
       case other
       when VectorNumber
@@ -18,20 +20,18 @@ class VectorNumber
       end
     end
 
-    # Return self.
-    #
-    # @return [VectorNumber]
-    alias +@ itself
-
     # Return new vector with negated coefficients.
     #
     # This preserves order of units.
     #
     # @return [VectorNumber]
+    #
+    # @since 0.2.0
     def -@
       new(&:-@)
     end
 
+    # @since 0.3.0
     alias neg -@
 
     # Return new vector as a sum of this and other value.
@@ -40,10 +40,13 @@ class VectorNumber
     #
     # @param other [Object]
     # @return [VectorNumber]
+    #
+    # @since 0.2.0
     def +(other)
       new([self, other])
     end
 
+    # @since 0.3.0
     alias add +
 
     # Return new vector as a sum of this and additive inverse of the other value.
@@ -52,10 +55,13 @@ class VectorNumber
     #
     # @param other [Object]
     # @return [VectorNumber]
+    #
+    # @since 0.2.0
     def -(other)
       self + new([other], &:-@)
     end
 
+    # @since 0.3.0
     alias sub -
 
     # Multiply all coefficients by a real number, returning new vector.
@@ -65,6 +71,8 @@ class VectorNumber
     # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or +other+ can't be multiplied by this one
+    #
+    # @since 0.2.1
     def *(other)
       if real_number?(other)
         other = other.real
@@ -78,6 +86,7 @@ class VectorNumber
       end
     end
 
+    # @since 0.3.0
     alias mult *
 
     # Divide all coefficients by a real number, returning new vector.
@@ -89,6 +98,8 @@ class VectorNumber
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or is not a real number
     # @raise [ZeroDivisionError] if +other+ is zero
+    #
+    # @since 0.2.1
     def /(other)
       check_divisibility(other)
 
@@ -99,6 +110,7 @@ class VectorNumber
       new { _1 / other }
     end
 
+    # @since 0.2.6
     alias quo /
 
     # Divide all coefficients by a real number using +fdiv+,
@@ -108,6 +120,8 @@ class VectorNumber
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or is not a real number
     # @raise [ZeroDivisionError] if +other+ is zero
+    #
+    # @since 0.2.1
     def fdiv(other)
       check_divisibility(other)
 
@@ -126,6 +140,8 @@ class VectorNumber
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or is not a real number
     # @raise [ZeroDivisionError] if +other+ is zero
+    #
+    # @since 0.2.6
     def div(other)
       check_divisibility(other)
 
@@ -146,6 +162,8 @@ class VectorNumber
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or is not a real number
     # @raise [ZeroDivisionError] if +other+ is zero
+    #
+    # @since 0.2.6
     def %(other)
       check_divisibility(other)
 
@@ -153,6 +171,7 @@ class VectorNumber
       new { _1 % other }
     end
 
+    # @since 0.2.6
     alias modulo %
 
     # Return the quotient and modulus of dividing self by +other+.
@@ -165,6 +184,8 @@ class VectorNumber
     # @return [Array(VectorNumber, VectorNumber)]
     # @raise [RangeError] if +other+ is not a number or is not a real number
     # @raise [ZeroDivisionError] if +other+ is zero
+    #
+    # @since 0.2.6
     def divmod(other)
       [div(other), modulo(other)]
     end
@@ -180,6 +201,8 @@ class VectorNumber
     # @return [VectorNumber]
     # @raise [RangeError] if +other+ is not a number or is not a real number
     # @raise [ZeroDivisionError] if +other+ is zero
+    #
+    # @since 0.2.6
     def remainder(other)
       check_divisibility(other)
 
@@ -189,6 +212,14 @@ class VectorNumber
 
     private
 
+    # @param other [Object]
+    # @return [void]
+    # @raise [RangeError] unless +other+ is a real number
+    # @raise [ZeroDivisionError]
+    #
+    # @see real_number?
+    #
+    # @since 0.2.6
     def check_divisibility(other)
       unless real_number?(other)
         raise RangeError, "can't divide #{self} by #{other.inspect}", caller

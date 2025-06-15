@@ -2,13 +2,17 @@
 
 class VectorNumber
   # Refinements of Numeric classes and Kernel to better work with VectorNumber and similar classes.
+  #
   # These do not depend on +VectorNumber+ and can technically be used separately.
   # Currently includes:
   # - refinement for +Complex#<=>+ to work with classes implementing +<=>+;
   # - refinement for +Kernel#BigDecimal+ to work with classes implementing +to_d+.
+  #
   # @example activating refinements
   #   require "vector_number/numeric_refinements"
   #   using VectorNumber::NumericRefinements
+  #
+  # @since 0.2.0
   module NumericRefinements
     # Refinement module to provide a +#<=>+ method that can work backwards.
     #
@@ -22,6 +26,8 @@ class VectorNumber
     #   using VectorNumber::NumericRefinements
     #   VectorNumber[2] <=> Complex(1, 0) #=> 1
     #   Complex(1, 0) <=> VectorNumber[2] #=> -1
+    #
+    # @since 0.2.1
     module CommutativeShuttle
       # Commutative +#<=>+.
       # Tries to call +other <=> self+ if +self <=> other+ returns +nil+.
@@ -47,6 +53,8 @@ class VectorNumber
     #   require "vector_number/numeric_refinements"
     #   using VectorNumber::NumericRefinements
     #   BigDecimal(VectorNumber[2]) #=> 0.2e1
+    #
+    # @since 0.2.1
     module BigDecimalToD
       # BigDecimal() that first tries to use #to_d.
       # @param value [Object]

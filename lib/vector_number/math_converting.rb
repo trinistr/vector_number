@@ -6,6 +6,8 @@ class VectorNumber
     # Calculate the absolute value of the vector, i.e. its length.
     #
     # @return [Float]
+    #
+    # @since 0.2.2
     def abs
       Math.sqrt(coefficients.sum(&:abs2)) # rubocop:disable Naming/VariableNumber
     end
@@ -15,6 +17,8 @@ class VectorNumber
     # Calculate the square of absolute value.
     #
     # @return [Float]
+    #
+    # @since 0.2.2
     def abs2 # rubocop:disable Naming/VariableNumber
       abs**2
     end
@@ -23,6 +27,8 @@ class VectorNumber
     #
     # @param digits [Integer]
     # @return [VectorNumber]
+    #
+    # @since 0.2.1
     def truncate(digits = 0)
       new { _1.truncate(digits) }
     end
@@ -31,6 +37,8 @@ class VectorNumber
     #
     # @param digits [Integer]
     # @return [VectorNumber]
+    #
+    # @since 0.2.2
     def ceil(digits = 0)
       new { _1.ceil(digits) }
     end
@@ -39,6 +47,8 @@ class VectorNumber
     #
     # @param digits [Integer]
     # @return [VectorNumber]
+    #
+    # @since 0.2.2
     def floor(digits = 0)
       new { _1.floor(digits) }
     end
@@ -49,6 +59,8 @@ class VectorNumber
     # @param half [Symbol, nil] one of +:up+, +:down+ or +:even+,
     #   see +Float#round+ for meaning
     # @return [VectorNumber]
+    #
+    # @since 0.2.2
     def round(digits = 0, half: :up)
       if defined?(BigDecimal)
         bd_mode =

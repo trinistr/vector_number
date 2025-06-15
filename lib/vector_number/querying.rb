@@ -12,6 +12,8 @@ class VectorNumber
     #   - 2 — complex number, etc.
     # @return [Boolean]
     # @raise [ArgumentError] if +dimensions+ is negative
+    #
+    # @since 0.2.0
     def numeric?(dimensions = 2)
       raise ArgumentError, "`dimensions` must be non-negative" unless dimensions >= 0
 
@@ -23,6 +25,8 @@ class VectorNumber
     # @param (see #numeric?)
     # @return (see #numeric?)
     # @raise (see #numeric?)
+    #
+    # @since 0.2.1
     def nonnumeric?(dimensions = 2)
       raise ArgumentError, "`dimensions` must be non-negative" unless dimensions >= 0
 
@@ -32,13 +36,19 @@ class VectorNumber
     # Returns +true+ if all coefficients are finite, +false+ otherwise.
     #
     # @return [Boolean]
+    #
+    # @since 0.1.0
     def finite?
       all? { |_u, v| v.finite? }
     end
 
     # Returns +1+ if any coefficients are infinite, +nil+ otherwise.
     #
+    # This behavior is the same as +Complex+'s.
+    #
     # @return [1, nil]
+    #
+    # @since 0.1.0
     def infinite?
       finite? ? nil : 1 # rubocop:disable Style/ReturnNilInPredicateMethodDefinition
     end
@@ -46,13 +56,19 @@ class VectorNumber
     # Returns +true+ if there are no non-zero coefficients, and +false+ otherwise.
     #
     # @return [Boolean]
+    #
+    # @since 0.1.0
     def zero?
       size.zero?
     end
 
     # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
     #
+    # This behavior is the same as +Numeric+'s.
+    #
     # @return [VectorNumber, nil]
+    #
+    # @since 0.1.0
     def nonzero?
       zero? ? nil : self # rubocop:disable Style/ReturnNilInPredicateMethodDefinition
     end
@@ -61,6 +77,8 @@ class VectorNumber
     # and +false+ otherwise.
     #
     # @return [Boolean]
+    #
+    # @since 0.1.0
     def positive?
       !zero? && all? { |_u, c| c.positive? }
     end
@@ -69,6 +87,8 @@ class VectorNumber
     # and +false+ otherwise.
     #
     # @return [Boolean]
+    #
+    # @since 0.1.0
     def negative?
       !zero? && all? { |_u, c| c.negative? }
     end
@@ -78,6 +98,8 @@ class VectorNumber
     # @see #numeric?
     #
     # @return [false]
+    #
+    # @since 0.1.0
     def real?
       false
     end
@@ -85,6 +107,8 @@ class VectorNumber
     # Always returns +false+, as vectors are not +Integer+s.
     #
     # @return [false]
+    #
+    # @since 0.2.1
     def integer?
       false
     end
