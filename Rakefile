@@ -12,7 +12,7 @@ begin
 rescue LoadError
   # Well, this is bad, but we can live without it.
   task :rubocop do
-    puts "Rubocop is not available, linting will not be done!"
+    puts "RuboCop is not available, linting will not be done!"
   end
 end
 

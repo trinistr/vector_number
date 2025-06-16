@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - add links to bugtracker and documentation (for appropriate version);
   - properly add CHANGELOG.md to doc generation.
 - Improve documentation for NumericRefinements to include examples and more info.
+- `#dup` is now an alias of `#+@` with no change in function.
 
 **Fixed**
 - Correct broken changelog link in gem metadata.
