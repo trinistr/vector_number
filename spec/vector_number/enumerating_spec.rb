@@ -92,23 +92,24 @@ RSpec.describe VectorNumber::Enumerating do
   include_examples "has an alias", :values, :coefficients
 
   describe "#to_h" do
-    subject(:hash) { number.to_h(&block) }
-
     let(:number) { composite_number }
-    let(:block) { nil }
 
-    context "without a block" do
+    context "with no parameters" do
+      subject(:hash) { number.to_h }
+
       it "returns plain vector representation without calling #each" do
         # Can't actually test for not calling #each, as objects are frozen and can't be mocked.
         expect(hash).to eq(0.i => 5, "y" => 1, :a => 1)
+        expect(hash).not_to be_frozen
       end
     end
 
-    context "with a block" do
-      let(:block) { ->(u, v) { [u, u.is_a?(Numeric) ? v : v * 0.5] } }
+    context "with frozen: true" do
+      subject(:hash) { number.to_h(frozen: true) }
 
-      it "returns transformed plain vector representation" do
-        expect(hash).to eq(0.i => 5, "y" => 0.5, :a => 0.5)
+      it "returns frozen internal hash" do
+        expect(hash).to be number.instance_variable_get(:@data)
+        expect(hash).to be_frozen
       end
     end
   end

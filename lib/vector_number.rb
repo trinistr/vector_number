@@ -173,7 +173,7 @@ class VectorNumber
   #
   # @since 0.1.0
   def initialize_from(values)
-    @data = values.to_h and return if values.is_a?(VectorNumber)
+    @data = values.to_h(frozen: true) and return if values.is_a?(VectorNumber)
 
     @data = Hash.new(0)
     case values

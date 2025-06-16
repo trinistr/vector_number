@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This is mostly a documentation update with a side of improved gemspec.
 
 **Changed**
+- [Breaking] Remove block argument from `#to_h`.
 - Improve method documentation and unify documentation style across the board.
 - Improve gemspec:
   - change source code and changelog links to point to a tagged commit;
