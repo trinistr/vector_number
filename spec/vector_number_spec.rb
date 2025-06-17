@@ -43,15 +43,17 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
   end
 
-  describe "#dup" do
-    subject(:dupe) { number.dup }
+  describe "#+@" do
+    subject(:result) { +number }
 
     let(:number) { described_class.new([1.2, Complex(3, 12), :f]) }
 
-    it "returns number itself" do
-      expect(dupe.object_id).to eq number.object_id
+    it "returns the number itself" do
+      expect(result).to be number
     end
   end
+
+  include_examples "has an alias", :dup, :+@
 
   describe "#clone" do
     subject(:clone) { number.clone(**args) }

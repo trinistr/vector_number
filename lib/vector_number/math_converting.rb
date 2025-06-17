@@ -14,7 +14,7 @@ class VectorNumber
     #
     # @since 0.2.2
     def abs
-      Math.sqrt(coefficients.sum(&:abs2)) # rubocop:disable Naming/VariableNumber
+      Math.sqrt(abs2)
     end
 
     alias magnitude abs
@@ -30,7 +30,7 @@ class VectorNumber
     #
     # @since 0.2.2
     def abs2 # rubocop:disable Naming/VariableNumber
-      abs**2
+      coefficients.sum(&:abs2) # rubocop:disable Naming/VariableNumber
     end
 
     # Return a new vector with every coefficient truncated using their +#truncate+.

@@ -106,16 +106,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     end
   end
 
-  describe "#+@" do
-    subject(:result) { +number }
-
-    let(:number) { [zero_number, real_number, composite_number, f_number].sample }
-
-    it "returns the number itself" do
-      expect(result).to be number
-    end
-  end
-
   describe "#-@" do
     subject(:result) { -number }
 
