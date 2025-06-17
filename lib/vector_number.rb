@@ -63,13 +63,16 @@ class VectorNumber
   # @since 0.1.0
   attr_reader :options
 
-  # Create new VectorNumber from +values+, possibly specifying +options+.
+  # Create new VectorNumber from a list of values, possibly specifying options.
   #
   # @example
-  #   VectorNumber[1, 2, 3] #=> (6)
-  #   VectorNumber[[1, 2, 3]] #=> (1⋅[1, 2, 3])
-  #   VectorNumber['b', VectorNumber::I, mult: :asterisk] #=> (1*'b' + 1i)
-  #   VectorNumber[] #=> (0)
+  #   VectorNumber[1, 2, 3] # => (6)
+  #   VectorNumber[[1, 2, 3]] # => (1⋅[1, 2, 3])
+  #   VectorNumber["b", VectorNumber::I, mult: :asterisk] # => (1*'b' + 1i)
+  #   VectorNumber[] # => (0)
+  #   VectorNumber["b", VectorNumber["b"]] # => (2⋅'b')
+  #   VectorNumber["a", "b", "a"] # => (2⋅'a' + 1⋅'b')
+  #
   # @param values [Array<Object>] values to put in the number
   # @param options [Hash{Symbol => Object}] options for the number
   # @option options [Symbol, String] :mult Multiplication symbol,
@@ -81,6 +84,19 @@ class VectorNumber
     new(values, options)
   end
 
+  # Create new VectorNumber from +values+, possibly specifying +options+,
+  # possibly modifying coefficients with a block.
+  #
+  # @example
+  #   VectorNumber.new(1, 2, 3) # ArgumentError
+  #   VectorNumber.new([1, 2, 3]) # => (6)
+  #   VectorNumber.new(["b", VectorNumber::I], mult: :asterisk) # => (1*'b' + 1i)
+  #   VectorNumber.new # => (0)
+  # @example with a block
+  #   VectorNumber.new(["a", "b", "c", 3]) { _1 * 2 } # => (2⋅'a' + 2⋅'b' + 2⋅'c' + 6)
+  #   VectorNumber.new(["a", "b", "c", 3], &:-@) # => (-1⋅'a' - 1⋅'b' - 1⋅'c' - 3)
+  #   VectorNumber.new(["a", "b", "c", 3], &:digits) # RangeError
+  #
   # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber]
   #   values for this number, hashes are treated like plain vector numbers
   # @param options [Hash{Symbol => Object}]

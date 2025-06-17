@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
+This is mostly a documentation update with a side of improved gemspec.
+
 **Changed**
 - Improve method documentation and unify documentation style across the board.
 - Improve gemspec:
