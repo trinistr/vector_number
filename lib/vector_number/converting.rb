@@ -12,9 +12,7 @@ class VectorNumber
     # @return [Integer, Float, Rational, BigDecimal]
     #
     # @since 0.1.0
-    def real
-      @data[R]
-    end
+    def real = @data[R]
 
     # Return imaginary part of the number.
     #
@@ -25,9 +23,7 @@ class VectorNumber
     # @return [Integer, Float, Rational, BigDecimal]
     #
     # @since 0.1.0
-    def imaginary
-      @data[I]
-    end
+    def imaginary = @data[I]
 
     # @since 0.2.1
     alias imag imaginary

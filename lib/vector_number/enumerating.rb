@@ -55,9 +55,7 @@ class VectorNumber
     # @return [Array<Object>]
     #
     # @since 0.1.0
-    def units
-      @data.keys
-    end
+    def units = @data.keys
 
     # @since 0.1.0
     alias keys units
@@ -71,9 +69,7 @@ class VectorNumber
     # @return [Array<Integer, Float, Rational, BigDecimal>]
     #
     # @since 0.1.0
-    def coefficients
-      @data.values
-    end
+    def coefficients = @data.values
 
     # @since 0.1.0
     alias values coefficients
@@ -112,9 +108,7 @@ class VectorNumber
     # @return [Integer, Float, Rational, BigDecimal]
     #
     # @since 0.2.4
-    def [](unit)
-      @data[unit] || 0
-    end
+    def [](unit) = @data[unit]
 
     # Check if a unit has a non-zero coefficient.
     #
@@ -126,9 +120,7 @@ class VectorNumber
     # @return [Boolean]
     #
     # @since 0.2.4
-    def unit?(unit)
-      @data.key?(unit)
-    end
+    def unit?(unit) = @data.key?(unit)
 
     # @since 0.2.4
     alias key? unit?
