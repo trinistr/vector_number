@@ -113,7 +113,7 @@ class VectorNumber
     # @raise [RangeError] if any non-real part is non-zero
     # @raise [NameError] if BigDecimal is not defined
     #
-    # @see BigDecimal
+    # @see Kernel.BigDecimal
     # @see NumericRefinements
     #
     # @since 0.1.0

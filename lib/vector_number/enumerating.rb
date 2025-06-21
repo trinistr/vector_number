@@ -12,7 +12,7 @@ class VectorNumber
     include ::Enumerable
 
     # Iterate through every pair of unit and coefficient.
-    # Returns {::Enumerator} if no block is given.
+    # Returns +Enumerator+ (with set +size+) if no block is given.
     #
     # @example
     #   v = VectorNumber["a", "b", 6]

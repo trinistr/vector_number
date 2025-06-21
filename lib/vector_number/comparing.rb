@@ -44,8 +44,9 @@ class VectorNumber
     # Compare to +other+ for strict equality.
     #
     # Values are considered equal only if +other+ is a VectorNumber
-    # and it has exactly the same units and coefficients,
-    # though possibly in a different order.
+    # and it has exactly the same units and coefficients, though possibly in a different order.
+    #
+    # Note that {#options} are not considered for equality.
     #
     # @example
     #   VectorNumber["a", "b", "c"].eql? VectorNumber["c", "b", "a"] # => true
