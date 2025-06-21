@@ -14,7 +14,7 @@ class VectorNumber
       dot: "⋅", # U+22C5
       invisible: "⁢", # U+2062, zero-width multiplication operator
       space: " ",
-      none: ""
+      none: "",
     }.freeze
 
     # Get a string representation of the vector.

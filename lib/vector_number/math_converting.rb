@@ -29,8 +29,8 @@ class VectorNumber
     # @return [Float]
     #
     # @since 0.2.2
-    def abs2 # rubocop:disable Naming/VariableNumber
-      coefficients.sum(&:abs2) # rubocop:disable Naming/VariableNumber
+    def abs2
+      coefficients.sum(&:abs2)
     end
 
     # Return a new vector with every coefficient truncated using their +#truncate+.

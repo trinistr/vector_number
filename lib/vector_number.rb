@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require_relative "vector_number/version"
-require_relative "vector_number/mathing"
-require_relative "vector_number/math_converting"
+require_relative "vector_number/comparing"
 require_relative "vector_number/converting"
 require_relative "vector_number/enumerating"
-require_relative "vector_number/comparing"
+require_relative "vector_number/math_converting"
+require_relative "vector_number/mathing"
 require_relative "vector_number/querying"
 require_relative "vector_number/stringifying"
+require_relative "vector_number/version"
 
 # A class to add together anything.
 class VectorNumber
@@ -47,22 +47,6 @@ class VectorNumber
   # @since 0.1.0
   I = UNIT[2]
 
-  # Number of non-zero dimensions.
-  #
-  # @return [Integer]
-  #
-  # @since 0.1.0
-  attr_reader :size
-
-  # Options used for this vector.
-  #
-  # @see KNOWN_OPTIONS
-  #
-  # @return [Hash{Symbol => Object}]
-  #
-  # @since 0.1.0
-  attr_reader :options
-
   # Create new VectorNumber from a list of values, possibly specifying options.
   #
   # @example
@@ -83,6 +67,22 @@ class VectorNumber
   def self.[](*values, **options)
     new(values, options)
   end
+
+  # Number of non-zero dimensions.
+  #
+  # @return [Integer]
+  #
+  # @since 0.1.0
+  attr_reader :size
+
+  # Options used for this vector.
+  #
+  # @see KNOWN_OPTIONS
+  #
+  # @return [Hash{Symbol => Object}]
+  #
+  # @since 0.1.0
+  attr_reader :options
 
   # Create new VectorNumber from +values+, possibly specifying +options+,
   # possibly modifying coefficients with a block.
