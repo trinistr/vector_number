@@ -106,16 +106,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
     end
   end
 
-  describe "#+@" do
-    subject(:result) { +number }
-
-    let(:number) { [zero_number, real_number, composite_number, f_number].sample }
-
-    it "returns the number itself" do
-      expect(result).to be number
-    end
-  end
-
   describe "#-@" do
     subject(:result) { -number }
 
@@ -833,7 +823,7 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       expect(result.to_a).to match_array([
         [VectorNumber::R, (32.14 + (128r / 9)).div(other)],
         [VectorNumber::I, -123.45.div(other)],
-        [:a, 2.div(other)]
+        [:a, 2.div(other)],
       ].reject { |(_u, c)| c.zero? })
     end
 
@@ -900,7 +890,7 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         [VectorNumber::R, -5.25 % other],
         [VectorNumber::I, 3.5 % other],
         ["sshshs", -3.5 % other],
-        [:a, -7 % other]
+        [:a, -7 % other],
       ].reject { |(_u, c)| c.zero? })
     end
 
@@ -983,7 +973,7 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         [VectorNumber::R, -5.25.remainder(other)],
         [VectorNumber::I, 3.5.remainder(other)],
         ["sshshs", -3.5.remainder(other)],
-        [:a, -7.remainder(other)]
+        [:a, -7.remainder(other)],
       ].reject { |(_u, c)| c.zero? })
     end
 

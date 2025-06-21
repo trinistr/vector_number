@@ -20,10 +20,10 @@ RSpec.describe VectorNumber::MathConverting do
 
   describe "#abs2", :aggregate_failures do
     it "returns square of the magnitude as a Float" do
-      expect(zero_number.abs2).to be 0.0
-      expect(real_number.abs2).to eq real_number.abs**2
-      expect(complex_number.abs2).to eq complex_number.abs**2
-      expect(composite_number.abs2).to eq composite_number.abs**2
+      expect(zero_number.abs2).to be 0
+      expect(real_number.abs2).to be 999.15**2
+      expect(complex_number.abs2).to be (0.12**2) + (13.5**2)
+      expect(composite_number.abs2).to be 1 + 1 + (8**2) + (6.3**2)
     end
   end
 

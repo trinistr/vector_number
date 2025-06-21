@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
+This is mostly a documentation update with a side of improved gemspec.
+
 **Changed**
 - Improve method documentation and unify documentation style across the board.
 - Improve gemspec:
@@ -15,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - properly add CHANGELOG.md to doc generation.
 - Improve documentation for NumericRefinements to include examples and more info.
 - `#dup` is now an alias of `#+@` with no change in function.
+- `#abs` is now calculated from `#abs2` instead of the other way around to reduce errors.
 
 **Fixed**
 - Correct broken changelog link in gem metadata.

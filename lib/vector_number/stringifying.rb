@@ -14,7 +14,7 @@ class VectorNumber
       dot: "⋅", # U+22C5
       invisible: "⁢", # U+2062, zero-width multiplication operator
       space: " ",
-      none: ""
+      none: "",
     }.freeze
 
     # Get a string representation of the vector.
@@ -22,8 +22,10 @@ class VectorNumber
     # @example
     #   VectorNumber[5, "s"].to_s # => "5 + 1⋅'s'"
     #   VectorNumber["s", 5].to_s # => "1⋅'s' + 5"
-    # @example with +:mult+
+    # @example with :mult argument
     #   VectorNumber[5, "s"].to_s(mult: :asterisk) # => "5 + 1*'s'"
+    # @example :mult option specified for the vector
+    #   VectorNumber[5, "s", mult: :none].to_s # => "5 + 1's'"
     #
     # @param mult [Symbol, String]
     #   text to use between coefficient and unit,
