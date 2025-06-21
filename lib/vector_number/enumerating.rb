@@ -74,7 +74,7 @@ class VectorNumber
     # @since 0.1.0
     alias values coefficients
 
-    # Get mutable hash with vector's data.
+    # Get hash with vector's data.
     #
     # Returned hash has a default value of 0.
     #
@@ -82,16 +82,12 @@ class VectorNumber
     #   VectorNumber["a", "b", 6].to_h # => {"a"=>1, "b"=>1, (0+0i)=>6}
     #   VectorNumber["a", "b", 6].to_h["c"] # => 0
     #
+    # @param frozen [Boolean] whether the hash should be frozen
     # @return [Hash{Object => Integer, Float, Rational, BigDecimal}]
     #
     # @since 0.1.0
-    def to_h(&)
-      # TODO: Remove block argument.
-      if block_given?
-        @data.to_h(&)
-      else
-        @data.dup
-      end
+    def to_h(frozen: false)
+      frozen ? @data : @data.dup
     end
 
     # Get the coefficient for the unit.

@@ -214,6 +214,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  benchmark
   bigdecimal
   bump
   rake (~> 13.0)
