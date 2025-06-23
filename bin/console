@@ -7,6 +7,9 @@ require "bundler/setup"
 # Supporting libraries.
 require "bigdecimal/util"
 
+require "benchmark"
+require "benchmark/ips"
+
 # This gem.
 require "vector_number"
 
@@ -17,6 +20,7 @@ Va = VectorNumber["a"]
 Vs = VectorNumber[:s]
 Vpi = VectorNumber[:pi] * Math::PI
 Vopt = VectorNumber[8, mult: :invisible]
+V = ((V1 * 3.3) + (Va * 4.5) - Vs)
 
 require "irb"
 IRB.start(__FILE__)

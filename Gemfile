@@ -7,8 +7,12 @@ gemspec
 # For running checks
 gem "rake", "~> 13.0", require: false
 
-# Testing
+# Testing framework
 gem "rspec", "~> 3.0", require: false
+
+# Benchmarking performance
+gem "benchmark", require: false
+gem "benchmark-ips", require: false
 
 group :linting do
   # Linting
