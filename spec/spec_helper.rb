@@ -10,6 +10,7 @@ require_relative "support/coverage_helper"
 
 require "vector_number"
 
+require_relative "support/negated_matchers"
 require_relative "support/shared_examples"
 
 RSpec.configure do |config|

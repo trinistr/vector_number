@@ -85,7 +85,7 @@ class VectorNumber
     #   VectorNumber["a"] <=> 2 # => nil
     #
     # @param other [Object]
-    # @return [-1, 0, 1]
+    # @return [Integer]
     # @return [nil] if +self+ or +other+ isn't a real number.
     #
     # @see Comparable
