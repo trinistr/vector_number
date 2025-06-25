@@ -97,9 +97,9 @@ class VectorNumber
   #   VectorNumber.new(["a", "b", "c", 3], &:-@) # => (-1⋅'a' - 1⋅'b' - 1⋅'c' - 3)
   #   VectorNumber.new(["a", "b", "c", 3], &:digits) # RangeError
   #
-  # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber]
+  # @param values [Array, VectorNumber, Hash{Object => Integer, Float, Rational, BigDecimal}, nil]
   #   values for this number, hashes are treated like plain vector numbers
-  # @param options [Hash{Symbol => Object}]
+  # @param options [Hash{Symbol => Object}, nil]
   #   options for this number, if +values+ is a VectorNumber or contains it,
   #   these will be merged with options from its +options+
   # @option options [Symbol, String] :mult
@@ -178,12 +178,14 @@ class VectorNumber
     @data = Hash.new(0)
 
     case values
-    when Hash
-      add_vector_to_data(values)
     when Array
       values.each { |value| add_value_to_data(value) }
+    when Hash
+      add_vector_to_data(values)
+    when nil
+      # Do nothing, as there are no values.
     else
-      # Don't add anything.
+      raise ArgumentError, "unsupported type for values: #{values.class}"
     end
   end
 

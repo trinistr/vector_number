@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
+**Changed**
+- [Breaking] Calling `new` with an unsupported value now raises `ArgumentError` instead of treating it like air.
+
 [Compare v0.3.1...main](https://github.com/trinistr/vector_number/compare/v0.3.1...main)
 
 ## [v0.3.1] — 2025-06-21
