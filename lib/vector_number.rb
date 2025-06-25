@@ -173,10 +173,12 @@ class VectorNumber
   #
   # @since 0.1.0
   def initialize_from(values)
+    @data = values.to_h and return if values.is_a?(VectorNumber)
+
     @data = Hash.new(0)
 
     case values
-    when VectorNumber, Hash
+    when Hash
       add_vector_to_data(values)
     when Array
       values.each { |value| add_value_to_data(value) }
