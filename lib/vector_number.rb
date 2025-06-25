@@ -206,7 +206,9 @@ class VectorNumber
   # @since 0.1.0
   def add_numeric_value_to_data(value)
     @data[R] += value.real
-    @data[I] += value.imaginary
+    # Most numbers will be real, and this extra condition appreciably speeds up addition,
+    # while having no noticeable impact on complex numbers.
+    @data[I] += value.imaginary unless value.real?
   end
 
   # @param vector [VectorNumber, Hash{Object => Integer, Float, Rational, BigDecimal}]
