@@ -253,7 +253,7 @@ class VectorNumber
       case values
       in VectorNumber
         merge_options(values.options, options)
-      in [*, VectorNumber => vector, *]
+      in Array[*, VectorNumber => vector, *]
         merge_options(vector.options, options)
       else
         merge_options(DEFAULT_OPTIONS, options)
