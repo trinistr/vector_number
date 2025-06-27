@@ -164,7 +164,7 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
   end
 
   context "when initializing with unsupported type" do
-    let(:value) { Set.new(1, 2, 3) }
+    let(:value) { Object.new }
 
     it "raises ArgumentError" do
       expect { new_number }.to raise_error ArgumentError
