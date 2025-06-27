@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Next]
 
 **Changed**
-- [🍄 BREAKING] `R` and `I` constants are now `1` and `2` instead of `0i` and `1i` respectively.
+- [🍄 BREAKING] Change `R` and `I` constants to be `1` and `2` instead of `0i` and `1i` respectively.
    Their values are still semi-private and should not be relied on.
 - [🍄 BREAKING] Calling `new` with an unsupported value now raises `ArgumentError` instead of treating it like air.
+- Optimize various initialization paths. It is now 1.5-2.5 times faster, depending on arguments.
 
 [Compare v0.3.1...main](https://github.com/trinistr/vector_number/compare/v0.3.1...main)
 
