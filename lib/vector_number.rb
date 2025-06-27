@@ -37,7 +37,7 @@ class VectorNumber
   # Get a unit for +n+th numeric dimension, where 1 is real, 2 is imaginary.
   #
   # @since 0.2.0
-  UNIT = ->(n) { (n - 1).i }.freeze
+  UNIT = ->(n) { n }.freeze
   # Constant for real unit.
   #
   # @since 0.2.0

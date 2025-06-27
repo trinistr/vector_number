@@ -52,8 +52,8 @@ VectorNumbers are mostly useful for summing up heterogeneous objects:
 sum = VectorNumber[]
 [4, "death", "death", 13, nil].each { sum = sum + _1 }
 sum # => (17 + 2⋅'death' + 1⋅)
-sum.to_a # => [[(0+0i), 17], ["death", 2], [nil, 1]]
-sum.to_h # => {(0+0i)=>17, "death"=>2, nil=>1}
+sum.to_a # => [[1, 17], ["death", 2], [nil, 1]]
+sum.to_h # => {1=>17, "death"=>2, nil=>1}
 ```
 
 Alternatively, the same result can be equivalently (and more efficiently) achieved by

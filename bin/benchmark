@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Bundler
+require "bundler/setup"
+
+# Supporting libraries.
+require "bigdecimal/util"
+require "fileutils"
+
+require "benchmark"
+require "benchmark/ips"
+require "stackprof"
+
+# This gem.
+require "vector_number"
+
+V0 = VectorNumber[0]
+V1 = VectorNumber[1]
+Vi = VectorNumber[1i]
+Va = VectorNumber["a"]
+Vs = VectorNumber[:s]
+Vpi = VectorNumber[:pi] * Math::PI
+Vopt = VectorNumber[8, mult: :invisible]
+# ((V1 * 3.3) + (Va * 4.5) - Vs)
+V = VectorNumber[3.3] + (4.5 * VectorNumber["a"]) - VectorNumber[:s]
+
+FileUtils.mkdir_p("tmp")
+StackProf.run(mode: :cpu, raw: true, out: "tmp/stackprof.dump") do
+  Benchmark.ips do |ips|
+    ips.report("real") { VectorNumber[1_345.34, -123.45, Complex(1, 0), 123.45r] }
+    ips.report("real-real") { VectorNumber[1_345.34, -123.45, 1, 123.45r] }
+    ips.report("complex") { VectorNumber[1_345.34i, Complex(12, -4556.2), Complex(0, 123.45), 15r] }
+    ips.report("string/symbol") { VectorNumber["asdf", "sdnhsdughdfghkdfg", :asdsafsdf, "asdf"] }
+    ips.report("from vector []") { VectorNumber[V] }
+    ips.report("from vector new") { VectorNumber.new(V) }
+    ips.report("-@") { -V }
+    ips.report("* 3") { V * 3 }
+    ips.report("various (+)") { VectorNumber[Complex(12, -4556.2), V, "asdf", :asdsafsdf, "asdf"] }
+  end
+end
+
+`stackprof tmp/stackprof.dump  --d3-flamegraph > tmp/flamegraph.html`
+
+# Baseline:
+#                 real    120.248k (± 6.7%) i/s    (8.32 μs/i) -    600.984k in   5.026862s
+#            real-real    123.672k (± 6.2%) i/s    (8.09 μs/i) -    616.224k in   5.006814s
+#              complex    118.893k (± 4.8%) i/s    (8.41 μs/i) -    597.450k in   5.039148s
+#        string/symbol    273.629k (± 6.4%) i/s    (3.65 μs/i) -      1.373M in   5.042627s
+#       from vector []    289.128k (± 6.4%) i/s    (3.46 μs/i) -      1.463M in   5.085560s
+#      from vector new    379.761k (± 6.6%) i/s    (2.63 μs/i) -      1.891M in   5.010302s
+#                   -@    235.569k (± 6.8%) i/s    (4.25 μs/i) -      1.192M in   5.088220s
+#                  * 3    248.626k (± 6.2%) i/s    (4.02 μs/i) -      1.260M in   5.097549s
+#          various (+)    165.008k (± 4.9%) i/s    (6.06 μs/i) -    831.630k in   5.054346s

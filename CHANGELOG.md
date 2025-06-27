@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Next]
 
 **Changed**
-- [Breaking] Calling `new` with an unsupported value now raises `ArgumentError` instead of treating it like air.
+- [🍄 BREAKING] `R` and `I` constants are now `1` and `2` instead of `0i` and `1i` respectively.
+   Their values are still semi-private and should not be relied on.
+- [🍄 BREAKING] Calling `new` with an unsupported value now raises `ArgumentError` instead of treating it like air.
 
 [Compare v0.3.1...main](https://github.com/trinistr/vector_number/compare/v0.3.1...main)
 
@@ -39,7 +41,7 @@ This is mostly a documentation update with a side of improved gemspec.
    `#+@` was already practically aliased by `#dup`.
 
 **Changed**
-- [Breaking] Long-existing but broken options feature is now fixed.
+- [🍄 BREAKING] Long-existing but broken options feature is now fixed.
    When creating new vector through any operation, participating vector's options
    are copied to the new one. When several vectors are present, only first one matters.
 - Both `#+@` and `#dup` are now aliases of `#itself` instead of full methods.
@@ -76,7 +78,7 @@ README was updated to reflect this change.
 - Add hash-like methods `#[]` and `#unit?` (aliased as `#key?`).
 
 **Changed**
-- [Breaking] Change `positive?` and `negative?` to no longer return `nil`
+- [🍄 BREAKING] Change `positive?` and `negative?` to no longer return `nil`
    when number is neither strictly positive or negative,
    these cases will now return `false`.
 - Make `VectorNumber.new` accept options when initializing from a VectorNumber

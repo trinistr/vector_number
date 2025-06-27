@@ -173,6 +173,7 @@ GEM
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
       yard-solargraph (~> 0.1)
+    stackprof (0.2.27)
     steep (1.10.0)
       activesupport (>= 5.1)
       concurrent-ruby (>= 1.1.10)
@@ -235,6 +236,7 @@ DEPENDENCIES
   rubocop-yard
   simplecov
   solargraph
+  stackprof
   steep
   vector_number!
   yard

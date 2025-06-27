@@ -11,7 +11,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
 
     it "creates a new VectorNumber" do
       expect(number).to be_a described_class
-      expect(number.to_a).to contain_exactly [0.i, 5], ["a", 1]
+      expect(number.to_a).to contain_exactly [1, 5], ["a", 1]
       expect(number).to be_frozen
     end
 
