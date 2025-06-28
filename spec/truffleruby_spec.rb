@@ -25,3 +25,17 @@ RSpec.describe "Float#ceil" do
     expect(-1.25.ceil(-1)).to eq(0)
   end
 end
+
+RSpec.describe "Kernel#Rational" do
+  let(:value) { Object.new }
+
+  before do
+    def value.to_r
+      1r
+    end
+  end
+
+  it "calls #to_r on the argument" do
+    expect(Rational(value)).to eql 1r
+  end
+end
