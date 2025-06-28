@@ -37,7 +37,7 @@ class VectorNumber
   # Get a unit for +n+th numeric dimension, where 1 is real, 2 is imaginary.
   #
   # @since 0.2.0
-  UNIT = ->(n) { (n - 1).i }.freeze
+  UNIT = ->(n) { n }.freeze
   # Constant for real unit.
   #
   # @since 0.2.0
@@ -97,9 +97,9 @@ class VectorNumber
   #   VectorNumber.new(["a", "b", "c", 3], &:-@) # => (-1⋅'a' - 1⋅'b' - 1⋅'c' - 3)
   #   VectorNumber.new(["a", "b", "c", 3], &:digits) # RangeError
   #
-  # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber]
+  # @param values [Array, VectorNumber, Hash{Object => Integer, Float, Rational, BigDecimal}, nil]
   #   values for this number, hashes are treated like plain vector numbers
-  # @param options [Hash{Symbol => Object}]
+  # @param options [Hash{Symbol => Object}, nil]
   #   options for this number, if +values+ is a VectorNumber or contains it,
   #   these will be merged with options from its +options+
   # @option options [Symbol, String] :mult
@@ -173,15 +173,18 @@ class VectorNumber
   #
   # @since 0.1.0
   def initialize_from(values)
-    @data = Hash.new(0)
+    @data = values.to_h and return if values.is_a?(VectorNumber)
 
+    @data = Hash.new(0)
     case values
-    when VectorNumber, Hash
-      add_vector_to_data(values)
     when Array
       values.each { |value| add_value_to_data(value) }
+    when Hash
+      add_vector_to_data(values)
+    when nil
+      # Do nothing, as there are no values.
     else
-      # Don't add anything.
+      raise ArgumentError, "unsupported type for values: #{values.class}"
     end
   end
 
@@ -206,7 +209,9 @@ class VectorNumber
   # @since 0.1.0
   def add_numeric_value_to_data(value)
     @data[R] += value.real
-    @data[I] += value.imaginary
+    # Most numbers will be real, and this extra condition appreciably speeds up addition,
+    # while having no noticeable impact on complex numbers.
+    @data[I] += value.imaginary unless value.real?
   end
 
   # @param vector [VectorNumber, Hash{Object => Integer, Float, Rational, BigDecimal}]
@@ -245,32 +250,27 @@ class VectorNumber
   # @since 0.1.0
   def save_options(options, values:)
     @options =
-      case [options, values]
-      in [{} | nil, VectorNumber]
-        values.options
-      in [{} | nil, [*, VectorNumber => vector, *]]
-        vector.options
-      in Hash, VectorNumber
+      case values
+      in VectorNumber
         merge_options(values.options, options)
-      in Hash, [*, VectorNumber => vector, *]
+      in Array[*, VectorNumber => vector, *]
         merge_options(vector.options, options)
-      in Hash, _ unless options.empty?
-        merge_options(default_options, options)
       else
-        default_options
+        merge_options(DEFAULT_OPTIONS, options)
       end
   end
 
   # @param base_options [Hash{Symbol => Object}]
-  # @param added_options [Hash{Symbol => Object}]
+  # @param added_options [Hash{Symbol => Object}, nil]
   # @return [Hash{Symbol => Object}]
   #
   # @since 0.3.0
   def merge_options(base_options, added_options)
+    return base_options if !added_options || added_options.empty?
     # Optimization for the common case of passing options through #new.
     return base_options if added_options.equal?(base_options)
 
-    base_options.merge(added_options).slice(*known_options)
+    base_options.merge(added_options).slice(*KNOWN_OPTIONS)
   end
 
   # Compact coefficients, calculate size and freeze data.
@@ -281,15 +281,5 @@ class VectorNumber
     @data.delete_if { |_u, c| c.zero? }
     @data.freeze
     @size = @data.size
-  end
-
-  # @since 0.2.0
-  def default_options
-    DEFAULT_OPTIONS
-  end
-
-  # @since 0.2.0
-  def known_options
-    KNOWN_OPTIONS
   end
 end

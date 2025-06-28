@@ -31,7 +31,7 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
     it "creates a new VectorNumber with default options" do
       expect(new_number).to be_a described_class
       expect(new_number).to be_frozen
-      expect(new_number.to_a).to contain_exactly [0.i, 1.75r], [1.i, 4.5r], [:a, 1], ["a", 2]
+      expect(new_number.to_a).to contain_exactly [1, 1.75r], [2, 4.5r], [:a, 1], ["a", 2]
       expect(new_number.options).to eq described_class::DEFAULT_OPTIONS
     end
 
@@ -105,14 +105,14 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
 
     it "applies transformation before compaction" do
       expect(new_number.size).to eq 3
-      expect(new_number).to contain_exactly [0.i, 1.5r], [1.i, 1], ["s", 2]
+      expect(new_number).to contain_exactly [1, 1.5r], [2, 1], ["s", 2]
     end
 
     context "when transformation returns real vector number" do
       let(:block) { ->(v) { num(v + 1) } }
 
       it "works exactly the same as with a normal real number" do
-        expect(new_number).to contain_exactly [0.i, 1.5r], [1.i, 1], ["s", 2]
+        expect(new_number).to contain_exactly [1, 1.5r], [2, 1], ["s", 2]
       end
     end
 
@@ -160,6 +160,14 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
       it "sets known options" do
         expect(new_number.options).to eq({ mult: :asterisk })
       end
+    end
+  end
+
+  context "when initializing with unsupported type" do
+    let(:value) { Object.new }
+
+    it "raises ArgumentError" do
+      expect { new_number }.to raise_error ArgumentError
     end
   end
 end

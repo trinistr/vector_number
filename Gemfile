@@ -7,7 +7,7 @@ gemspec
 # For running checks
 gem "rake", "~> 13.0", require: false
 
-# Testing
+# Testing framework
 gem "rspec", "~> 3.0", require: false
 
 group :linting do
@@ -44,4 +44,9 @@ group :development do
 
   # Version changes
   gem "bump", require: false
+
+  # Benchmarking performance
+  gem "benchmark", require: false
+  gem "benchmark-ips", require: false
+  gem "stackprof", require: false
 end

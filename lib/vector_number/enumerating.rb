@@ -21,7 +21,7 @@ class VectorNumber
     #   units # => ["a", "b"]
     # @example Enumerator
     #   v.each.size # => 3
-    #   (v.each + [["d", 0]]).map(&:first) # => ["a", "b", (0+0i), "d"]
+    #   (v.each + [["d", 0]]).map(&:first) # => ["a", "b", 1, "d"]
     #   v.each_pair.peek # => ["a", 1]
     #
     # @overload each
@@ -49,7 +49,7 @@ class VectorNumber
     # Get a list of units with non-zero coefficients.
     #
     # @example
-    #   VectorNumber["a", "b", 6].units # => ["a", "b", (0+0i)]
+    #   VectorNumber["a", "b", 6].units # => ["a", "b", 1]
     #   VectorNumber.new.keys # => []
     #
     # @return [Array<Object>]
@@ -79,7 +79,7 @@ class VectorNumber
     # Returned hash has a default value of 0.
     #
     # @example
-    #   VectorNumber["a", "b", 6].to_h # => {"a"=>1, "b"=>1, (0+0i)=>6}
+    #   VectorNumber["a", "b", 6].to_h # => {"a"=>1, "b"=>1, 1=>6}
     #   VectorNumber["a", "b", 6].to_h["c"] # => 0
     #
     # @return [Hash{Object => Integer, Float, Rational, BigDecimal}]
