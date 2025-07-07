@@ -59,17 +59,20 @@ namespace :version do
     Rake::Task["version:_update_version"].invoke("patch")
   end
 
-  task :_update_version, [:bump] do |_task, args|
+  task :_update_version, [:bump] do |_task, args| # rubocop:disable Rake/Desc
     require "bump"
     Bump::Bump.run(args[:bump], commit: false, changelog: true)
-    
-    name = Dir["*.gemspec"].first.then { File.readlines(_1).grep(/spec\.name = "\w+"/).first.match(/"(\w+)"/)[1] }
+
+    name =
+      Dir["*.gemspec"].first.then do |f|
+        File.readlines(f).grep(/spec\.name = "\w+"/).first.match(/"(\w+)"/)[1]
+      end
     new_version = Bump::Bump.current
     Rake::Task["version:_update_changelog"].invoke(name, new_version)
     Rake::Task["version:_commit_and_tag"].invoke(name, new_version)
   end
 
-  task :_update_changelog, [:name, :new_version] do |_task, args|
+  task :_update_changelog, [:name, :new_version] do |_task, args| # rubocop:disable Rake/Desc
     name = args[:name]
     new_version = args[:new_version]
 
@@ -90,7 +93,7 @@ namespace :version do
     File.write("CHANGELOG.md", changelog.join)
   end
 
-  task :_commit_and_tag, [:name, :new_version] do |_task, args|
+  task :_commit_and_tag, [:name, :new_version] do |_task, args| # rubocop:disable Rake/Desc
     name = args[:name]
     new_version = args[:new_version]
 
