@@ -67,7 +67,7 @@ VectorNumber.new([4, "death", "death", 13, nil])
 
 VectorNumber is developed on MRI (CRuby) but should work on other engines too.
 - TruffleRuby: works as expected, but there are differences in core Ruby code, so some tests fail.
-- JRuby: significant problems (at least on CI), but may work.
+- JRuby: significant problems, but may work, currently not tested.
 - Other engines: untested, but should work, depending on compatibility.
 
 ## Development
