@@ -56,8 +56,7 @@ sum.to_a # => [[1, 17], ["death", 2], [nil, 1]]
 sum.to_h # => {1=>17, "death"=>2, nil=>1}
 ```
 
-Alternatively, the same result can be equivalently (and more efficiently) achieved by
-passing all values to a constructor:
+Alternatively, the same result can be equivalently (and more efficiently) achieved by passing all values to a constructor:
 ```ruby
 VectorNumber[4, "death", "death", 13, nil]
 VectorNumber.new([4, "death", "death", 13, nil])
@@ -72,9 +71,11 @@ VectorNumber is developed on MRI (CRuby) but should work on other engines too.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests, `rake rubocop` to check code, `rake steep` to check typing or just `rake` to do everything. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests, `rake rubocop` to lint code and check style compliance, `rake rbs` to validate signatures or just `rake` to do everything above. There is also `rake steep` to check typing, and `rake docs` to generate YARD documentation.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, change Next version in `CHANGELOG.md`, commit changes and tag the commit. Alternatively, an appropriate `rake bump:{major|minor|patch}` command can be used.
+You can also run `bin/console` for an interactive prompt that will allow you to experiment, or `bin/benchmark` to run a benchmark script and generate a StackProf flamegraph.
+
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, run `bundle exec rake version:{major|minor|patch}`, and then run `bundle exec rake release`, which will push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
