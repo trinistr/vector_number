@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Next]
+## [v0.4.0] — 2025-07-07
 
 **Changed**
 - [🍄 BREAKING] Change `R` and `I` constants to be `1` and `2` instead of `0i` and `1i` respectively.
