@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
+[Compare v0.4.1...main](https://github.com/trinistr/vector_number/compare/v0.4.1...main)
+
+
+## [v0.4.1] — 2025-07-07
+
 Small update to fix Changelog.
 
-[Compare v0.4.0...main](https://github.com/trinistr/vector_number/compare/v0.4.0...main)
+[Compare v0.4.0...v0.4.1](https://github.com/trinistr/vector_number/compare/v0.4.0...v0.4.1)
 
 ## [v0.4.0] — 2025-07-07
 
@@ -154,6 +159,7 @@ README was updated to reflect this change.
 - Initial work.
 
 [Next]: https://github.com/trinistr/vector_number/tree/main
+[v0.4.1]: https://github.com/trinistr/vector_number/tree/v0.4.1
 [v0.4.0]: https://github.com/trinistr/vector_number/tree/v0.4.0
 [v0.3.1]: https://github.com/trinistr/vector_number/tree/v0.3.1
 [v0.3.0]: https://github.com/trinistr/vector_number/tree/v0.3.0
