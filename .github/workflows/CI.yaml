@@ -14,5 +14,3 @@ jobs:
     uses: ./.github/workflows/cruby.yaml
   TruffleRuby:
     uses: ./.github/workflows/truffleruby.yaml
-  JRuby:
-    uses: ./.github/workflows/jruby.yaml

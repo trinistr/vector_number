@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    Their values are still semi-private and should not be relied on.
 - [🍄 BREAKING] Calling `new` with an unsupported value now raises `ArgumentError` instead of treating it like air.
 - Optimize various initialization paths. It is now 1.5-2.5 times faster, depending on arguments.
+- [🚀 CI] Disable JRuby testing on CI.
 
 [Compare v0.3.1...main](https://github.com/trinistr/vector_number/compare/v0.3.1...main)
 
