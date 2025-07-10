@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# Bundler
+# Set up LOAD_PATH with Bundler
 require "bundler/setup"
 
-# Supporting libraries.
+# Load supporting libraries
 require "bigdecimal/util"
 require "fileutils"
 
@@ -12,9 +12,10 @@ require "benchmark"
 require "benchmark/ips"
 require "stackprof"
 
-# This gem.
+# Load this gem
 require "vector_number"
 
+# Setup test data
 V0 = VectorNumber[0]
 V1 = VectorNumber[1]
 Vi = VectorNumber[1i]
@@ -25,6 +26,7 @@ Vopt = VectorNumber[8, mult: :invisible]
 # ((V1 * 3.3) + (Va * 4.5) - Vs)
 V = VectorNumber[3.3] + (4.5 * VectorNumber["a"]) - VectorNumber[:s]
 
+# Run benchmark
 FileUtils.mkdir_p("tmp")
 StackProf.run(mode: :cpu, raw: true, out: "tmp/stackprof.dump") do
   Benchmark.ips do |ips|
@@ -40,7 +42,9 @@ StackProf.run(mode: :cpu, raw: true, out: "tmp/stackprof.dump") do
   end
 end
 
-`stackprof tmp/stackprof.dump  --d3-flamegraph > tmp/flamegraph.html`
+# Generate flamegraph to actually understand StackProf's report
+`stackprof tmp/stackprof.dump --d3-flamegraph > tmp/flamegraph.html`
+puts "Flamegraph generated at tmp/flamegraph.html"
 
 # Baseline:
 #             real    120.248k (± 6.7%) i/s    (8.32 μs/i) -    600.984k in   5.026862s

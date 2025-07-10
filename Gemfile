@@ -42,7 +42,7 @@ group :development do
   # Language server for development
   gem "solargraph", require: false
 
-  # Version changes
+  # Automatic updates for version changes
   gem "bump", require: false
 
   # Benchmarking performance
