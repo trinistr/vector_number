@@ -84,7 +84,7 @@ VectorNumbers implement most of the methods you can find in `Numeric`, with appr
 - `positive?` is true if all coefficients are positive, the same for `negative?` (though this is different from `Complex`);
 - `round` and friends round each coefficient, with all the bells and whistles;
 - `div` and `%` perform division and remainder operations elementwise;
-- `5 < VectorNumber[6]` returns `true` and `5 < VectorNumber["string"]` returns `nil`, etc.
+- `5 < VectorNumber[6]` returns `true` and `5 < VectorNumber["string"]` raises `ArgumentError`, etc.
 
 VectorNumbers, if only consisting of a real number, can mostly be used interchangeably with core numbers due to `coerce` and conversion (`to_i`, etc.) methods. They can even be used as array indices! Due to including `Comparable`, they can also participate in comparison and sorting.
 
