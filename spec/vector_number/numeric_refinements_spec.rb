@@ -3,6 +3,12 @@
 require "vector_number/numeric_refinements"
 
 RSpec.describe VectorNumber::NumericRefinements do
+  before(:context) do # rubocop:disable RSpec/BeforeAfterAll
+    if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.1.0")
+      skip "Numeric refinements are not available"
+    end
+  end
+
   describe Complex, "#<=>" do
     let(:number) { rand(Complex(-100, 0)..Complex(0, 0)) }
 

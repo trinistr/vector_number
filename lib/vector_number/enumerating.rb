@@ -36,10 +36,10 @@ class VectorNumber
     # @see Enumerator
     #
     # @since 0.1.0
-    def each(&)
+    def each(&block)
       return to_enum { size } unless block_given?
 
-      @data.each(&)
+      @data.each(&block)
       self
     end
 
@@ -85,10 +85,10 @@ class VectorNumber
     # @return [Hash{Object => Integer, Float, Rational, BigDecimal}]
     #
     # @since 0.1.0
-    def to_h(&)
+    def to_h(&block)
       # TODO: Remove block argument.
       if block_given?
-        @data.to_h(&)
+        @data.to_h(&block)
       else
         @data.dup
       end

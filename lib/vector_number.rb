@@ -107,12 +107,12 @@ class VectorNumber
   # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
   # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
   # @raise [RangeError] if any pesky non-reals get where they shouldn't
-  def initialize(values = nil, options = nil, &)
+  def initialize(values = nil, options = nil, &transform)
     # @type var options: Hash[Symbol, Object]
     initialize_from(values)
-    apply_transform(&)
+    apply_transform(&transform)
     finalize_contents
-    save_options(options, values:)
+    save_options(options, values: values)
     @options.freeze
     @data.freeze
     freeze
@@ -152,8 +152,8 @@ class VectorNumber
   # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
   # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
   # @return [VectorNumber]
-  def new(from = self, &)
-    self.class.new(from, options, &)
+  def new(from = self, &transform)
+    self.class.new(from, options, &transform)
   end
 
   # Check if +other+ is a real number.

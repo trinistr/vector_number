@@ -8,6 +8,8 @@ class VectorNumber
   # - refinement for +Complex#<=>+ to work with classes implementing +<=>+;
   # - refinement for +Kernel#BigDecimal+ to work with classes implementing +to_d+.
   #
+  # @note Refinements won't work on Ruby 3.0.
+  #
   # @example activating refinements
   #   require "vector_number/numeric_refinements"
   #   using VectorNumber::NumericRefinements
@@ -41,7 +43,11 @@ class VectorNumber
     end
 
     if (Complex(1, 0) <=> VectorNumber[1]).nil?
-      refine(Complex) { import_methods CommutativeShuttle }
+      refine(Complex) do
+        import_methods CommutativeShuttle
+      rescue
+        warn "Numeric refinements are not available on Ruby < 3.1"
+      end
     end
 
     # Refinement module to change Kernel#BigDecimal so it works with +#to_d+.
@@ -68,11 +74,17 @@ class VectorNumber
         if value.respond_to?(:to_d)
           ndigits.nil? ? value.to_d : value.to_d(ndigits)
         else
-          ndigits.nil? ? super(value, exception:) : super
+          ndigits.nil? ? super(value, exception: exception) : super
         end
       end
     end
 
-    refine(Kernel) { import_methods BigDecimalToD } if defined?(BigDecimal)
+    if defined?(BigDecimal)
+      refine(Kernel) do
+        import_methods BigDecimalToD
+      rescue
+        warn "Numeric refinements are not available on Ruby < 3.1"
+      end
+    end
   end
 end

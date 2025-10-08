@@ -45,7 +45,7 @@ class VectorNumber
         else
           result << (coefficient.positive? ? " + " : " - ")
         end
-        result << value_to_s(unit, coefficient.abs, mult:)
+        result << value_to_s(unit, coefficient.abs, mult: mult)
       end
       result
     end

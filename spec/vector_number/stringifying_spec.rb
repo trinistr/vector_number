@@ -44,7 +44,7 @@ RSpec.describe VectorNumber::Stringifying do
     end
 
     context "when :mult option is passed" do
-      subject(:string) { composite_number.to_s(mult:) }
+      subject(:string) { composite_number.to_s(mult: mult) }
 
       context "with one of the predefined options" do
         let(:mult) { described_class::MULT_STRINGS.keys.sample }
