@@ -95,7 +95,7 @@ VectorNumber[:s] / VectorNumber[3] # => (1/3⋅s)
 ### (Somewhat) advanced usage
 
 > [!TIP]
-> Look at [API documentation](https://rubydoc.info/gems/vector_number) for all methods.
+> Look at API documentation for all methods.
 
 #### Frozenness
 VectorNumbers are always frozen, as a number should be. However, they hold references to units (keys), which aren't frozen or duplicated. It is the user's responsibility to ensure that keys aren't mutated, the same as it is for Hash.

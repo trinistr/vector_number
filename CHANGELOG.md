@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
+**Changed**
+- Decrease minimum required Ruby version to 3.0.0. "vector_number/numeric_refinements" will not work on 3.0, however.
+
 [Compare v0.4.2...main](https://github.com/trinistr/vector_number/compare/v0.4.2...main)
 
 ## [v0.4.2] — 2025-10-08
