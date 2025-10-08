@@ -1,18 +1,25 @@
 # frozen_string_literal: true
 
+task default: %i[spec rubocop rbs]
+
 require "English"
 require "bundler/gem_tasks"
 
-task default: %i[spec rubocop rbs]
-
-require "rspec/core/rake_task"
-RSpec::Core::RakeTask.new(:spec)
+begin
+  require "rspec/core/rake_task"
+  RSpec::Core::RakeTask.new(:spec)
+rescue LoadError
+  # Probably running in CI.
+  task :spec do
+    puts "RSpec is not available, tests will not be run!"
+  end
+end
 
 begin
   require "rubocop/rake_task"
   RuboCop::RakeTask.new
 rescue LoadError
-  # Well, this is bad, but we can live without it.
+  # Probably running in CI.
   task :rubocop do
     puts "RuboCop is not available, linting will not be done!"
   end
@@ -21,7 +28,7 @@ end
 desc "Validate signatures with RBS"
 task :rbs do
   puts "Checking signatures with RBS..."
-  if system "rbs", "-rbigdecimal", "-Isig", "validate"
+  if system "rbs", "-Isig", "validate"
     puts "Signatures are good!"
     puts
   else
@@ -38,8 +45,11 @@ task steep: :rbs do
 end
 
 desc "Generate documentation with YARD"
-task :docs do
-  status = system "yard", "doc", ".", "--main", "README.md", "--files", "CHANGELOG.md"
+task :docs, [:output_dir] do |_task, args|
+  output_dir = args[:output_dir] || "doc"
+  # The default is to generate documentation for `lib/**/*.rb`, so we don't need to specify it.
+  # Options should generally be specified in `.yardopts`.
+  status = system "yard", "doc", "--output-dir", output_dir
   exit $CHILD_STATUS.exitstatus || 1 unless status
 end
 
@@ -63,10 +73,7 @@ namespace :version do
     require "bump"
     Bump::Bump.run(args[:bump], commit: false, changelog: true)
 
-    name =
-      Dir["*.gemspec"].first.then do |f|
-        File.readlines(f).grep(/spec\.name = "\w+"/).first.match(/"(\w+)"/)[1]
-      end
+    name = Dir["*.gemspec"].first.then { |f| Gem::Specification.load(f).name }
     new_version = Bump::Bump.current
     Rake::Task["version:_update_changelog"].invoke(name, new_version)
     Rake::Task["version:_commit_and_tag"].invoke(name, new_version)
@@ -76,19 +83,21 @@ namespace :version do
     name = args[:name]
     new_version = args[:new_version]
 
-    changelog = File.read("CHANGELOG.md").split(/(^##+.*)/)
+    changelog = File.read("CHANGELOG.md").split(/(^(?>##+)[^\n]+\n\n)/)
     # Change previous comparison link
     prev_index = changelog.index { _1.match?(/^## \[v#{new_version}\]/) }
-    changelog[prev_index + 1].gsub!("...main", "...v#{new_version}")
+    changelog[prev_index + 1].gsub!("...main", "...v#{new_version}") if prev_index
     # Add new comparison link
     next_index = changelog.index { _1.match?(/^## \[Next\]/) }
     changelog[next_index] <<
-      "\n\n[Compare v#{new_version}...main](https://github.com/trinistr/#{name}/compare/v#{new_version}...main)\n\n"
+      "\n[Compare v#{new_version}...main](https://github.com/trinistr/#{name}/compare/v#{new_version}...main)\n\n"
     # Add a version link
     changelog.last.sub!(
       /\[Next\]: .+/,
       "\\0\n[v#{new_version}]: https://github.com/trinistr/#{name}/tree/v#{new_version}"
     )
+    # Delete v0.0.0 if present
+    changelog.delete_if { _1.match?(/^## \[v0\.0\.0\]/) }
 
     File.write("CHANGELOG.md", changelog.join)
   end

@@ -4,7 +4,7 @@
 [![CI](https://github.com/trinistr/vector_number/actions/workflows/CI.yaml/badge.svg)](https://github.com/trinistr/vector_number/actions/workflows/CI.yaml)
 
 > [!TIP]
-> You may be viewing documentation for an older (or newer) version of the gem. Check badges above to see what the latest released version is, or, better yet, look at [Changelog](https://github.com/trinistr/vector_number/blob/main/CHANGELOG.md) to see all versions, including unreleased changes!
+> You may be viewing documentation for an older (or newer) version of the gem. Look at [Changelog](https://github.com/trinistr/dicey/blob/main/CHANGELOG.md) to see all versions, including unreleased changes.
 
 ***
 
@@ -25,6 +25,20 @@ Similar projects:
 
 However, none of them have been updated in *years*.
 
+## Table of contents
+
+- [Installation](#installation)
+  - [Ruby engine support status](#ruby-engine-support-status)
+- [Usage](#usage)
+  - [Basics](#basics)
+  - [(Somewhat) advanced usage](#somewhat-advanced-usage)
+    - [Frozenness](#frozenness)
+    - [Numerical behavior](#numerical-behavior)
+    - [Enumeration and hash-like behavior](#enumeration-and-hash-like-behavior)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Installation
 
 Install with `gem`:
@@ -37,7 +51,18 @@ If using Bundler, add gem to your Gemfile:
 gem "vector_number"
 ```
 
+### Ruby engine support status
+
+VectorNumber is developed on MRI (CRuby) but should work on other engines too.
+- TruffleRuby: there are some minor differences in behavior, but otherwise works as expected.
+- JRuby: significant problems, but may work, currently not tested.
+- Other engines: untested, but should work, depending on compatibility with MRI.
+
 ## Usage
+
+> [!Note]
+> - Latest API documentation from `main` branch is automatically deployed to [GitHub Pages](https://trinistr.github.io/vector_number).
+> - Documentation for published versions is available on [RubyDoc](https://rubydoc.info/gems/vector_number).
 
 ### Basics
 
@@ -96,13 +121,6 @@ There are also the usual `[]`, `unit?` (`key?`), `units` (`keys`), `coefficients
 > [!NOTE]
 > Be aware that `[]` always returns `0` for "missing" units. `unit?` will return `false` for them.
 
-## Ruby engine support status
-
-VectorNumber is developed on MRI (CRuby) but should work on other engines too.
-- TruffleRuby: there are some minor differences in behavior, but otherwise works as expected.
-- JRuby: significant problems, but may work, currently not tested.
-- Other engines: untested, but should work, depending on compatibility with MRI.
-
 ## Development
 
 After checking out the repo, run `bundle install` to install dependencies. Then, run `rake spec` to run the tests, `rake rubocop` to lint code and check style compliance, `rake rbs` to validate signatures or just `rake` to do everything above. There is also `rake steep` to check typing, and `rake docs` to generate YARD documentation.
@@ -116,6 +134,16 @@ To release a new version, run `rake version:{major|minor|patch}`, and then run `
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at [https://github.com/trinistr/vector_number]().
+
+### Checklist for a new or updated feature
+
+- Running `rake spec` reports 100% coverage (unless it's impossible to achieve in one run).
+- Running `rake rubocop` reports no offenses.
+- Running `rake steep` reports no new warnings or errors.
+- Tests cover the behavior and its interactions. 100% coverage *is not enough*, as it does not guarantee that all code paths are tested.
+- Documentation is up-to-date: generate it with `rake docs` and read it.
+- "*CHANGELOG.md*" lists the change if it has impact on users.
+- "*README.md*" is updated if the feature should be visible there.
 
 ## License
 
