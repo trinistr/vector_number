@@ -68,7 +68,7 @@ class VectorNumber
         if value.respond_to?(:to_d)
           ndigits.nil? ? value.to_d : value.to_d(ndigits)
         else
-          ndigits.nil? ? super(value, exception:) : super
+          ndigits.nil? ? super(value, exception: exception) : super
         end
       end
     end
