@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
 
   spec.homepage = "https://github.com/trinistr/#{spec.name}"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.1.0"
+  spec.required_ruby_version = ">= 3.0.0"
   spec.summary = "Add, subtract and do math with any objects"
   spec.description = <<~TEXT
     VectorNumber provides a Numeric-like experience for doing arithmetics on heterogeneous objects, with more advanced operations based on real vector spaces available when needed.
