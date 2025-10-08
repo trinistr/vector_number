@@ -208,6 +208,8 @@ class VectorNumber
 
     def eql?: (in_value_type other) -> bool
 
+    def hash: () -> Integer
+
     def <=>: (in_value_type other) -> Integer?
   end
 

@@ -190,6 +190,22 @@ RSpec.describe VectorNumber::Comparing do
     end
   end
 
+  describe "#hash" do
+    subject(:hash) { composite_number.hash }
+
+    it "is equal for equal vectors" do
+      expect(hash).to eq num(5, "y", :a, mult: :invisible).hash
+    end
+
+    it "is usually not equal for different vectors" do
+      expect(hash).not_to eq num(5, "y", :b).hash
+    end
+
+    it "is usually not equal for different classes" do
+      expect(hash).not_to eq({ VectorNumber::R => 5, "y" => 1, :a => 1 }.hash)
+    end
+  end
+
   describe "#<=>" do
     subject { forward_comparison ? compared_number <=> other : other <=> compared_number }
 

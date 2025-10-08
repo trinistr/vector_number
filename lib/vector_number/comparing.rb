@@ -45,6 +45,7 @@ class VectorNumber
     #
     # Values are considered equal only if +other+ is a VectorNumber
     # and it has exactly the same units and coefficients, though possibly in a different order.
+    # Additionally, `a.eql?(b)` implies `a.hash == b.hash`.
     #
     # Note that {#options} are not considered for equality.
     #
@@ -67,6 +68,22 @@ class VectorNumber
       else
         false
       end
+    end
+
+    # Generate an Integer hash value for self.
+    #
+    # Hash values are stable during runtime, but not between processes.
+    #
+    # @example
+    #   VectorNumber["b", "a"].hash # => 3081872088394655324
+    #   VectorNumber["a", "b", mult: :cross].hash # => 3081872088394655324
+    #   VectorNumber["b", "c"].hash # => -1002381358514682371
+    #
+    # @return [Integer]
+    #
+    # @since 0.4.2
+    def hash
+      [self.class, @data].hash
     end
 
     # Compare to +other+ and return -1, 0, or 1
