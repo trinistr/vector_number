@@ -1,18 +1,25 @@
 # frozen_string_literal: true
 
+task default: %i[spec rubocop rbs]
+
 require "English"
 require "bundler/gem_tasks"
 
-task default: %i[spec rubocop rbs]
-
-require "rspec/core/rake_task"
-RSpec::Core::RakeTask.new(:spec)
+begin
+  require "rspec/core/rake_task"
+  RSpec::Core::RakeTask.new(:spec)
+rescue LoadError
+  # Probably running in CI.
+  task :spec do
+    puts "RSpec is not available, tests will not be run!"
+  end
+end
 
 begin
   require "rubocop/rake_task"
   RuboCop::RakeTask.new
 rescue LoadError
-  # Well, this is bad, but we can live without it.
+  # Probably running in CI.
   task :rubocop do
     puts "RuboCop is not available, linting will not be done!"
   end
@@ -21,7 +28,7 @@ end
 desc "Validate signatures with RBS"
 task :rbs do
   puts "Checking signatures with RBS..."
-  if system "rbs", "-rbigdecimal", "-Isig", "validate"
+  if system "rbs", "-Isig", "validate"
     puts "Signatures are good!"
     puts
   else
@@ -38,8 +45,11 @@ task steep: :rbs do
 end
 
 desc "Generate documentation with YARD"
-task :docs do
-  status = system "yard", "doc", ".", "--main", "README.md", "--files", "CHANGELOG.md"
+task :docs, [:output_dir] do |_task, args|
+  output_dir = args[:output_dir] || "doc"
+  # The default is to generate documentation for `lib/**/*.rb`, so we don't need to specify it.
+  # Options should generally be specified in `.yardopts`.
+  status = system "yard", "doc", "--output-dir", output_dir
   exit $CHILD_STATUS.exitstatus || 1 unless status
 end
 
