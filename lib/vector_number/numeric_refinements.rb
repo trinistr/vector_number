@@ -41,7 +41,11 @@ class VectorNumber
     end
 
     if (Complex(1, 0) <=> VectorNumber[1]).nil?
-      refine(Complex) { import_methods CommutativeShuttle }
+      refine(Complex) do
+        import_methods CommutativeShuttle
+      rescue
+        raise "Numeric refinements are not available on Ruby < 3.1"
+      end
     end
 
     # Refinement module to change Kernel#BigDecimal so it works with +#to_d+.
@@ -73,6 +77,12 @@ class VectorNumber
       end
     end
 
-    refine(Kernel) { import_methods BigDecimalToD } if defined?(BigDecimal)
+    if defined?(BigDecimal)
+      refine(Kernel) do
+        import_methods BigDecimalToD
+      rescue
+        raise "Numeric refinements are not available on Ruby < 3.1"
+      end
+    end
   end
 end
