@@ -111,9 +111,11 @@ class VectorNumber
           else :half_up
           end
         new { _1.is_a?(BigDecimal) ? _1.round(digits, bd_mode) : _1.round(digits, half:) }
+      # :nocov:
       else
         new { _1.round(digits, half:) }
       end
+      # :nocov:
     end
   end
 end
