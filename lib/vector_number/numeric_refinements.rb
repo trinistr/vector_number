@@ -44,7 +44,7 @@ class VectorNumber
       refine(Complex) do
         import_methods CommutativeShuttle
       rescue
-        raise "Numeric refinements are not available on Ruby < 3.1"
+        warn "Numeric refinements are not available on Ruby < 3.1"
       end
     end
 
@@ -81,7 +81,7 @@ class VectorNumber
       refine(Kernel) do
         import_methods BigDecimalToD
       rescue
-        raise "Numeric refinements are not available on Ruby < 3.1"
+        warn "Numeric refinements are not available on Ruby < 3.1"
       end
     end
   end
