@@ -30,5 +30,6 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
+        bundler: latest
     - name: Run RSpec
       run: bundle exec rake spec
