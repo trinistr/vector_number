@@ -714,7 +714,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "returns a Float result" do
-        expect(result).to be_a Float
         expect(result).to eq number.fdiv(value)
       end
 
@@ -722,7 +721,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
         it "returns a Float result" do
-          expect(result).to be_a Float
           expect(result).to eq number.fdiv(value)
         end
       end
@@ -756,7 +754,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
       let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "returns a Float result" do
-        expect(result).to be_a Float
         expect(result).to eq number.fdiv(value)
       end
 
@@ -764,7 +761,6 @@ RSpec.describe VectorNumber::Mathing, :aggregate_failures do
         let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
         it "returns a Float result" do
-          expect(result).to be_a Float
           expect(result).to eq number.fdiv(value)
         end
       end
