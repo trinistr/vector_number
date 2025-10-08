@@ -8,6 +8,8 @@ class VectorNumber
   # - refinement for +Complex#<=>+ to work with classes implementing +<=>+;
   # - refinement for +Kernel#BigDecimal+ to work with classes implementing +to_d+.
   #
+  # @note Refinements won't work on Ruby 3.0.
+  #
   # @example activating refinements
   #   require "vector_number/numeric_refinements"
   #   using VectorNumber::NumericRefinements
