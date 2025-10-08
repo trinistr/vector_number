@@ -28,33 +28,17 @@ RSpec.describe Kernel do
     context "with complex number" do
       let(:number) { complex_number }
 
-      if RUBY_ENGINE == "ruby"
-        it "raises RangeError" do
-          expect { conversion }.to raise_error RangeError
-        end
-      # :nocov"
-      else
-        it "raises TypeError" do
-          expect { conversion }.to raise_error TypeError
-        end
+      it "raises RangeError" do
+        expect { conversion }.to raise_error RangeError
       end
-      # :nocov"
     end
 
     context "with composite number" do
       let(:number) { composite_number }
 
-      if RUBY_ENGINE == "ruby"
-        it "raises RangeError" do
-          expect { conversion }.to raise_error RangeError
-        end
-      # :nocov"
-      else
-        it "raises TypeError" do
-          expect { conversion }.to raise_error TypeError
-        end
+      it "raises RangeError" do
+        expect { conversion }.to raise_error RangeError
       end
-      # :nocov"
     end
   end
 
@@ -116,17 +100,33 @@ RSpec.describe Kernel do
     context "with complex number" do
       let(:number) { complex_number }
 
-      it "raises RangeError" do
-        expect { conversion }.to raise_error RangeError
+      if RUBY_ENGINE == "ruby"
+        it "raises RangeError" do
+          expect { conversion }.to raise_error RangeError
+        end
+      # :nocov"
+      else
+        it "raises TypeError" do
+          expect { conversion }.to raise_error TypeError
+        end
       end
+      # :nocov"
     end
 
     context "with composite number" do
       let(:number) { composite_number }
 
-      it "raises RangeError" do
-        expect { conversion }.to raise_error RangeError
+      if RUBY_ENGINE == "ruby"
+        it "raises RangeError" do
+          expect { conversion }.to raise_error RangeError
+        end
+      # :nocov"
+      else
+        it "raises TypeError" do
+          expect { conversion }.to raise_error TypeError
+        end
       end
+      # :nocov"
     end
   end
 
