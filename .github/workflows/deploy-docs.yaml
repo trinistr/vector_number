@@ -29,9 +29,6 @@ jobs:
           bundler-cache: true
       - name: Generate documentation
         run: bundle exec rake docs
-      - name: Copy extra files
-        run: |
-          cp "D8+D4+D4.png" doc/
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
