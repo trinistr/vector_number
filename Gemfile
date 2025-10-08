@@ -4,11 +4,21 @@ source "https://rubygems.org"
 
 gemspec
 
-# For running checks
-gem "rake", "~> 13.0", require: false
+# All gems that aren't actually used in code should have "require: false".
+# This is needed for RBS, because otherwise it will install insane number of definitions.
+# Alternatively, ignore them in `rbs_collection.yaml`.
 
-# Testing framework
-gem "rspec", "~> 3.0", require: false
+# For running tasks
+gem "rake", require: false
+
+group :test do
+  # Testing framework
+  gem "rspec", require: false
+
+  # Code coverage report
+  gem "simplecov", require: false
+  gem "simplecov_lcov_formatter", require: false
+end
 
 group :linting do
   # Linting
@@ -22,31 +32,30 @@ group :linting do
 
   # Checking type signatures
   gem "rbs", require: false
+  # Checking types in code
+  gem "steep", require: false
+end
+
+group :documentation do
+  # Documentation generation
+  gem "redcarpet", require: false
+  gem "yard", require: false
+end
+
+group :development do
+  # Automatic updates for version changes
+  gem "bump", require: false
+
+  # Benchmarking and profiling
+  gem "benchmark", require: false
+  gem "benchmark-ips", require: false
+  gem "stackprof", require: false
+
+  # For console
+  gem "irb", require: false
 end
 
 group :optional do
   # Development and testing use BigDecimal, though it is not required for the gem.
   gem "bigdecimal"
-end
-
-group :development do
-  # Type checking
-  gem "steep", require: false
-
-  # Code coverage report
-  gem "simplecov", require: false
-
-  # Documentation
-  gem "yard", require: false
-
-  # Language server for development
-  gem "solargraph", require: false
-
-  # Automatic updates for version changes
-  gem "bump", require: false
-
-  # Benchmarking performance
-  gem "benchmark", require: false
-  gem "benchmark-ips", require: false
-  gem "stackprof", require: false
 end
