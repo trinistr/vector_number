@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
-[Compare v0.4.1...main](https://github.com/trinistr/vector_number/compare/v0.4.1...main)
+This update improves gem's description and README in an effort to make it clearer what the gem does.
 
+**Added**
+- Add description and a better summary to gemspec.
+- Add overview of main features to README.
+
+[Compare v0.4.1...main](https://github.com/trinistr/vector_number/compare/v0.4.1...main)
 
 ## [v0.4.1] — 2025-07-07
 
@@ -18,12 +23,13 @@ Small update to fix Changelog.
 
 ## [v0.4.0] — 2025-07-07
 
+This update significantly speeds up creation of VectorNumbers.
+
 **Changed**
-- [🍄 BREAKING] Change `R` and `I` constants to be `1` and `2` instead of `0i` and `1i` respectively.
-   Their values are still semi-private and should not be relied on.
+- [🍄 BREAKING] Change `R` and `I` constants to be `1` and `2` instead of `0i` and `1i` respectively. Their values are still semi-private and should not be relied on.
 - [🍄 BREAKING] Calling `new` with an unsupported value now raises `ArgumentError` instead of treating it like air.
-- Optimize various initialization paths. It is now 1.5-2.5 times faster, depending on arguments.
-- [🚀 CI] Disable JRuby testing on CI.
+- Optimize various initialization paths. It is now 1.5–2.5 times faster, depending on arguments.
+- [🚀 CI] Disable JRuby testing on CI. There were too many issues with JRuby, and it's not a priority to support it.
 
 [Compare v0.3.1...v0.4.0](https://github.com/trinistr/vector_number/compare/v0.3.1...v0.4.0)
 
@@ -49,17 +55,12 @@ This is mostly a documentation update with a side of improved gemspec.
 ## [v0.3.0] — 2025-05-12
 
 **Added**
-- Add aliases to other operators:
-   `#neg` for `#-@`, `#add` for `#+`, `#sub` for `#-`, `#mult` for `#*`.
-   `#+@` was already practically aliased by `#dup`.
+- Add aliases to other operators: `#neg` for `#-@`, `#add` for `#+`, `#sub` for `#-`, `#mult` for `#*`. `#+@` was already practically aliased by `#dup`.
 
 **Changed**
-- [🍄 BREAKING] Long-existing but broken options feature is now fixed.
-   When creating new vector through any operation, participating vector's options
-   are copied to the new one. When several vectors are present, only first one matters.
+- [🍄 BREAKING] Long-existing but broken options feature is now fixed. When creating new vector through any operation, participating vector's options are copied to the new one. When several vectors are present, only first one matters.
 - Both `#+@` and `#dup` are now aliases of `#itself` instead of full methods.
-- [🚀 CI] "CI" workflow now reports status of all checks,
-   excluding allowed-to-fail workflows (currently JRuby and TruffleRuby).
+- [🚀 CI] "CI" workflow now reports status of all checks, excluding allowed-to-fail workflows (currently JRuby and TruffleRuby). In the future this will provide more guarantees about gem' quality and compatibility.
 
 [Compare v0.2.6...v0.3.0](https://github.com/trinistr/vector_number/compare/v0.2.6...v0.3.0)
 
@@ -70,11 +71,10 @@ This is mostly a documentation update with a side of improved gemspec.
 - Add `#quo` alias to `#/`.
 
 **Fixed**
-- `#/`, `#fdiv` as well as new division methods now properly check for division by zero.
-   VectorNumber does not support this as not all Numeric classes do.
+- `#/`, `#fdiv` as well as new division methods now properly check for division by zero. VectorNumber does not support this as not all Numeric classes do.
 
 **Changed**
-- [🚀 CI] Add Ruby 3.4 to CI.
+- [🚀 CI] Add Ruby 3.4 to CI as ruby-head is now preview of 3.5.
 
 [Compare v0.2.5...v0.2.6](https://github.com/trinistr/vector_number/compare/v0.2.5...v0.2.6)
 
@@ -91,11 +91,8 @@ README was updated to reflect this change.
 - Add hash-like methods `#[]` and `#unit?` (aliased as `#key?`).
 
 **Changed**
-- [🍄 BREAKING] Change `positive?` and `negative?` to no longer return `nil`
-   when number is neither strictly positive or negative,
-   these cases will now return `false`.
-- Make `VectorNumber.new` accept options when initializing from a VectorNumber
-   instead of only copying. Options will be merged.
+- [🍄 BREAKING] Change `positive?` and `negative?` to no longer return `nil` when number is neither strictly positive or negative, these cases will now return `false`.
+- Make `VectorNumber.new` accept options when initializing from a VectorNumber instead of only copying. Options will be merged.
 - Remove `Initializing` module, move its methods to the actual class.
 - Update development gems' versions.
 
