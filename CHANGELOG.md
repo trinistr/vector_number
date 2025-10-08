@@ -12,6 +12,7 @@ This update improves gem's description and README in an effort to make it cleare
 **Added**
 - Add description and a better summary to gemspec.
 - Add overview of main features to README.
+- Add `#hash` method to properly support VectorNumbers as Hash keys.
 
 [Compare v0.4.1...main](https://github.com/trinistr/vector_number/compare/v0.4.1...main)
 
