@@ -15,9 +15,11 @@ jobs:
         experimental: [true]
     continue-on-error: ${{ matrix.experimental }}
     env:
-      BUNDLE_WITHOUT: 'linting:development'
+      BUNDLE_ONLY: "default:test:optional"
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
+      with:
+        persist-credentials: false
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
