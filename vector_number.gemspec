@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "lib/vector_number/version"
-
 Gem::Specification.new do |spec|
   spec.name = "vector_number"
-  spec.version = VectorNumber::VERSION
+  spec.version = File.read("lib/#{spec.name}/version.rb")[/(?<=VERSION = ")[\d.]+/]
   spec.authors = ["Alexandr Bulancov"]
 
   spec.homepage = "https://github.com/trinistr/#{spec.name}"
@@ -35,6 +33,6 @@ Gem::Specification.new do |spec|
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{\Aexe/}) { File.basename(_1) }
 
-  spec.extra_rdoc_files = ["README.md", "LICENSE.txt"]
-  spec.rdoc_options << "--main" << "README.md" << "--files" << "LICENSE.txt"
+  spec.rdoc_options = ["--main", "README.md"]
+  spec.extra_rdoc_files = ["README.md"]
 end
