@@ -81,7 +81,7 @@ As vectors are immutable, `+@`, `dup` and `clone` return the same instance.
 VectorNumbers implement most of the methods you can find in `Numeric`, with appropriate behavior. For example:
 - `abs` (`magnitude`) calculates length of the vector;
 - `infinite?` checks whether any coefficient is infinite (or NaN), in the same way as `Complex` does it;
-- `positive?` is true if all coefficients are positive, the same for `negative?` (though this is different from `Complex`);
+- `positive?` is true if all coefficients are positive, the same for `negative?` (though this is different from `Complex`) (and they can both be false);
 - `round` and friends round each coefficient, with all the bells and whistles;
 - `div` and `%` perform division and remainder operations elementwise;
 - `5 < VectorNumber[6]` returns `true` and `5 < VectorNumber["string"]` raises `ArgumentError`, etc.
@@ -105,11 +105,13 @@ VectorNumber is developed on MRI (CRuby) but should work on other engines too.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests, `rake rubocop` to lint code and check style compliance, `rake rbs` to validate signatures or just `rake` to do everything above. There is also `rake steep` to check typing, and `rake docs` to generate YARD documentation.
+After checking out the repo, run `bundle install` to install dependencies. Then, run `rake spec` to run the tests, `rake rubocop` to lint code and check style compliance, `rake rbs` to validate signatures or just `rake` to do everything above. There is also `rake steep` to check typing, and `rake docs` to generate YARD documentation.
 
 You can also run `bin/console` for an interactive prompt that will allow you to experiment, or `bin/benchmark` to run a benchmark script and generate a StackProf flamegraph.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, run `bundle exec rake version:{major|minor|patch}`, and then run `bundle exec rake release`, which will push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `rake install`.
+
+To release a new version, run `rake version:{major|minor|patch}`, and then run `rake release`, which will build the package and push the `.gem` file to [rubygems.org](https://rubygems.org). After that, push the release commit and tags to the repository with `git push --follow-tags`.
 
 ## Contributing
 
@@ -117,4 +119,4 @@ Bug reports and pull requests are welcome on GitHub at [https://github.com/trini
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+This gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT), see [LICENSE.txt](https://github.com/trinistr/vector_number/blob/main/LICENSE.txt).
