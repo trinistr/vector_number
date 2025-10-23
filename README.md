@@ -147,4 +147,4 @@ Bug reports and pull requests are welcome on GitHub at [https://github.com/trini
 
 ## License
 
-This gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT), see [LICENSE.txt](https://github.com/trinistr/vector_number/blob/main/LICENSE.txt).
+This gem is available as open source under the terms of the MIT License, see [LICENSE.txt](https://github.com/trinistr/vector_number/blob/main/LICENSE.txt).
