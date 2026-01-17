@@ -6,12 +6,12 @@ rescue LoadError
   # Ok, either there is no bigdecimal, or it is always available.
 end
 
+Dir["#{__dir__}/support/**/*.rb"].each { require _1 unless _1.end_with?("coverage_helper.rb") }
+
+# Require coverage helper before the gem to ensure proper coverage reporting.
 require_relative "support/coverage_helper"
 
 require "vector_number"
-
-require_relative "support/negated_matchers"
-require_relative "support/shared_examples"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
