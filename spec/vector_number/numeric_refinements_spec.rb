@@ -55,11 +55,11 @@ RSpec.describe VectorNumber::NumericRefinements do
     using VectorNumber::NumericRefinements
 
     # NB: Method must be called after `using` refinements for them to work, even in a block.
-    subject(:conversion) { BigDecimal(num(number)) }
-
     let(:number) { rand(-300.0..3000.0).round(3) }
 
     context "when converting a vector number" do
+      subject(:conversion) { BigDecimal(num(number)) }
+
       context "without second argument" do
         it "returns an equivalent BigDecimal" do
           expect(conversion).to be_a(BigDecimal).and eq number
@@ -100,8 +100,15 @@ RSpec.describe VectorNumber::NumericRefinements do
       subject(:conversion) { BigDecimal(number) }
 
       context "without second argument" do
-        it "raises ArgumentError" do
-          expect { conversion }.to raise_error ArgumentError
+        # https://github.com/ruby/bigdecimal/blob/master/CHANGES.md#323
+        if BigDecimal::VERSION < "3.2.3"
+          it "raises ArgumentError" do
+            expect { conversion }.to raise_error ArgumentError
+          end
+        else
+          it "returns an equivalent BigDecimal" do
+            expect(conversion).to be_a(BigDecimal).and eq number
+          end
         end
       end
 
