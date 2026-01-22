@@ -22,8 +22,8 @@ GEM
     base64 (0.3.0)
     benchmark (0.4.1)
     benchmark-ips (2.14.0)
-    bigdecimal (3.2.2)
-    bigdecimal (3.2.2-java)
+    bigdecimal (4.0.1)
+    bigdecimal (4.0.1-java)
     bump (0.10.0)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.3)
@@ -233,8 +233,8 @@ CHECKSUMS
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
   benchmark (0.4.1) sha256=d4ef40037bba27f03b28013e219b950b82bace296549ec15a78016552f8d2cce
   benchmark-ips (2.14.0) sha256=b72bc8a65d525d5906f8cd94270dccf73452ee3257a32b89fbd6684d3e8a9b1d
-  bigdecimal (3.2.2) sha256=39085f76b495eb39a79ce07af716f3a6829bc35eb44f2195e2753749f2fa5adc
-  bigdecimal (3.2.2-java) sha256=1fcbead3efc3eae26956f7fef6bbdd342f987c0bdbf68f500a1467389f430205
+  bigdecimal (4.0.1) sha256=8b07d3d065a9f921c80ceaea7c9d4ae596697295b584c296fe599dd0ad01c4a7
+  bigdecimal (4.0.1-java) sha256=95c40a0a92dfb83b293f4b9865cd27caa7c045bedab86f3620e5dc27e6553083
   bump (0.10.0) sha256=07929cf79031d2863f55e7b111e164566be10c43f8c42d67db7cb3b5745f0975
   concurrent-ruby (1.3.5) sha256=813b3e37aca6df2a21a3b9f1d497f8cbab24a2b94cab325bffe65ee0f6cbebc6
   connection_pool (2.5.3) sha256=cfd74a82b9b094d1ce30c4f1a346da23ee19dc8a062a16a85f58eab1ced4305b

@@ -45,7 +45,9 @@ class VectorNumber
   #
   # @since 0.1.0
   def to_i
-    numeric?(1) ? real.to_i : raise_convert_error(Integer)
+    raise_convert_error(Integer) unless numeric?(1)
+
+    real.to_i
   end
 
   # @since 0.1.0
@@ -67,7 +69,9 @@ class VectorNumber
   #
   # @since 0.1.0
   def to_f
-    numeric?(1) ? real.to_f : raise_convert_error(Float)
+    raise_convert_error(Float) unless numeric?(1)
+
+    real.to_f
   end
 
   # Return value as a Rational if only real part is non-zero.
@@ -86,7 +90,9 @@ class VectorNumber
   #
   # @since 0.1.0
   def to_r
-    numeric?(1) ? real.to_r : raise_convert_error(Rational)
+    raise_convert_error(Rational) unless numeric?(1)
+
+    real.to_r
   end
 
   # Return value as a BigDecimal if only real part is non-zero.
@@ -114,14 +120,12 @@ class VectorNumber
   #
   # @since 0.1.0
   def to_d(ndigits = nil)
-    if numeric?(1)
-      return BigDecimal(real, ndigits) if ndigits
-      return BigDecimal(real, Float::DIG) if real.is_a?(Float)
+    raise_convert_error(BigDecimal) unless numeric?(1)
 
-      BigDecimal(real)
-    else
-      raise_convert_error(BigDecimal)
-    end
+    return BigDecimal(real, ndigits) if ndigits
+    return BigDecimal(real, Float::DIG) if real.is_a?(Float)
+
+    BigDecimal(real)
   end
 
   # Return value as a Complex if only real and/or imaginary parts are non-zero.
@@ -140,7 +144,9 @@ class VectorNumber
   #
   # @since 0.1.0
   def to_c
-    numeric?(2) ? Complex(real, imaginary) : raise_convert_error(Complex)
+    raise_convert_error(Complex) unless numeric?(2)
+
+    Complex(real, imaginary)
   end
 
   private

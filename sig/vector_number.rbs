@@ -1,43 +1,22 @@
-type vector_type = VectorNumber
-type real_number = Integer | Float | Rational | BigDecimal
-
-type in_value_type = untyped
-type unit_type = untyped
-type coefficient_type = real_number
-
-type list[T] = Array[T]
-
-type plain_vector_type = Hash[unit_type, coefficient_type]
-type units_list_type = list[unit_type]
-type coefficients_list_type = list[coefficient_type]
-type each_value_type = [unit_type, coefficient_type]
-
-type options_type = Hash[Symbol, untyped]
-
-interface _BaseMethods
-  def size: -> Integer
-  def options: -> options_type
-
-  # private
-  def new: () { (coefficient_type value) -> coefficient_type } -> vector_type
-         | (in_value_type) { (coefficient_type value) -> coefficient_type } -> vector_type
-         | () -> vector_type
-         | (in_value_type) -> vector_type
-  def real_number?: (real_number value) -> true
-                  | (vector_type) -> bool
-                  | (in_value_type value) -> false
-end
-
 # A class to add together anything.
 class VectorNumber
-  include _BaseMethods
-  include VectorNumber::Mathing
-  include VectorNumber::MathConverting
-  include VectorNumber::Converting
-  include VectorNumber::Enumerating
-  include VectorNumber::Comparing
-  include VectorNumber::Querying
-  include VectorNumber::Stringifying
+  # ---- Generic types ----
+  type real_number = Integer | Float | Rational | BigDecimal
+
+  type in_value_type = untyped
+  type unit_type = untyped
+  type coefficient_type = real_number
+
+  type list[T] = Array[T]
+
+  type plain_instance = Hash[unit_type, coefficient_type]
+  type units_list_type = list[unit_type]
+  type coefficients_list_type = list[coefficient_type]
+  type each_value_type = [unit_type, coefficient_type]
+
+  type options_type = Hash[Symbol, untyped]
+
+  # ---- Constants ----
 
   VERSION: String
 
@@ -48,10 +27,15 @@ class VectorNumber
   R: Complex
   I: Complex
 
-  def self.[]: (*unit_type values, **options_type options) -> vector_type
+  # ---- Public methods ----
+
+  def self.[]: (*unit_type values, **options_type options) -> instance
+
+  def size: -> Integer
+  def options: -> options_type
 
   def initialize:
-    (?(units_list_type | plain_vector_type | vector_type)? values, ?options_type? options)
+    (?(units_list_type | plain_instance | instance)? values, ?options_type? options)
     ?{ (coefficient_type coefficient) -> coefficient_type }
     -> void
 
@@ -64,15 +48,24 @@ class VectorNumber
 
   @size: Integer
   @options: options_type
-  @data: plain_vector_type
+  @data: plain_instance
 
-  def initialize_from: ((units_list_type | plain_vector_type | vector_type)? values) -> void
+  def new: () { (coefficient_type value) -> coefficient_type } -> instance
+         | (in_value_type) { (coefficient_type value) -> coefficient_type } -> instance
+         | () -> instance
+         | (in_value_type) -> instance
 
-  def add_value_to_data: ((vector_type | Numeric | unit_type) value) -> void
+  def real_number?: (real_number value) -> true
+                  | (instance) -> bool
+                  | (in_value_type value) -> false
+
+  def initialize_from: ((units_list_type | plain_instance | instance)? values) -> void
+
+  def add_value_to_data: ((instance | Numeric | unit_type) value) -> void
 
   def add_numeric_value_to_data: (Numeric value) -> void
 
-  def add_vector_to_data: ((vector_type | plain_vector_type) vector) -> void
+  def add_vector_to_data: ((instance | plain_instance) vector) -> void
 
   def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
 
@@ -80,178 +73,154 @@ class VectorNumber
   def merge_options: (options_type base_options, options_type added_options) -> options_type
 
   def finalize_contents: () -> void
+end
 
-  # Methods for performing actual math.
-  module Mathing
-    include _BaseMethods
+# Methods for performing actual math.
+class VectorNumber
+  def coerce: (in_value_type) -> [instance, self]
 
-    def coerce: (in_value_type) -> [vector_type, self]
+  def -@: () -> instance
+  alias neg -@
 
-    def -@: () -> vector_type
-    alias neg -@
+  def +: (in_value_type) -> instance
+  alias add +
 
-    def +: (in_value_type) -> vector_type
-    alias add +
+  def -: (in_value_type) -> instance
+  alias sub -
 
-    def -: (in_value_type) -> vector_type
-    alias sub -
+  def *: (real_number | instance) -> instance
+  alias mult *
 
-    def *: (real_number | vector_type) -> vector_type
-    alias mult *
+  def /: (real_number | instance) -> instance
+  alias quo /
 
-    def /: (real_number | vector_type) -> vector_type
-    alias quo /
+  def fdiv: (real_number | instance) -> instance
 
-    def fdiv: (real_number | vector_type) -> vector_type
+  def div: (real_number | instance) -> instance
 
-    def div: (real_number | vector_type) -> vector_type
+  def %: (real_number | instance) -> instance
+  alias modulo %
 
-    def %: (real_number | vector_type) -> vector_type
-    alias modulo %
+  def divmod: (real_number | instance) -> [instance, instance]
 
-    def divmod: (real_number | vector_type) -> [vector_type, vector_type]
+  def remainder: (real_number | instance) -> instance
 
-    def remainder: (real_number | vector_type) -> vector_type
+  private
 
-    private
+  def check_divisibility: (real_number | instance) -> void
+end
 
-    def check_divisibility: (real_number | vector_type) -> void
-  end
+# Various mathematical operations that are also conversions.
+class VectorNumber
+  def abs: () -> Float
 
-  # Various mathematical operations that are also conversions.
-  module MathConverting
-    include _BaseMethods
-    include Enumerating
+  def abs2: () -> Float
 
-    def abs: () -> Float
+  def truncate: (?Integer) -> instance
 
-    def abs2: () -> Float
+  def ceil: (?Integer) -> instance
 
-    def truncate: (Integer) -> vector_type
+  def floor: (?Integer) -> instance
 
-    def ceil: (Integer) -> vector_type
+  def round: (?Integer, ?half: (:up | :down | :even)) -> instance
+end
 
-    def floor: (Integer) -> vector_type
+# Methods for converting to different number classes.
+class VectorNumber
+  def real: () -> real_number
 
-    def round: (Integer, ?half: (:up | :down | :even)) -> vector_type
-  end
+  def imaginary: () -> real_number
+  alias imag imaginary
 
-  # Methods for converting to different number classes.
-  module Converting
-    include _BaseMethods
-    include Querying
+  def to_i: () -> Integer
+  alias to_int to_i
 
-    def real: () -> real_number
+  def to_f: () -> Float
 
-    def imaginary: () -> real_number
-    alias imag imaginary
+  def to_r: () -> Rational
 
-    def to_i: () -> Integer
-            | () -> void
-    alias to_int to_i
+  def to_d: (?Integer?) -> BigDecimal
 
-    def to_f: () -> Float
-            | () -> void
+  def to_c: () -> Complex
 
-    def to_r: () -> Rational
-            | () -> void
+  private
 
-    def to_d: (?Integer?) -> BigDecimal
-            | (?Integer?) -> void
+  def raise_convert_error: (Class) -> void
+end
 
-    def to_c: () -> Complex
-            | () -> void
+class VectorNumber
+  include _Each[each_value_type]
+  include Enumerable[each_value_type]
 
-    def truncate: (?Integer digits) -> vector_type
+  def each: () { (unit_type unit, coefficient_type coefficient) -> void } -> self
+          | () -> Enumerator[each_value_type, Integer]
+          | ...
+  alias each_pair each
 
-    private
+  def units: () -> units_list_type
+  alias keys units
 
-    def raise_convert_error: (Class) -> void
-  end
+  def coefficients: () -> coefficients_list_type
+  alias values coefficients
 
-  # Methods for enumerating values of the number.
-  module Enumerating
-    include _BaseMethods
-    include _Each[each_value_type]
-    include Enumerable[each_value_type]
+  def to_h: () -> plain_instance
+          | () { (unit_type, coefficient_type) -> each_value_type } -> plain_instance
 
-    def each: () { (unit_type unit, coefficient_type coefficient) -> void } -> self
-            | () -> Enumerator[each_value_type, Integer]
-            | ...
-    alias each_pair each
+  def []: (unit_type unit) -> coefficient_type
 
-    def units: () -> units_list_type
-    alias keys units
+  def unit?: (unit_type unit) -> bool
+  alias key? unit?
+end
 
-    def coefficients: () -> coefficients_list_type
-    alias values coefficients
+# Methods for comparing with other numbers.
+class VectorNumber
+  def ==: (in_value_type other) -> bool
 
-    def to_h: () -> plain_vector_type
-            | () { (unit_type, coefficient_type) -> each_value_type } -> plain_vector_type
+  def eql?: (in_value_type other) -> bool
 
-    def []: (unit_type unit) -> coefficient_type
+  def hash: () -> Integer
 
-    def unit?: (unit_type unit) -> bool
-    alias key? unit?
-  end
+  def <=>: (in_value_type other) -> Integer?
+end
 
-  # Methods for comparing with other numbers.
-  module Comparing
-    include _BaseMethods
-    include Enumerating
-    include Converting
-    include Querying
+# Methods for querying state of the number.
+# Mostly modeled after {::Complex}.
+class VectorNumber
+  def numeric?: (?Integer) -> bool
 
-    def ==: (in_value_type other) -> bool
+  def nonnumeric?: (?Integer) -> bool
 
-    def eql?: (in_value_type other) -> bool
+  def finite?: () -> bool
 
-    def hash: () -> Integer
+  def infinite?: () -> Integer?
 
-    def <=>: (in_value_type other) -> Integer?
-  end
+  def zero?: () -> bool
 
-  # Methods for querying state of the number.
-  # Mostly modeled after {::Complex}.
-  module Querying
-    include Enumerating
+  def nonzero?: () -> self?
 
-    def numeric?: (?Integer) -> bool
+  def positive?: () -> bool
 
-    def nonnumeric?: (?Integer) -> bool
+  def negative?: () -> bool
 
-    def finite?: () -> bool
+  def real?: () -> false
 
-    def infinite?: () -> Integer?
+  def integer?: () -> false
+end
 
-    def zero?: () -> bool
+# Methods and options for string representation.
+class VectorNumber
+  MULT_STRINGS: Hash[Symbol, String]
 
-    def nonzero?: () -> self?
+  def to_s: (?mult: (Symbol | String)) -> String
 
-    def positive?: () -> bool
+  def inspect: () -> String
 
-    def negative?: () -> bool
+  private
 
-    def real?: () -> false
+  def value_to_s: (unit_type unit, coefficient_type coefficient, mult: (Symbol | String)) -> String
+end
 
-    def integer?: () -> false
-  end
-
-  # Methods and options for string representation.
-  module Stringifying
-    include Querying
-
-    MULT_STRINGS: Hash[Symbol, String]
-
-    def to_s: (?mult: (Symbol | String)) -> String
-
-    def inspect: () -> String
-
-    private
-
-    def value_to_s: (unit_type unit, coefficient_type coefficient, mult: (Symbol | String)) -> String
-  end
-
+class VectorNumber
   # Refinements of Numeric classes to better work with VectorNumber and similar classes.
   module NumericRefinements
     module CommutativeShuttle
