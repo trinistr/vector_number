@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe VectorNumber::Comparing do
+RSpec.describe VectorNumber do
   let(:real_number) { num(567/120r) }
   let(:composite_number) { num("y", :a, 5) }
 

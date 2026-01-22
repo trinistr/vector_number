@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe VectorNumber::Querying, :aggregate_failures do
+RSpec.describe VectorNumber, :aggregate_failures do
   let(:null_number) { num }
   let(:zero_number) { num(0, 0.i) }
   let(:real_number) { num(1, 0.i) }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe VectorNumber::Mathing, :aggregate_failures do
+RSpec.describe VectorNumber, :aggregate_failures do
   let(:zero_number) { num(Complex(0, 0), 0.0, 1, -1) }
   let(:real_number) { num(-1.5r) }
   let(:composite_number) { num("y", :a, 5) }

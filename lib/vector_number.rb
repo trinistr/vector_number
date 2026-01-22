@@ -11,14 +11,6 @@ require_relative "vector_number/version"
 
 # A class to add together anything.
 class VectorNumber
-  include Mathing
-  include MathConverting
-  include Converting
-  include Enumerating
-  include Comparing
-  include Querying
-  include Stringifying
-
   # Keys for possible options.
   # Unknown options will be rejected when creating a vector.
   #

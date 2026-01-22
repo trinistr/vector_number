@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe VectorNumber::MathConverting do
+RSpec.describe VectorNumber do
   let(:zero_number) { num }
   let(:real_number) { num(1001.15) }
   let(:complex_number) { num(Complex(0.12, -13.5)) }
