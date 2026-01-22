@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class VectorNumber
-  ### Methods for querying state of the number.
-  ### Mostly modeled after {::Complex}.
+  # @group Querying
+  #
+  # Mostly modelled after {::Complex}.
 
-  # Whether this VectorNumber can be considered strictly numeric, e.g. real or complex.
+  # Whether this VectorNumber can be considered strictly numeric — real or complex.
   #
   # @example
   #   VectorNumber[2].numeric? # => true
@@ -55,7 +56,7 @@ class VectorNumber
     all? { |_u, v| v.finite? }
   end
 
-  # Returns +1+ if any coefficients are infinite, +nil+ otherwise.
+  # Returns +1+ if any coefficients are non-finite, +nil+ otherwise.
   #
   # This behavior is the same as +Complex+'s.
   #
@@ -73,9 +74,13 @@ class VectorNumber
 
   # Returns +true+ if there are no non-zero coefficients, and +false+ otherwise.
   #
+  # This is synonymous with +size+ being 0.
+  #
   # @example
   #   VectorNumber["c"].zero? # => false
   #   VectorNumber[].zero? # => true
+  #
+  # @see #size
   #
   # @return [Boolean]
   #
@@ -84,11 +89,14 @@ class VectorNumber
 
   # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
   #
-  # This behavior is the same as +Numeric+'s.
+  # This is synonymous with +size+ not being equal to 0.
+  # Behavior of returning self or +nil+ is the same as +Numeric+'s.
   #
   # @example
   #   VectorNumber["ab", "cd"].nonzero? # => (1⋅'ab' + 1⋅'cd')
   #   VectorNumber[].nonzero? # => nil
+  #
+  # @see #size
   #
   # @return [VectorNumber, nil]
   #

@@ -3,7 +3,7 @@
 Gem::Specification.new do |spec|
   spec.name = "vector_number"
   spec.version = File.read("lib/#{spec.name}/version.rb")[/(?<=VERSION = ")[\d.]+/]
-  spec.authors = ["Alexandr Bulancov"]
+  spec.authors = ["Alexander Bulancov"]
 
   spec.homepage = "https://github.com/trinistr/#{spec.name}"
   spec.license = "MIT"

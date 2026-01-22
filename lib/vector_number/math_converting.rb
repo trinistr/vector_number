@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class VectorNumber
-  ### Various mathematical operations that are also conversions.
+  # @group Mathematical operations
 
-  # Calculate the absolute value of the vector, i.e. its length.
+  # Calculate the absolute value of the vector (its length).
   #
   # @example
   #   VectorNumber[5.3].abs # => 5.3
@@ -85,6 +85,11 @@ class VectorNumber
   end
 
   # Return a new vector with every coefficient rounded using their +#round+.
+  #
+  # In the case of +BigDecimal+ coefficients, the +half+ parameter is converted
+  # to the corresponding +BigDecimal+ rounding mode
+  # (one of +:half_up+, +:half_down+, or +:half_even+).
+  # Other modes can not be specified.
   #
   # @example
   #   VectorNumber[-4.5i, "i"].round(half: :up) # => (-5i + 1⋅'i')

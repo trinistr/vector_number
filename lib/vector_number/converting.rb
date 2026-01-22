@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class VectorNumber
-  ### Methods for converting to different number classes.
+  # @group Converting to different numeric classes
 
   # Return real part of the number.
   #

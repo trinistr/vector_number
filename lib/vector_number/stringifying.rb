@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class VectorNumber
-  ### Methods and options for string representation.
-
   # Predefined symbols for multiplication to display between unit and coefficient.
   #
   # @return [Hash{Symbol => String}]
@@ -17,7 +15,9 @@ class VectorNumber
     none: "",
   }.freeze
 
-  # Get a string representation of the vector.
+  # @group Miscellaneous methods
+
+  # Return string representation of the vector.
   #
   # @example
   #   VectorNumber[5, "s"].to_s # => "5 + 1⋅'s'"
@@ -50,7 +50,7 @@ class VectorNumber
     result
   end
 
-  # Get a string representation of the vector.
+  # Return string representation of the vector.
   #
   # This is similar to +Complex#inspect+: it returns result of {#to_s} in round brackets.
   #

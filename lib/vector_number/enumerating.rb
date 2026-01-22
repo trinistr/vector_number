@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class VectorNumber
-  ### Methods for enumerating values of the number.
+  # @group Hash-like operations
 
   # +Enumerable+ is included so its methods can be used.
   # @example using Enumerable methods
@@ -26,7 +26,7 @@ class VectorNumber
   #
   # @overload each
   #   @yieldparam unit [Object]
-  #   @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
+  #   @yieldparam coefficient [Numeric]
   #   @yieldreturn [void]
   #   @return [VectorNumber] self
   # @overload each
@@ -66,7 +66,7 @@ class VectorNumber
   #   VectorNumber["a", "b", 6].coefficients # => [1, 1, 6]
   #   VectorNumber.new.values # => []
   #
-  # @return [Array<Integer, Float, Rational, BigDecimal>]
+  # @return [Array<Numeric>]
   #
   # @since 0.1.0
   def coefficients = @data.values
@@ -82,7 +82,7 @@ class VectorNumber
   #   VectorNumber["a", "b", 6].to_h # => {"a"=>1, "b"=>1, 1=>6}
   #   VectorNumber["a", "b", 6].to_h["c"] # => 0
   #
-  # @return [Hash{Object => Integer, Float, Rational, BigDecimal}]
+  # @return [Hash{Object => Numeric}]
   #
   # @since 0.1.0
   def to_h(&block)
@@ -105,7 +105,7 @@ class VectorNumber
   #   VectorNumber["a", "b", 6]["c"] # => 0
   #
   # @param unit [Object]
-  # @return [Integer, Float, Rational, BigDecimal]
+  # @return [Numeric]
   #
   # @since 0.2.4
   def [](unit) = @data[unit]

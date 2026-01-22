@@ -1,16 +1,94 @@
 # frozen_string_literal: true
 
-require_relative "vector_number/comparing"
-require_relative "vector_number/converting"
-require_relative "vector_number/enumerating"
-require_relative "vector_number/math_converting"
-require_relative "vector_number/mathing"
-require_relative "vector_number/querying"
-require_relative "vector_number/stringifying"
-require_relative "vector_number/version"
-
-# A class to add together anything.
+# VectorNumber provides a Numeric-like experience for doing arithmetics on heterogeneous objects,
+# with more advanced operations based on real vector spaces available when needed.
+#
+# VectorNumber inherits from +Object+ and includes +Enumerable+ and +Comparable+.
+# It implements mostly the same interface as +Numeric+ classes, but can {#coerce} any value.
+# Its behavior follows +Complex+ when possible.
+#
+# All instances are frozen after creation.
+#
+# **Creation**
+# - {.[]}: the simplest way to create a VectorNumber
+# - {#initialize}: an alternative way, with some advanced features
+#
+# **Comparing**
+# - {#==}: test for equal value
+# - {#eql?}: test for equal value and type
+# - {#<=>}: compare real values
+# - {#hash}: calculate hash value for use in +Hash+es
+#
+# **Querying**
+# - {#zero?}: check if all coefficients are zero
+# - {#nonzero?}: check if any coefficient is non-zero
+# - {#positive?}: check if all coefficients are positive
+# - {#negative?}: check if all coefficients are negative
+# - {#finite?}: check if all coefficients are finite
+# - {#infinite?}: check if any coefficient is non-finite
+# - {#numeric?}: test if value is real or complex
+# - {#nonnumeric?}: test if value is not real or complex
+# - {#integer?}: +false+
+# - {#real?}: +false+
+#
+# **Unary** **math** **operations**
+# - {#+}/{#dup}: return self
+# - {#-@}/{#neg}: negate value
+# - {#abs}/{#magnitude}: return absolute value (magnitude, length)
+# - {#abs2}: return square of absolute value
+#
+# **Arithmetic** **operations**
+# - {#coerce}: convert any object to a VectorNumber
+# - {#+}/{#add}: add object
+# - {#-}/{#sub}: subtract object
+# - {#*}/{#mult}: multiply (scale) by a real number
+# - {#/}/{#quo}: divide (scale) by a real number
+# - {#fdiv}: divide (scale) by a real number, using +fdiv+
+# - {#div}: perform integer division
+# - {#%}/{#modulo}: return modulus from integer division
+# - {#divmod}: combination of {#div} and {#modulo}
+# - {#remainder}: return remainder from integer division
+#
+# **Rounding**
+# - {#round}: round each coefficient
+# - {#ceil}: round each coefficient up towards +∞
+# - {#floor}: round each coefficient down towards -∞
+# - {#truncate}: truncate each coefficient towards 0
+#
+# **Type** **conversion**
+# - {#real}: return real part
+# - {#imag}/{#imaginary}: return imaginary part
+# - {#to_i}/{#to_int}: convert to +Integer+ if possible
+# - {#to_f}: convert to +Float+ if possible
+# - {#to_r}: convert to +Rational+ if possible
+# - {#to_d}: convert to +BigDecimal+ if possible
+# - {#to_c}: convert to +Complex+ if possible
+#
+# **Hash-like** **operations**
+# - {#each}/{#each_pair}: iterate through every pair of unit and coefficient
+# - {#[]}: get coefficient by unit
+# - {#unit?}/{#key?}: check if a unit has a non-zero coefficient
+# - {#units}/{#keys}: return an array of units
+# - {#coefficients}/#{values}: return an array of coefficients
+# - {#to_h}: convert to Hash
+#
+# **Miscellaneous** **methods**
+# - {#size}: number of non-zero coefficients
+# - {#options}: hash of options
+# - {#dup}/{#+}: return self
+# - {#clone}: return self
+# - {#to_s}: return string representation suitable for printing
+# - {#inspect}: return string representation suitable for display
 class VectorNumber
+  require_relative "vector_number/comparing"
+  require_relative "vector_number/converting"
+  require_relative "vector_number/enumerating"
+  require_relative "vector_number/math_converting"
+  require_relative "vector_number/mathing"
+  require_relative "vector_number/querying"
+  require_relative "vector_number/stringifying"
+  require_relative "vector_number/version"
+
   # Keys for possible options.
   # Unknown options will be rejected when creating a vector.
   #
@@ -39,6 +117,7 @@ class VectorNumber
   # @since 0.1.0
   I = UNIT[2]
 
+  # @group Creation
   # Create new VectorNumber from a list of values, possibly specifying options.
   #
   # @example
@@ -59,6 +138,7 @@ class VectorNumber
   def self.[](*values, **options)
     new(values, options)
   end
+  # @endgroup
 
   # Number of non-zero dimensions.
   #
@@ -76,8 +156,20 @@ class VectorNumber
   # @since 0.1.0
   attr_reader :options
 
+  # @group Creation
   # Create new VectorNumber from +values+, possibly specifying +options+,
   # possibly modifying coefficients with a block.
+  #
+  # +values+ can be:
+  # - an array of values (see {.[]});
+  # - a VectorNumber to copy;
+  # - a hash in the format returned by {#to_h};
+  # - +nil+ to specify a 0-dimensional vector (same as an empty array or hash).
+  #
+  # Using a hash as +values+ is an advanced technique which allows to quickly
+  # construct a VectorNumber with desired units and coefficients,
+  # but it can also lead to unexpected results if care is not taken
+  # to provide only valid keys and values.
   #
   # @example
   #   VectorNumber.new(1, 2, 3) # ArgumentError
@@ -88,16 +180,18 @@ class VectorNumber
   #   VectorNumber.new(["a", "b", "c", 3]) { _1 * 2 } # => (2⋅'a' + 2⋅'b' + 2⋅'c' + 6)
   #   VectorNumber.new(["a", "b", "c", 3], &:-@) # => (-1⋅'a' - 1⋅'b' - 1⋅'c' - 3)
   #   VectorNumber.new(["a", "b", "c", 3], &:digits) # RangeError
+  # @example using hash for values
+  #   v = VectorNumber.new({1 => 15, "a" => 3.4, nil => -3}) # => (15 + 3.4⋅'a' - 3⋅)
+  #   v.to_h # => {1 => 15, "a" => 3.4, nil => -3}
   #
-  # @param values [Array, VectorNumber, Hash{Object => Integer, Float, Rational, BigDecimal}, nil]
-  #   values for this number, hashes are treated like plain vector numbers
+  # @param values [Array, VectorNumber, Hash{Object => Numeric}, nil] values for this vector
   # @param options [Hash{Symbol => Object}, nil]
-  #   options for this number, if +values+ is a VectorNumber or contains it,
+  #   options for this vector, if +values+ is a VectorNumber or contains it,
   #   these will be merged with options from its +options+
-  # @option options [Symbol, String] :mult
-  #   text to use between unit and coefficient, see {Stringifying#to_s} for explanation
-  # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
-  # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
+  # @option options [Symbol, String] :mult Multiplication symbol,
+  #   either a key from {MULT_STRINGS} or a literal string to use
+  # @yieldparam coefficient [Numeric] a real number
+  # @yieldreturn [Numeric] new coefficient
   # @raise [RangeError] if a block is used and it returns a non-number or non-real number
   def initialize(values = nil, options = nil, &transform)
     # @type var options: Hash[Symbol, Object]
@@ -109,6 +203,8 @@ class VectorNumber
     @data.freeze
     freeze
   end
+
+  # @group Miscellaneous methods
 
   # Return self.
   #
@@ -141,8 +237,8 @@ class VectorNumber
   # Create new VectorNumber from a value or self, optionally applying a transform.
   #
   # @param from [Object] self if not specified
-  # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
-  # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
+  # @yieldparam coefficient [Numeric] a real number
+  # @yieldreturn [Numeric] new coefficient
   # @return [VectorNumber]
   def new(from = self, &transform)
     self.class.new(from, options, &transform)
@@ -158,7 +254,7 @@ class VectorNumber
     (value.is_a?(Numeric) && value.real?) || (value.is_a?(self.class) && value.numeric?(1))
   end
 
-  # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber, nil]
+  # @param values [Array, Hash{Object => Numeric}, VectorNumber, nil]
   # @return [void]
   def initialize_from(values)
     @data = values.to_h and return if values.is_a?(VectorNumber)
@@ -198,7 +294,7 @@ class VectorNumber
     @data[I] += value.imaginary unless value.real?
   end
 
-  # @param vector [VectorNumber, Hash{Object => Integer, Float, Rational, BigDecimal}]
+  # @param vector [VectorNumber, Hash{Object => Numeric}]
   # @return [void]
   def add_vector_to_data(vector)
     vector.each_pair do |unit, coefficient|
@@ -208,8 +304,8 @@ class VectorNumber
     end
   end
 
-  # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
-  # @yieldreturn [Integer, Float, Rational, BigDecimal]
+  # @yieldparam coefficient [Numeric] a real number
+  # @yieldreturn [Numeric] new coefficient
   # @return [void]
   # @raise [RangeError]
   def apply_transform

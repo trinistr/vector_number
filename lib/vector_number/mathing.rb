@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class VectorNumber
-  ### Methods for performing actual math.
-  ###
-  ### All operators (like +*+) have aliases (like +mult+)
-  ### to make method chaining easier and more natural.
+  # @group Mathematical operations
+  #
+  # All operators (like +*+) have aliases (like +mult+)
+  # to make method chaining easier and more natural.
 
   # The coerce method provides support for Ruby type coercion.
   #
@@ -165,7 +165,7 @@ class VectorNumber
   # to fix syntax highlighting: /
 
   # Divide all coefficients by a real +other+ using +fdiv+,
-  # returning new vector with Float (or BigDecimal) coefficients.
+  # returning new vector with decimal coefficients.
   #
   # There isn't much benefit to this method, as {#/} doesn't do integer division,
   # but it is provided for consistency.
@@ -193,7 +193,8 @@ class VectorNumber
     new { _1.fdiv(other) }
   end
 
-  # Divide all coefficients by a real +other+, rounding results with +#floor+.
+  # Divide all coefficients by a real +other+,
+  # converting results to integers using +#floor+.
   #
   # This is requal to +(self / other).floor+.
   #
@@ -210,6 +211,7 @@ class VectorNumber
   #
   # @see #divmod
   # @see #%
+  # @see #floor
   #
   # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
   # @return [VectorNumber]

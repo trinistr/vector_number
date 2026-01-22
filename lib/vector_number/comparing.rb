@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class VectorNumber
-  ### Methods for comparing with other numbers.
+  # @group Comparing
 
   # +Comparable+ is included for parity with +Numeric+.
   # @example using Comparable methods
@@ -12,7 +12,7 @@ class VectorNumber
   # @since 0.2.0
   include ::Comparable
 
-  # Compare to +other+ for equality.
+  # Test whether +other+ has the same value.
   #
   # Values are considered equal if
   # - +other+ is a VectorNumber and it is +eql?+ to this one, or
@@ -41,7 +41,7 @@ class VectorNumber
     end
   end
 
-  # Compare to +other+ for strict equality.
+  # Test whether +other+ is VectorNumber and has the same value.
   #
   # Values are considered equal only if +other+ is a VectorNumber
   # and it has exactly the same units and coefficients, though possibly in a different order.
@@ -73,6 +73,7 @@ class VectorNumber
   # Generate an Integer hash value for self.
   #
   # Hash values are stable during runtime, but not between processes.
+  # Options are disregarded for hash calculation.
   #
   # @example
   #   VectorNumber["b", "a"].hash # => 3081872088394655324
@@ -87,7 +88,10 @@ class VectorNumber
   end
 
   # Compare to +other+ and return -1, 0, or 1
-  # if +self+ is less than, equal, or larger than +other+.
+  # if +self+ is less than, equal, or larger than +other+ on real number line,
+  # or +nil+ if any or both values are non-real.
+  #
+  # Most VectorNumbers are non-real and therefore not comparable with this method.
   #
   # @example
   #   VectorNumber[130] <=> 12 # => 1
@@ -101,12 +105,13 @@ class VectorNumber
   #   VectorNumber[12.1i] <=> 2 # => nil
   #   VectorNumber["a"] <=> 2 # => nil
   #
+  # @see #numeric?
+  # @see Comparable
+  # @see NumericRefinements
+  #
   # @param other [Object]
   # @return [Integer]
   # @return [nil] if +self+ or +other+ isn't a real number.
-  #
-  # @see Comparable
-  # @see NumericRefinements
   #
   # @since 0.2.0
   def <=>(other)
