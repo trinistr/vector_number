@@ -16,6 +16,10 @@ class VectorNumber
   #
   # @since 0.2.0
   module NumericRefinements
+    # CommutativeShuttle refinement works only on 3.1, so it almost never actually runs.
+    # There are tests for the correct behavior, however, so it's fine.
+    # :nocov:
+
     # Refinement module to provide a +#<=>+ method that can work backwards.
     #
     # @note Currently only applies to Complex on *3.1*,
@@ -49,6 +53,7 @@ class VectorNumber
         warn "Numeric refinements are not available on Ruby < 3.1"
       end
     end
+    # :nocov:
 
     # Refinement module to change Kernel#BigDecimal so it works with +#to_d+.
     #
@@ -79,6 +84,7 @@ class VectorNumber
       end
     end
 
+    # :nocov:
     if defined?(BigDecimal)
       refine(Kernel) do
         import_methods BigDecimalToD
@@ -86,5 +92,6 @@ class VectorNumber
         warn "Numeric refinements are not available on Ruby < 3.1"
       end
     end
+    # :nocov:
   end
 end

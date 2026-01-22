@@ -4,9 +4,11 @@ require "vector_number/numeric_refinements"
 
 RSpec.describe VectorNumber::NumericRefinements do
   before(:context) do # rubocop:disable RSpec/BeforeAfterAll
+    # :nocov:
     if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.1.0")
       skip "Numeric refinements are not available"
     end
+    # :nocov:
   end
 
   describe Complex, "#<=>" do
@@ -100,11 +102,13 @@ RSpec.describe VectorNumber::NumericRefinements do
       subject(:conversion) { BigDecimal(number) }
 
       context "without second argument" do
+        # :nocov:
         # https://github.com/ruby/bigdecimal/blob/master/CHANGES.md#323
-        if BigDecimal::VERSION < "3.2.3"
+        if !defined?(BigDecimal::VERSION) || BigDecimal::VERSION < "3.2.3"
           it "raises ArgumentError" do
             expect { conversion }.to raise_error ArgumentError
           end
+          # :nocov:
         else
           it "returns an equivalent BigDecimal" do
             expect(conversion).to be_a(BigDecimal).and eq number
