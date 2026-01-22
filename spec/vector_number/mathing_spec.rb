@@ -238,7 +238,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     context "when adding any random value" do
-      let(:other) { [Object.new, Class, VectorNumber, :foo, binding].sample }
+      let(:other) { [Object.new, Class, described_class, :foo, binding].sample }
 
       it "adds the object as a new unit" do
         expect(result.units).to match_array(number.units << other)
@@ -377,7 +377,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     context "when subtracting any random value" do
-      let(:other) { [Object.new, Class, VectorNumber, :foo, binding].sample }
+      let(:other) { [Object.new, Class, described_class, :foo, binding].sample }
 
       it "subtracts the object as a new unit" do
         expect(result.units).to match_array(number.units << other)
@@ -459,7 +459,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
 
     context "when multiplying by any other value" do
       let(:other) do
-        [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
+        [Complex(rand, rand(1..5)), Object.new, described_class, :foo, binding, [1]].sample
       end
 
       it "raises RangeError" do
@@ -474,7 +474,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       let(:value) { [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
 
       it "returns a real result as a vector number" do
-        expect(result).to be_a(VectorNumber)
+        expect(result).to be_a(described_class)
         expect(result.to_a).to eq [[VectorNumber::R, number * value]]
       end
 
@@ -482,7 +482,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
         let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
         it "returns a real result as a vector number" do
-          expect(result).to be_a(VectorNumber)
+          expect(result).to be_a(described_class)
           expect(result.to_a).to eq [[VectorNumber::R, number * value]]
         end
       end
@@ -494,7 +494,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       let(:other) { [composite_number, f_number, num(1, -15i)].sample }
 
       it "returns vector multiplied by the real number" do
-        expect(result).to be_a(VectorNumber)
+        expect(result).to be_a(described_class)
         expect(result).to eq other * number
       end
 
@@ -502,7 +502,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
         let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
         it "returns vector multiplied by the real number" do
-          expect(result).to be_a(VectorNumber)
+          expect(result).to be_a(described_class)
           expect(result).to eq other * number
         end
       end
@@ -514,7 +514,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
   shared_examples "invalid division" do
     context "when dividing by any non-real-number value" do
       let(:other) do
-        [Complex(rand, rand(1..5)), Object.new, VectorNumber, :foo, binding, [1]].sample
+        [Complex(rand, rand(1..5)), Object.new, described_class, :foo, binding, [1]].sample
       end
 
       it "raises RangeError" do
@@ -567,7 +567,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
         let(:other) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
         it "creates a new number, dividing all coefficients by the value of the other number" do
-          expect(result).to be_a(VectorNumber)
+          expect(result).to be_a(described_class)
           expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v / other] })
         end
       end
@@ -600,7 +600,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
         let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
         it "creates a new number, dividing all coefficients by the value of the other number" do
-          expect(result).to be_a(VectorNumber)
+          expect(result).to be_a(described_class)
           expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v / other] })
         end
       end
@@ -613,7 +613,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       let(:value) { [-rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "returns a real result as a vector number" do
-        expect(result).to be_a VectorNumber
+        expect(result).to be_a described_class
         expect(result.to_a).to eq [[VectorNumber::R, number / value]]
       end
 
@@ -621,7 +621,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
         let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
         it "returns a real result as a vector number" do
-          expect(result).to be_a(VectorNumber)
+          expect(result).to be_a(described_class)
           expect(result.to_a).to eq [[VectorNumber::R, number / value]]
         end
       end
@@ -668,7 +668,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
         let(:other) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
         it "creates a new number, dividing all coefficients by the other number" do
-          expect(result).to be_a(VectorNumber)
+          expect(result).to be_a(described_class)
           expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v.fdiv(other)] })
         end
       end
@@ -701,7 +701,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
         let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
         it "creates a new number, dividing all coefficients by the value of the other number" do
-          expect(result).to be_a(VectorNumber)
+          expect(result).to be_a(described_class)
           expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v.fdiv(other)] })
         end
       end
@@ -733,7 +733,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "returns a real result as a vector number" do
-        expect(result).to be_a VectorNumber
+        expect(result).to be_a described_class
         expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
       end
 
@@ -741,7 +741,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
         let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
         it "returns a real result as a vector number" do
-          expect(result).to be_a VectorNumber
+          expect(result).to be_a described_class
           expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
         end
       end
@@ -773,7 +773,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
       it "returns a real result as a vector number" do
-        expect(result).to be_a VectorNumber
+        expect(result).to be_a described_class
         expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
       end
 
@@ -781,7 +781,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
         let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
 
         it "returns a real result as a vector number" do
-          expect(result).to be_a VectorNumber
+          expect(result).to be_a described_class
           expect(result.to_a).to eq [[VectorNumber::R, number.fdiv(value)]]
         end
       end

@@ -9,10 +9,14 @@ plugins:
   - rubocop-thread_safety
   - rubocop-yard
 
-# This makes no sense for a single-class library.
+# These make no sense for a single-class library.
 Metrics/ClassLength:
   Enabled: false
-
-# Cop triggers on subfiles, even though it is wrong.
+Style/Documentation:
+  Enabled: false
 Style/StaticClass:
+  # Cop triggers on subfiles, even though it is wrong.
+  Enabled: false
+RSpec/SpecFilePathFormat:
+  # Grouping is done by source files, not constants or methods.
   Enabled: false
