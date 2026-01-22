@@ -38,7 +38,7 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
     it "adds everything together to form a vector" do
       expect(new_number).not_to be_zero
       expect(new_number.size).to eq 4
-      expect(new_number).to eql num(1.75r, 4.5ri, "a", "a", :a)
+      expect(new_number).to eql num(1.75, 4.5ri, "a", "a", :a)
     end
 
     context "when array is empty" do
@@ -63,7 +63,7 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
 
       it "adds values from vector to the rest" do
         expect(new_number.size).to eq 3
-        expect(new_number).to eql num(18.25, 4.1i, "s", "s")
+        expect(new_number).to eql num(18.25r, 4.1i, "s", "s")
       end
     end
 
@@ -72,7 +72,7 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
 
       it "copies options from the first vector encountered" do
         expect(new_number.size).to eq 3
-        expect(new_number).to eql num(18.25, 4.1i, "s", "s")
+        expect(new_number).to eql num(18.25r, 4.1i, "s", "s")
         expect(new_number.options).to eq({ mult: :cross })
       end
     end

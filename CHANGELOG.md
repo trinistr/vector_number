@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [🍄 BREAKING] Remove inner modules. All methods are now defined directly on `VectorNumber`. This was always the intended public interface.
 - Update documentation. Add a listing of all methods and general information to class's documentation. Group methods by type.
 
+**Fixed**
+- `eql?` now correctly tests equality using `eql?`, not `==`. `v1.eql?(v2) -> v1.hash == v2.hash` should now always hold.
+
 [Compare v0.4.3...main](https://github.com/trinistr/vector_number/compare/v0.4.3...main)
 
 ## [v0.4.3] — 2025-10-08

@@ -23,6 +23,12 @@ RSpec.describe VectorNumber do
         it { is_expected.to be true }
       end
 
+      context "when comparing to an equal value of the same class with non-eql? coefficients" do
+        let(:other) { num(4.725) }
+
+        it { is_expected.to be true }
+      end
+
       context "when comparing to an equal value of a different class" do
         let(:other) { 567.fdiv(120) }
 
@@ -97,6 +103,12 @@ RSpec.describe VectorNumber do
         it { is_expected.to be false }
       end
 
+      context "when some value is equal but non-eql?" do
+        let(:other) { num("y", :a, 5.0) }
+
+        it { is_expected.to be true }
+      end
+
       context "when comparing to a different value of a different class" do
         let(:other) { [5, "string", nil].sample }
 
@@ -122,6 +134,12 @@ RSpec.describe VectorNumber do
         let(:other) { num(567/120r) }
 
         it { is_expected.to be true }
+      end
+
+      context "when comparing to an equal value of the same class with non-eql? coefficients" do
+        let(:other) { num(4.725) }
+
+        it { is_expected.to be false }
       end
 
       context "when comparing to an equal value of a different class" do
@@ -158,14 +176,14 @@ RSpec.describe VectorNumber do
         it { is_expected.to be true }
       end
 
-      context "when numbers are initialized with different units, but extra coefficients are 0" do
-        let(:other) { num(:a, 5, "y", 0.i) }
-
-        it { is_expected.to be true }
-      end
-
       context "when some values are not the same" do
         let(:other) { num("y", "a", 5) }
+
+        it { is_expected.to be false }
+      end
+
+      context "when some value is equal but non-eql?" do
+        let(:other) { num("y", :a, 5.0) }
 
         it { is_expected.to be false }
       end

@@ -12,10 +12,10 @@ class VectorNumber
   # @since 0.2.0
   include ::Comparable
 
-  # Test whether +other+ has the same value.
+  # Test whether +other+ has the same value with +==+ semantics.
   #
   # Values are considered equal if
-  # - +other+ is a VectorNumber and it is +eql?+ to this one, or
+  # - +other+ is a VectorNumber and it has the same units and equal coefficients, or
   # - +other+ is a Numeric equal in value to this (real or complex) number.
   #
   # @example
@@ -30,9 +30,11 @@ class VectorNumber
   #
   # @since 0.2.0
   def ==(other)
-    return true if eql?(other)
+    return true if equal?(other)
 
     case other
+    when VectorNumber
+      size == other.size && @data == other.to_h
     when Numeric
       numeric?(2) && other.real == real && other.imaginary == imaginary
     else
@@ -41,7 +43,7 @@ class VectorNumber
     end
   end
 
-  # Test whether +other+ is VectorNumber and has the same value.
+  # Test whether +other+ is VectorNumber and has the same value with +eql?+ semantics.
   #
   # Values are considered equal only if +other+ is a VectorNumber
   # and it has exactly the same units and coefficients, though possibly in a different order.
@@ -62,12 +64,9 @@ class VectorNumber
   # @since 0.1.0
   def eql?(other)
     return true if equal?(other)
+    return false unless other.is_a?(VectorNumber)
 
-    if other.is_a?(VectorNumber)
-      other.size == size && other.each_pair.all? { |u, c| @data[u] == c }
-    else
-      false
-    end
+    size.eql?(other.size) && @data.eql?(other.to_h)
   end
 
   # Generate an Integer hash value for self.
