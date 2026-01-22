@@ -327,14 +327,8 @@ class VectorNumber
 
     private
 
-    # @param other [Object]
-    # @return [void]
     # @raise [RangeError] unless +other+ is a real number
     # @raise [ZeroDivisionError]
-    #
-    # @see real_number?
-    #
-    # @since 0.2.6
     def check_divisibility(other)
       unless real_number?(other)
         raise RangeError, "can't divide #{self} by #{other.inspect}", caller

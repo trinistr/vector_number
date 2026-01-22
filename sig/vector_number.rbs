@@ -76,10 +76,8 @@ class VectorNumber
 
   def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
 
-  def save_options: (options_type? options, values: in_value_type) -> void
+  def save_options: (options_type? options, in_value_type values) -> void
   def merge_options: (options_type base_options, options_type added_options) -> options_type
-  def default_options: () -> options_type
-  def known_options: () -> list[Symbol]
 
   def finalize_contents: () -> void
 

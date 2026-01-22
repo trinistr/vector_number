@@ -106,13 +106,13 @@ class VectorNumber
   #   text to use between unit and coefficient, see {Stringifying#to_s} for explanation
   # @yieldparam coefficient [Integer, Float, Rational, BigDecimal]
   # @yieldreturn [Integer, Float, Rational, BigDecimal] new coefficient
-  # @raise [RangeError] if any pesky non-reals get where they shouldn't
+  # @raise [RangeError] if a block is used and it returns a non-number or non-real number
   def initialize(values = nil, options = nil, &transform)
     # @type var options: Hash[Symbol, Object]
     initialize_from(values)
     apply_transform(&transform)
     finalize_contents
-    save_options(options, values: values)
+    save_options(options, values)
     @options.freeze
     @data.freeze
     freeze
@@ -162,16 +162,12 @@ class VectorNumber
   #
   # @param value [Object]
   # @return [Boolean]
-  #
-  # @since 0.1.0
   def real_number?(value)
     (value.is_a?(Numeric) && value.real?) || (value.is_a?(self.class) && value.numeric?(1))
   end
 
   # @param values [Array, Hash{Object => Integer, Float, Rational, BigDecimal}, VectorNumber, nil]
   # @return [void]
-  #
-  # @since 0.1.0
   def initialize_from(values)
     @data = values.to_h and return if values.is_a?(VectorNumber)
 
@@ -190,8 +186,6 @@ class VectorNumber
 
   # @param value [VectorNumber, Numeric, Object]
   # @return [void]
-  #
-  # @since 0.1.0
   def add_value_to_data(value)
     case value
     when Numeric
@@ -205,8 +199,6 @@ class VectorNumber
 
   # @param value [Numeric]
   # @return [void]
-  #
-  # @since 0.1.0
   def add_numeric_value_to_data(value)
     @data[R] += value.real
     # Most numbers will be real, and this extra condition appreciably speeds up addition,
@@ -216,8 +208,6 @@ class VectorNumber
 
   # @param vector [VectorNumber, Hash{Object => Integer, Float, Rational, BigDecimal}]
   # @return [void]
-  #
-  # @since 0.1.0
   def add_vector_to_data(vector)
     vector.each_pair do |unit, coefficient|
       raise RangeError, "#{coefficient} is not a real number" unless real_number?(coefficient)
@@ -230,8 +220,6 @@ class VectorNumber
   # @yieldreturn [Integer, Float, Rational, BigDecimal]
   # @return [void]
   # @raise [RangeError]
-  #
-  # @since 0.1.0
   def apply_transform
     return unless block_given?
 
@@ -246,9 +234,7 @@ class VectorNumber
   # @param options [Hash{Symbol => Object}, nil]
   # @param values [Object] initializing object
   # @return [void]
-  #
-  # @since 0.1.0
-  def save_options(options, values:)
+  def save_options(options, values)
     @options =
       case values
       in VectorNumber
@@ -263,8 +249,6 @@ class VectorNumber
   # @param base_options [Hash{Symbol => Object}]
   # @param added_options [Hash{Symbol => Object}, nil]
   # @return [Hash{Symbol => Object}]
-  #
-  # @since 0.3.0
   def merge_options(base_options, added_options)
     return base_options if !added_options || added_options.empty?
     # Optimization for the common case of passing options through #new.
@@ -275,8 +259,6 @@ class VectorNumber
 
   # Compact coefficients, calculate size and freeze data.
   # @return [void]
-  #
-  # @since 0.1.0
   def finalize_contents
     @data.delete_if { |_u, c| c.zero? }
     @data.freeze

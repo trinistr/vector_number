@@ -74,8 +74,6 @@ class VectorNumber
     # @param mult [Symbol, String]
     # @return [String]
     # @raise [ArgumentError] if +mult+ is not in {MULT_STRINGS}'s keys
-    #
-    # @since 0.1.0
     def value_to_s(unit, coefficient, mult:)
       if !mult.is_a?(String) && !MULT_STRINGS.key?(mult)
         raise ArgumentError, "unknown key #{mult.inspect}", caller
