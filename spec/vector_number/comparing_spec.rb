@@ -75,8 +75,14 @@ RSpec.describe VectorNumber do
         it { is_expected.to be false }
       end
 
+      context "when comparing to a different value of a numeric class" do
+        let(:other) { [5, -13.2, 17r].sample }
+
+        it { is_expected.to be false }
+      end
+
       context "when comparing to a different value of a different class" do
-        let(:other) { [5, "string", nil].sample }
+        let(:other) { [[], "string", nil].sample }
 
         it { is_expected.to be false }
       end
@@ -109,8 +115,14 @@ RSpec.describe VectorNumber do
         it { is_expected.to be true }
       end
 
+      context "when comparing to a different value of a numeric class" do
+        let(:other) { [5, -13.2, 17r].sample }
+
+        it { is_expected.to be false }
+      end
+
       context "when comparing to a different value of a different class" do
-        let(:other) { [5, "string", nil].sample }
+        let(:other) { [[], "string", nil].sample }
 
         it { is_expected.to be false }
       end
@@ -154,8 +166,14 @@ RSpec.describe VectorNumber do
         it { is_expected.to be false }
       end
 
+      context "when comparing to a different value of a numeric class" do
+        let(:other) { [5, -13.2, 17r].sample }
+
+        it { is_expected.to be false }
+      end
+
       context "when comparing to a different value of a different class" do
-        let(:other) { [5, "string", nil].sample }
+        let(:other) { [[], "string", nil].sample }
 
         it { is_expected.to be false }
       end
@@ -200,8 +218,14 @@ RSpec.describe VectorNumber do
         it { is_expected.to be false }
       end
 
+      context "when comparing to a different value of a numeric class" do
+        let(:other) { [5, -13.2, 17r].sample }
+
+        it { is_expected.to be false }
+      end
+
       context "when comparing to a different value of a different class" do
-        let(:other) { [5, "string", nil].sample }
+        let(:other) { [[], "string", nil].sample }
 
         it { is_expected.to be false }
       end
