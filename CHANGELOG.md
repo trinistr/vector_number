@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
+[Compare v0.5.0...main](https://github.com/trinistr/vector_number/compare/v0.5.0...main)
+
+## [v0.5.0] — 2026-01-23
+
+This update changes code structure, aligning it more closely with the intended design, and improves documentation.
+
 **Changed**
 - [🍄 BREAKING] Remove inner modules. All methods are now defined directly on `VectorNumber`. This was always the intended public interface.
 - Update documentation. Add a listing of all methods and general information to class's documentation. Group methods by type.
@@ -14,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Fixed**
 - `eql?` now correctly tests equality using `eql?`, not `==`. `v1.eql?(v2) -> v1.hash == v2.hash` should now always hold.
 
-[Compare v0.4.3...main](https://github.com/trinistr/vector_number/compare/v0.4.3...main)
+[Compare v0.4.3...v0.5.0](https://github.com/trinistr/vector_number/compare/v0.4.3...v0.5.0)
 
 ## [v0.4.3] — 2025-10-08
 
@@ -175,6 +181,7 @@ README was updated to reflect this change.
 - Initial work.
 
 [Next]: https://github.com/trinistr/vector_number/tree/main
+[v0.5.0]: https://github.com/trinistr/vector_number/tree/v0.5.0
 [v0.4.3]: https://github.com/trinistr/vector_number/tree/v0.4.3
 [v0.4.2]: https://github.com/trinistr/vector_number/tree/v0.4.2
 [v0.4.1]: https://github.com/trinistr/vector_number/tree/v0.4.1
