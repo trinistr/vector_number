@@ -9,8 +9,8 @@ RSpec.describe VectorNumber do
   let(:vector_u) { [zero_number, real_number, composite_number, f_number].sample }
   let(:vector_v) { [zero_number, real_number, composite_number, f_number].sample }
   let(:vector_w) { [zero_number, real_number, composite_number, f_number].sample }
-  let(:scalar_a) { rand(BigDecimal(-10)..BigDecimal(10)) * rand(BigDecimal(0.1)..BigDecimal(100)) }
-  let(:scalar_b) { rand(BigDecimal(-10)..BigDecimal(10)) * rand(BigDecimal(0.1)..BigDecimal(100)) }
+  let(:scalar_a) { rand((BigDecimal(1) / 10)..BigDecimal(1000)) * [-1, 1].sample }
+  let(:scalar_b) { rand((BigDecimal(1) / 10)..BigDecimal(1000)) * [-1, 1].sample }
 
   # These tests "prove" that we are actually working with a vector space.
   # @see https://en.wikipedia.org/wiki/Vector_space#Definition_and_basic_properties
