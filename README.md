@@ -69,7 +69,7 @@ VectorNumber is developed on MRI (CRuby) but should work on other engines too.
 VectorNumbers are mostly useful for tallying up heterogeneous objects:
 ```ruby
 sum = [4, "death", "death", 13, nil].reduce(VectorNumber[], :+)
-sum # => (17 + 2⋅'death' + 1⋅)
+sum # => (17 + 2⋅"death" + 1⋅)
 sum.to_h # => {1=>17, "death"=>2, nil=>1}
 sum.to_a # => [[1, 17], ["death", 2], [nil, 1]]
 
@@ -81,12 +81,12 @@ VectorNumber.new([4, "death", "death", 13, nil])
 
 Doing arithmetic with vectors is simple and intuitive:
 ```ruby
-VectorNumber["string"] + "string" # => (2⋅'string')
-VectorNumber["string"] - "str" # => (1⋅'string' - 1⋅'str')
-VectorNumber[5] + VectorNumber["string"] - 0.5 # => (4.5 + 1⋅'string')
-VectorNumber["string", "string", "string", "str"] # => (3⋅'string' + 1⋅'str')
+VectorNumber["string"] + "string" # => (2⋅"string")
+VectorNumber["string"] - "str" # => (1⋅"string" - 1⋅"str")
+VectorNumber[5] + VectorNumber["string"] - 0.5 # => (4.5 + 1⋅"string")
+VectorNumber["string", "string", "string", "str"] # => (3⋅"string" + 1⋅"str")
 # Multiply and divide by any real number:
-VectorNumber[:s] * 2 + VectorNumber["string"] * 0.3 # => (2⋅s + 0.3⋅'string')
+VectorNumber[:s] * 2 + VectorNumber["string"] * 0.3 # => (2⋅s + 0.3⋅"string")
 VectorNumber[:s] / VectorNumber[3] # => (1/3⋅s)
 # Multiplication even works when the left operand is a regular number:
 1/3r * VectorNumber[[]] # => (1/3⋅[])

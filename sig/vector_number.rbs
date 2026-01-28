@@ -207,7 +207,9 @@ class VectorNumber
 
   private
 
-  def value_to_s: (unit_type unit, coefficient_type coefficient, mult: (Symbol | String)) -> String
+  def build_string: (String operator) -> String
+
+  def value_to_s: (unit_type unit, coefficient_type coefficient, String operator) -> String
 end
 
 class VectorNumber

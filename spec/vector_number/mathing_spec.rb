@@ -508,6 +508,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
     subject(:result) { number / other }
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
+
     include_examples "invalid division"
 
     context "when dividing by a real number" do
@@ -607,6 +608,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
     subject(:result) { number.fdiv(other) }
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
+
     include_examples "invalid division"
 
     context "when dividing by a real number" do
@@ -764,6 +766,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
 
     let(:number) { num(32.14, -123.45i, 128r / 9, :a, :a) }
     let(:other) { rand(-10.0..10.0) }
+
     include_examples "invalid division"
 
     it "calls #div on each component" do

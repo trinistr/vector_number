@@ -144,14 +144,14 @@ class VectorNumber
   # @example
   #   VectorNumber.new(1, 2, 3) # ArgumentError
   #   VectorNumber.new([1, 2, 3]) # => (6)
-  #   VectorNumber.new(["b", VectorNumber::I]) # => (1⋅'b' + 1i)
+  #   VectorNumber.new(["b", VectorNumber::I]) # => (1⋅"b" + 1i)
   #   VectorNumber.new # => (0)
   # @example with a block
-  #   VectorNumber.new(["a", "b", "c", 3]) { _1 * 2 } # => (2⋅'a' + 2⋅'b' + 2⋅'c' + 6)
-  #   VectorNumber.new(["a", "b", "c", 3], &:-@) # => (-1⋅'a' - 1⋅'b' - 1⋅'c' - 3)
+  #   VectorNumber.new(["a", "b", "c", 3]) { _1 * 2 } # => (2⋅"a" + 2⋅"b" + 2⋅"c" + 6)
+  #   VectorNumber.new(["a", "b", "c", 3], &:-@) # => (-1⋅"a" - 1⋅"b" - 1⋅"c" - 3)
   #   VectorNumber.new(["a", "b", "c", 3], &:digits) # RangeError
   # @example using hash for values
-  #   v = VectorNumber.new({1 => 15, "a" => 3.4, nil => -3}) # => (15 + 3.4⋅'a' - 3⋅)
+  #   v = VectorNumber.new({1 => 15, "a" => 3.4, nil => -3}) # => (15 + 3.4⋅"a" - 3⋅)
   #   v.to_h # => {1 => 15, "a" => 3.4, nil => -3}
   #
   # @param values [Array, VectorNumber, Hash{Object => Numeric}, nil] values for this vector

@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Changed**
 - [🍄 BREAKING] Removed options in their entirety. The only way to specify multiplication symbol is in call to `#to_s`.
   - Constructors' signatures now include `**nil` to prevent mistakes.
+- `VectorNumber#to_s` now calls `#inspect` on Strings instead of just using `String#to_s`. This prevents issues with embedded quotation marks.
+  - As a a side effect, String units are now surrounded by double quotes, not single.
 
 [Compare v0.5.0...main](https://github.com/trinistr/vector_number/compare/v0.5.0...main)
 

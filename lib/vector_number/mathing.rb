@@ -11,12 +11,12 @@ class VectorNumber
   # Unlike other numeric types, VectorNumber can coerce *anything*.
   #
   # @example
-  #   VectorNumber["a"].coerce(5) # => [(5), (1⋅'a')]
+  #   VectorNumber["a"].coerce(5) # => [(5), (1⋅"a")]
   #   VectorNumber[7].coerce([]) # => [(1⋅[]), (7)]
-  #   VectorNumber["a"] + 5 # => (1⋅'a' + 5)
+  #   VectorNumber["a"] + 5 # => (1⋅"a" + 5)
   #   # Direct reverse coercion doesn't work, but Numeric types know how to call #coerce:
   #   5.coerce(VectorNumber["a"]) # RangeError
-  #   5 + VectorNumber["a"] # => (5 + 1⋅'a')
+  #   5 + VectorNumber["a"] # => (5 + 1⋅"a")
   #
   # @param other [Object]
   # @return [Array(VectorNumber, VectorNumber)]
@@ -34,8 +34,8 @@ class VectorNumber
   # Return new vector with negated coefficients (additive inverse).
   #
   # @example
-  #   -VectorNumber[12, "i"] # => (-12 - 1⋅'i')
-  #   VectorNumber["a", "b", "a"].neg # => (-2⋅'a' - 1⋅'b')
+  #   -VectorNumber[12, "i"] # => (-12 - 1⋅"i")
+  #   VectorNumber["a", "b", "a"].neg # => (-2⋅"a" - 1⋅"b")
   #   -VectorNumber["a"] + VectorNumber["a"] # => (0)
   #
   # @return [VectorNumber]
@@ -53,11 +53,11 @@ class VectorNumber
   #
   # @example
   #   VectorNumber[5] + 10 # => (15)
-  #   VectorNumber["a"].add(VectorNumber["b"]) # => (1⋅'a' + 1⋅'b')
-  #   VectorNumber["a"] + "b" # => (1⋅'a' + 1⋅'b')
+  #   VectorNumber["a"].add(VectorNumber["b"]) # => (1⋅"a" + 1⋅"b")
+  #   VectorNumber["a"] + "b" # => (1⋅"a" + 1⋅"b")
   # @example numeric types can be added in reverse
   #   10 + VectorNumber[5] # => (15)
-  #   10 + VectorNumber["a"] # => (10 + 1⋅'a')
+  #   10 + VectorNumber["a"] # => (10 + 1⋅"a")
   #
   # @param other [Object]
   # @return [VectorNumber]
@@ -76,11 +76,11 @@ class VectorNumber
   #
   # @example
   #   VectorNumber[5] - 3 # => (2)
-  #   VectorNumber["a"].sub(VectorNumber["b"]) # => (1⋅'a' - 1⋅'b')
-  #   VectorNumber["a"] - "b" # => (1⋅'a' - 1⋅'b')
+  #   VectorNumber["a"].sub(VectorNumber["b"]) # => (1⋅"a" - 1⋅"b")
+  #   VectorNumber["a"] - "b" # => (1⋅"a" - 1⋅"b")
   # @example numeric types can be subtracted in reverse
   #   3 - VectorNumber[5] # => (-2)
-  #   3 - VectorNumber["a"] # => (3 - 1⋅'a')
+  #   3 - VectorNumber["a"] # => (3 - 1⋅"a")
   #
   # @param other [Object]
   # @return [VectorNumber]
@@ -99,13 +99,13 @@ class VectorNumber
   #
   # @example
   #   VectorNumber[5] * 2 # => (10)
-  #   VectorNumber["a", "b", 6].mult(2) # => (2⋅'a' + 2⋅'b' + 12)
-  #   VectorNumber["a"] * VectorNumber[2] # => (2⋅'a')
+  #   VectorNumber["a", "b", 6].mult(2) # => (2⋅"a" + 2⋅"b" + 12)
+  #   VectorNumber["a"] * VectorNumber[2] # => (2⋅"a")
   #   # Can't multiply by a non-real:
   #   VectorNumber["a"] * VectorNumber["b"] # RangeError
   # @example numeric types can be multiplied in reverse
   #   2 * VectorNumber[5] # => (10)
-  #   2 * VectorNumber["a"] # => (2⋅'a')
+  #   2 * VectorNumber["a"] # => (2⋅"a")
   #
   # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
   # @return [VectorNumber]
@@ -135,8 +135,8 @@ class VectorNumber
   #
   # @example
   #   VectorNumber[10] / 2 # => (5)
-  #   VectorNumber["a", "b", 6].quo(2) # => (1/2⋅'a' + 1/2⋅'b' + 3/1)
-  #   VectorNumber["a"] / VectorNumber[2] # => (1/2⋅'a')
+  #   VectorNumber["a", "b", 6].quo(2) # => (1/2⋅"a" + 1/2⋅"b" + 3/1)
+  #   VectorNumber["a"] / VectorNumber[2] # => (1/2⋅"a")
   #   # Can't divide by a non-real:
   #   VectorNumber["a"] / VectorNumber["b"] # RangeError
   # @example numeric types can be divided in reverse
@@ -172,8 +172,8 @@ class VectorNumber
   #
   # @example
   #   VectorNumber[10].fdiv(2) # => (5.0)
-  #   VectorNumber["a", "b", 6].fdiv(2) # => (0.5⋅'a' + 0.5⋅'b' + 3.0)
-  #   VectorNumber["a"].fdiv(VectorNumber[2]) # => (0.5⋅'a')
+  #   VectorNumber["a", "b", 6].fdiv(2) # => (0.5⋅"a" + 0.5⋅"b" + 3.0)
+  #   VectorNumber["a"].fdiv(VectorNumber[2]) # => (0.5⋅"a")
   #   # Can't divide by a non-real:
   #   VectorNumber["a"].fdiv(VectorNumber["b"]) # RangeError
   # @example reverse division may return non-vector results
@@ -200,8 +200,8 @@ class VectorNumber
   #
   # @example
   #   VectorNumber[10].div(3) # => (3)
-  #   VectorNumber["a"].div(2) # => (0⋅'a')
-  #   VectorNumber["a"].div(VectorNumber[2]) # => (0⋅'a')
+  #   VectorNumber["a"].div(2) # => (0)
+  #   VectorNumber["a"].div(VectorNumber[2]) # => (0)
   #   # Can't divide by a non-real:
   #   VectorNumber["a"].div(VectorNumber["b"]) # RangeError
   # @example numeric types can be divided in reverse
@@ -233,8 +233,8 @@ class VectorNumber
   #
   # @example
   #   VectorNumber[10] % 3 # => (1)
-  #   VectorNumber["a", "b", 6].modulo(2) # => (1⋅'a' + 1⋅'b')
-  #   -VectorNumber["a"] % VectorNumber[2] # => (1⋅'a')
+  #   VectorNumber["a", "b", 6].modulo(2) # => (1⋅"a" + 1⋅"b")
+  #   -VectorNumber["a"] % VectorNumber[2] # => (1⋅"a")
   #   # Can't divide by a non-real:
   #   VectorNumber["a"] % VectorNumber["b"] # RangeError
   # @example numeric types can be divided in reverse
@@ -271,8 +271,8 @@ class VectorNumber
   #
   # @example
   #   VectorNumber[10].divmod(3) # => [(3), (1)]
-  #   VectorNumber["a"].divmod(2) # => [(0⋅'a'), (1⋅'a')]
-  #   VectorNumber["a"].divmod(VectorNumber[2]) # => [(0⋅'a'), (1⋅'a')]
+  #   VectorNumber["a"].divmod(2) # => [(0), (1⋅"a")]
+  #   VectorNumber["a"].divmod(VectorNumber[2]) # => [(0), (1⋅"a")]
   #   # Can't divide by a non-real:
   #   VectorNumber["a"].divmod(VectorNumber["b"]) # RangeError
   # @example numeric types can be divided in reverse
@@ -299,8 +299,8 @@ class VectorNumber
   #
   # @example
   #   VectorNumber[10].remainder(3) # => (1)
-  #   VectorNumber["a"].remainder(2) # => (1⋅'a')
-  #   -VectorNumber["a"].remainder(VectorNumber[2]) # => (-1⋅'a')
+  #   VectorNumber["a"].remainder(2) # => (1⋅"a")
+  #   -VectorNumber["a"].remainder(VectorNumber[2]) # => (-1⋅"a")
   #   # Can't divide by a non-real:
   #   VectorNumber["a"].remainder(VectorNumber["b"]) # RangeError
   # @example numeric types can be divided in reverse

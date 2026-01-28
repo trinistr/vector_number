@@ -38,8 +38,8 @@ class VectorNumber
   # @example
   #   VectorNumber[5.39].truncate # => (5)
   #   VectorNumber[-5.35i].truncate # => (-5i)
-  #   VectorNumber[-5.35i, "i"].truncate # => (-5i + 1⋅'i')
-  #   VectorNumber[-5.35i, "i"].truncate(1) # => (-5.3i + 1⋅'i')
+  #   VectorNumber[-5.35i, "i"].truncate # => (-5i + 1⋅"i")
+  #   VectorNumber[-5.35i, "i"].truncate(1) # => (-5.3i + 1⋅"i")
   #   VectorNumber[-5.35i, "i"].truncate(-1) # => (0)
   #
   # @param digits [Integer]
@@ -55,9 +55,9 @@ class VectorNumber
   # @example
   #   VectorNumber[5.39].ceil # => (6)
   #   VectorNumber[-5.35i].ceil # => (-5i)
-  #   VectorNumber[-5.35i, "i"].ceil # => (-5i + 1⋅'i')
-  #   VectorNumber[-5.35i, "i"].ceil(1) # => (-5.3i + 1⋅'i')
-  #   VectorNumber[-5.35i, "i"].ceil(-1) # => (10⋅'i')
+  #   VectorNumber[-5.35i, "i"].ceil # => (-5i + 1⋅"i")
+  #   VectorNumber[-5.35i, "i"].ceil(1) # => (-5.3i + 1⋅"i")
+  #   VectorNumber[-5.35i, "i"].ceil(-1) # => (10⋅"i")
   #
   # @param digits [Integer]
   # @return [VectorNumber]
@@ -72,8 +72,8 @@ class VectorNumber
   # @example
   #   VectorNumber[5.39].floor # => (5)
   #   VectorNumber[-5.35i].floor # => (-6i)
-  #   VectorNumber[-5.35i, "i"].floor # => (-6i + 1⋅'i')
-  #   VectorNumber[-5.35i, "i"].floor(1) # => (-5.4i + 1⋅'i')
+  #   VectorNumber[-5.35i, "i"].floor # => (-6i + 1⋅"i")
+  #   VectorNumber[-5.35i, "i"].floor(1) # => (-5.4i + 1⋅"i")
   #   VectorNumber[-5.35i, "i"].floor(-1) # => (-10i)
   #
   # @param digits [Integer]
@@ -92,11 +92,11 @@ class VectorNumber
   # Other modes can not be specified.
   #
   # @example
-  #   VectorNumber[-4.5i, "i"].round(half: :up) # => (-5i + 1⋅'i')
-  #   VectorNumber[-4.5i, "i"].round(half: :even) # => (-4i + 1⋅'i')
-  #   VectorNumber[-5.5i, "i"].round(half: :even) # => (-6i + 1⋅'i')
-  #   VectorNumber[-5.5i, "i"].round(half: :down) # => (-5i + 1⋅'i')
-  #   VectorNumber[-5.35i, "i"].round(1) # => (-5.4i + 1⋅'i')
+  #   VectorNumber[-4.5i, "i"].round(half: :up) # => (-5i + 1⋅"i")
+  #   VectorNumber[-4.5i, "i"].round(half: :even) # => (-4i + 1⋅"i")
+  #   VectorNumber[-5.5i, "i"].round(half: :even) # => (-6i + 1⋅"i")
+  #   VectorNumber[-5.5i, "i"].round(half: :down) # => (-5i + 1⋅"i")
+  #   VectorNumber[-5.35i, "i"].round(1) # => (-5.4i + 1⋅"i")
   #   VectorNumber[-5.35i, "i"].round(-1) # => (-10i)
   #
   # @param digits [Integer]

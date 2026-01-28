@@ -93,7 +93,7 @@ class VectorNumber
   # Behavior of returning self or +nil+ is the same as +Numeric+'s.
   #
   # @example
-  #   VectorNumber["ab", "cd"].nonzero? # => (1⋅'ab' + 1⋅'cd')
+  #   VectorNumber["ab", "cd"].nonzero? # => (1⋅"ab" + 1⋅"cd")
   #   VectorNumber[].nonzero? # => nil
   #
   # @see #size
