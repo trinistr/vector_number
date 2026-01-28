@@ -38,6 +38,8 @@ StackProf.run(mode: :cpu, raw: true, out: "tmp/stackprof.dump") do
     ips.report("-@") { -V }
     ips.report("* 3") { V * 3 }
     ips.report("various (+)") { VectorNumber[Complex(12, -4556.2), V, "asdf", :asdsafsdf, "asdf"] }
+
+    ips.report("to_s") { V.to_s }
   end
 end
 
