@@ -403,6 +403,15 @@ RSpec.describe VectorNumber, :aggregate_failures do
           expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v * other] })
         end
       end
+
+      context "if multiplying a BigDecimal", :bigdecimal do
+        let(:value) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+        it "creates a new number, multiplying all coefficients by the other number" do
+          expect(result.units).to eq number.units
+          expect(result.to_a).to eq(number.to_a.map { |k, v| [k, v * value] })
+        end
+      end
     end
 
     context "when multiplying non-real by a non-real vector_number" do
