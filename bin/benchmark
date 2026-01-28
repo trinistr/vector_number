@@ -45,7 +45,7 @@ end
 `stackprof tmp/stackprof.dump --d3-flamegraph > tmp/flamegraph.html`
 puts "Flamegraph generated at tmp/flamegraph.html"
 
-# Baseline:
+# Before optimization of init paths (#13):
 #             real    120.248k (± 6.7%) i/s    (8.32 μs/i) -    600.984k in   5.026862s
 #        real-real    123.672k (± 6.2%) i/s    (8.09 μs/i) -    616.224k in   5.006814s
 #          complex    118.893k (± 4.8%) i/s    (8.41 μs/i) -    597.450k in   5.039148s
@@ -55,7 +55,6 @@ puts "Flamegraph generated at tmp/flamegraph.html"
 #               -@    235.569k (± 6.8%) i/s    (4.25 μs/i) -      1.192M in   5.088220s
 #              * 3    248.626k (± 6.2%) i/s    (4.02 μs/i) -      1.260M in   5.097549s
 #      various (+)    165.008k (± 4.9%) i/s    (6.06 μs/i) -    831.630k in   5.054346s
-
 # After optimization of init paths (#13):
 #             real    289.522k (± 3.4%) i/s    (3.45 μs/i) -      1.453M in   5.024349s
 #        real-real    329.834k (± 2.6%) i/s    (3.03 μs/i) -      1.666M in   5.054816s
@@ -66,3 +65,24 @@ puts "Flamegraph generated at tmp/flamegraph.html"
 #               -@    443.206k (± 5.1%) i/s    (2.26 μs/i) -      2.251M in   5.095046s
 #              * 3    487.009k (± 5.2%) i/s    (2.05 μs/i) -      2.464M in   5.077360s
 #      various (+)    234.189k (± 2.3%) i/s    (4.27 μs/i) -      1.172M in   5.008158s
+
+# Before removal of options (#26):
+#             real    231.082k (± 2.6%) i/s    (4.33 μs/i) -      1.163M in   5.037066s
+#        real-real    253.418k (± 5.6%) i/s    (3.95 μs/i) -      1.271M in   5.037368s
+#          complex    201.462k (± 2.5%) i/s    (4.96 μs/i) -      1.008M in   5.006450s
+#    string/symbol    313.463k (± 2.1%) i/s    (3.19 μs/i) -      1.586M in   5.062981s
+#   from vector []    257.227k (± 5.3%) i/s    (3.89 μs/i) -      1.286M in   5.013854s
+#  from vector new    628.928k (± 5.2%) i/s    (1.59 μs/i) -      3.170M in   5.057247s
+#               -@    308.831k (± 5.2%) i/s    (3.24 μs/i) -      1.565M in   5.083014s
+#              * 3    328.424k (± 5.7%) i/s    (3.04 μs/i) -      1.661M in   5.077397s
+#      various (+)    180.166k (± 6.1%) i/s    (5.55 μs/i) -    907.100k in   5.056962s
+# After removal of options (#26):
+#             real    302.025k (± 2.5%) i/s    (3.31 μs/i) -      1.532M in   5.074870s
+#        real-real    349.126k (± 2.6%) i/s    (2.86 μs/i) -      1.769M in   5.069765s
+#          complex    257.213k (± 3.4%) i/s    (3.89 μs/i) -      1.299M in   5.057227s
+#    string/symbol    435.402k (± 4.6%) i/s    (2.30 μs/i) -      2.176M in   5.011349s
+#   from vector []    335.146k (± 6.5%) i/s    (2.98 μs/i) -      1.670M in   5.009872s
+#  from vector new    720.398k (±10.1%) i/s    (1.39 μs/i) -      3.611M in   5.067640s
+#               -@    372.443k (± 6.5%) i/s    (2.68 μs/i) -      1.868M in   5.038103s
+#              * 3    391.317k (± 5.3%) i/s    (2.56 μs/i) -      1.982M in   5.079901s
+#      various (+)    223.269k (± 4.3%) i/s    (4.48 μs/i) -      1.116M in   5.009854s
