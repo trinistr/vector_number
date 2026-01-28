@@ -14,14 +14,9 @@ class VectorNumber
   type coefficients_list_type = list[coefficient_type]
   type each_value_type = [unit_type, coefficient_type]
 
-  type options_type = Hash[Symbol, untyped]
-
   # ---- Constants ----
 
   VERSION: String
-
-  KNOWN_OPTIONS: list[Symbol]
-  DEFAULT_OPTIONS: options_type
 
   UNIT: ^(Integer) -> Complex
   R: Complex
@@ -29,13 +24,12 @@ class VectorNumber
 
   # ---- Public methods ----
 
-  def self.[]: (*unit_type values, **options_type options) -> instance
+  def self.[]: (*unit_type values) -> instance
 
   def size: -> Integer
-  def options: -> options_type
 
   def initialize:
-    (?(units_list_type | plain_instance | instance)? values, ?options_type? options)
+    (?(units_list_type | plain_instance | instance)? values)
     ?{ (coefficient_type coefficient) -> coefficient_type }
     -> void
 
@@ -47,7 +41,6 @@ class VectorNumber
   private
 
   @size: Integer
-  @options: options_type
   @data: plain_instance
 
   def new: () { (coefficient_type value) -> coefficient_type } -> instance
@@ -68,9 +61,6 @@ class VectorNumber
   def add_vector_to_data: ((instance | plain_instance) vector) -> void
 
   def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
-
-  def save_options: (options_type? options, in_value_type values) -> void
-  def merge_options: (options_type base_options, options_type added_options) -> options_type
 
   def finalize_contents: () -> void
 end

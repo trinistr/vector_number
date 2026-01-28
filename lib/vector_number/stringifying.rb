@@ -24,8 +24,7 @@ class VectorNumber
   #   VectorNumber["s", 5].to_s # => "1⋅'s' + 5"
   # @example with :mult argument
   #   VectorNumber[5, "s"].to_s(mult: :asterisk) # => "5 + 1*'s'"
-  # @example :mult option specified for the vector
-  #   VectorNumber[5, "s", mult: :none].to_s # => "5 + 1's'"
+  #   VectorNumber[5, "s"].to_s(mult: "~~~") # => "5 + 1~~~'s'"
   #
   # @param mult [Symbol, String]
   #   text to use between coefficient and unit,
@@ -35,7 +34,7 @@ class VectorNumber
   #   if +mult+ is not a String and is not in {MULT_STRINGS}'s keys
   #
   # @since 0.1.0
-  def to_s(mult: options[:mult])
+  def to_s(mult: :dot)
     return "0" if zero?
 
     result = +""
@@ -63,7 +62,6 @@ class VectorNumber
   #
   # @since 0.1.0
   def inspect
-    # TODO: Probably make this independent of options.
     "(#{self})"
   end
 

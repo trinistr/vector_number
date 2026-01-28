@@ -69,49 +69,12 @@ RSpec.describe VectorNumber, :aggregate_failures do
         expect(result.first.units).to eq [other]
       end
     end
-
-    context "if number has non-default options" do
-      let(:number) { num(rand, rand.i, "coerce", mult: :cross) }
-
-      context "when other value is a VectorNumber" do
-        let(:other) { num(rand, mult: :blank) }
-
-        it "leaves options as-is for both" do
-          expect(result.first.options).to eq(mult: :blank)
-          expect(result.last.options).to eq(mult: :cross)
-        end
-      end
-
-      context "when other value is anything else" do
-        let(:other) { [-33, Object.new, "myself", :vector, 1.upto(2)].sample }
-
-        it "propagates options to the new vector" do
-          expect(result.first.options).to eq(mult: :cross)
-          expect(result.last.options).to eq(mult: :cross)
-        end
-      end
-    end
-  end
-
-  shared_examples "options propagation" do
-    context "when number has non-default options" do
-      let(:number) { num(rand.i, mult: "mult") }
-      let(:other) { num(rand * rand, mult: "ult") }
-
-      it "propagates first vector's options to the result" do
-        # `eq` would be mostly sufficient,
-        # but we also optimize options to be the same hash.
-        expect(result.options).to be number.options
-      end
-    end
   end
 
   describe "#-@" do
     subject(:result) { -number }
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
-
-    include_examples "options propagation"
 
     it "returns a new number with all coefficients negated" do
       expect(result.units).to eq number.units
@@ -125,8 +88,6 @@ RSpec.describe VectorNumber, :aggregate_failures do
     subject(:result) { number + other }
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
-
-    include_examples "options propagation"
 
     context "when adding a real number" do
       let(:other) { [rand(1.0..2.0), rand(1..10_000), rand(1r..100r)].sample }
@@ -262,8 +223,6 @@ RSpec.describe VectorNumber, :aggregate_failures do
     subject(:result) { number - other }
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
-
-    include_examples "options propagation"
 
     context "when subtracting a real number" do
       let(:other) { [rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
@@ -409,8 +368,6 @@ RSpec.describe VectorNumber, :aggregate_failures do
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
 
-    include_examples "options propagation"
-
     context "when multiplying by a real number" do
       let(:other) { [-rand(6.0..7.0), rand(13..10_000), rand(10r..100r)].sample }
 
@@ -551,8 +508,6 @@ RSpec.describe VectorNumber, :aggregate_failures do
     subject(:result) { number / other }
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
-
-    include_examples "options propagation"
     include_examples "invalid division"
 
     context "when dividing by a real number" do
@@ -652,8 +607,6 @@ RSpec.describe VectorNumber, :aggregate_failures do
     subject(:result) { number.fdiv(other) }
 
     let(:number) { [zero_number, real_number, composite_number, f_number].sample }
-
-    include_examples "options propagation"
     include_examples "invalid division"
 
     context "when dividing by a real number" do
@@ -811,8 +764,6 @@ RSpec.describe VectorNumber, :aggregate_failures do
 
     let(:number) { num(32.14, -123.45i, 128r / 9, :a, :a) }
     let(:other) { rand(-10.0..10.0) }
-
-    include_examples "options propagation"
     include_examples "invalid division"
 
     it "calls #div on each component" do
@@ -878,7 +829,6 @@ RSpec.describe VectorNumber, :aggregate_failures do
     let(:number) { num(1.5, -1i, "sshshs", :a, :a) * -3.5 }
     let(:other) { rand(-10.0..10.0) }
 
-    include_examples "options propagation"
     include_examples "invalid division"
 
     it "calls #% on each component" do
@@ -961,7 +911,6 @@ RSpec.describe VectorNumber, :aggregate_failures do
     let(:number) { num(1.5, -1i, "sshshs", :a, :a) * -3.5 }
     let(:other) { rand(-10.0..10.0) }
 
-    include_examples "options propagation"
     include_examples "invalid division"
 
     it "calls #% on each component" do

@@ -22,7 +22,6 @@ Vi = VectorNumber[1i]
 Va = VectorNumber["a"]
 Vs = VectorNumber[:s]
 Vpi = VectorNumber[:pi] * Math::PI
-Vopt = VectorNumber[8, mult: :invisible]
 # ((V1 * 3.3) + (Va * 4.5) - Vs)
 V = VectorNumber[3.3] + (4.5 * VectorNumber["a"]) - VectorNumber[:s]
 

@@ -49,8 +49,6 @@ class VectorNumber
   # and it has exactly the same units and coefficients, though possibly in a different order.
   # Additionally, `a.eql?(b)` implies `a.hash == b.hash`.
   #
-  # Note that {#options} are not considered for equality.
-  #
   # @example
   #   VectorNumber["a", "b", "c"].eql? VectorNumber["c", "b", "a"] # => true
   #   VectorNumber[3.13].eql? 3.13 # => false
@@ -72,11 +70,10 @@ class VectorNumber
   # Generate an Integer hash value for self.
   #
   # Hash values are stable during runtime, but not between processes.
-  # Options are disregarded for hash calculation.
   #
   # @example
   #   VectorNumber["b", "a"].hash # => 3081872088394655324
-  #   VectorNumber["a", "b", mult: :cross].hash # => 3081872088394655324
+  #   VectorNumber["a", "b"].hash # => 3081872088394655324
   #   VectorNumber["b", "c"].hash # => -1002381358514682371
   #
   # @return [Integer]

@@ -5,7 +5,6 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
 
   let(:arguments) { [value] }
   let(:value) { nil }
-  let(:options) { nil }
   let(:block) { nil }
 
   context "when initializing with nil" do
@@ -17,23 +16,15 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
   context "when initializing with a vector number" do
     let(:value) { num("you", "are", "cute") }
 
-    it "copies values and options from it" do
+    it "copies values from it" do
       expect(new_number).to be_a described_class
       expect(new_number).to be_frozen
       expect(new_number.to_a).to contain_exactly ["you", 1], ["are", 1], ["cute", 1]
-      expect(new_number.options).to be value.options
     end
   end
 
   context "when initializing with an array" do
     let(:value) { [1, 0.25r, 2.5ri, "a", "a", :a, 0, -0.5, Complex(1, 2)] }
-
-    it "creates a new VectorNumber with default options" do
-      expect(new_number).to be_a described_class
-      expect(new_number).to be_frozen
-      expect(new_number.to_a).to contain_exactly [1, 1.75r], [2, 4.5r], [:a, 1], ["a", 2]
-      expect(new_number.options).to eq described_class::DEFAULT_OPTIONS
-    end
 
     it "adds everything together to form a vector" do
       expect(new_number).not_to be_zero
@@ -66,16 +57,6 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
         expect(new_number).to eql num(18.25r, 4.1i, "s", "s")
       end
     end
-
-    context "when array contains vector numbers with options" do
-      let(:value) { [0.25r, num(15r, Complex(3, 4.1), "s", mult: :cross), num("s", mult: "blank")] }
-
-      it "copies options from the first vector encountered" do
-        expect(new_number.size).to eq 3
-        expect(new_number).to eql num(18.25r, 4.1i, "s", "s")
-        expect(new_number.options).to eq({ mult: :cross })
-      end
-    end
   end
 
   context "when initializing with a hash" do
@@ -87,7 +68,6 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
       expect(new_number.to_a).to contain_exactly(
         [1, -123], ["u r", 49_153], [Encoding::UTF_8, 1.337]
       )
-      expect(new_number.options).to eq described_class::DEFAULT_OPTIONS
     end
 
     context "when it contains non-real values" do
@@ -137,28 +117,6 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
 
       it "raises RangeError" do
         expect { new_number }.to raise_error RangeError
-      end
-    end
-  end
-
-  context "when initializing with explicit options" do
-    subject(:new_number) { described_class.new(value, options) }
-
-    let(:options) { { mult: :asterisk, wrong: :option } }
-
-    context "when values are an Array" do
-      subject(:value) { ["1.2", Complex(3, 12), :f] }
-
-      it "sets known options" do
-        expect(new_number.options).to eq({ mult: :asterisk })
-      end
-    end
-
-    context "when values are a VectorNumber" do
-      subject(:value) { num("1.2", Complex(3, 12), :f) }
-
-      it "sets known options" do
-        expect(new_number.options).to eq({ mult: :asterisk })
       end
     end
   end

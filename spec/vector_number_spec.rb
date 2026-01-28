@@ -14,16 +14,6 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(number.to_a).to contain_exactly [1, 5], ["a", 1]
       expect(number).to be_frozen
     end
-
-    context "when options are passed" do
-      subject(:number) { described_class["1.2", Complex(3, 12), :f, **options] }
-
-      let(:options) { { mult: :asterisk, wrong: :option } }
-
-      it "sets known options" do
-        expect(number.options).to eq({ mult: :asterisk })
-      end
-    end
   end
 
   describe "#size" do
@@ -33,13 +23,6 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(num(4i).size).to be 1
       expect(num("1", 2, 3, 4).size).to be 2
       expect(num(*("a".."z").to_a).size).to be 26
-    end
-  end
-
-  describe "#options" do
-    it "returns options for the number" do
-      expect(num.options).to eq described_class::DEFAULT_OPTIONS
-      expect(num(mult: :space).options).to eq({ mult: :space })
     end
   end
 

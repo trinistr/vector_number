@@ -14,6 +14,20 @@ RSpec.describe VectorNumber do
       it { is_expected.to be true }
     end
 
+    context "when comparing to a random object" do
+      let(:compared_number) { num([13, 8.7.i, "oui", "ya", Object.new].sample(3)) }
+      let(:other) { Object.new }
+
+      it { is_expected.to be false }
+    end
+
+    context "when comparing to a non-numeric object that is superficially similar" do
+      let(:compared_number) { num([13, 8.7, "oui", "ya"]) }
+      let(:other) { [13, 8.7, "oui", "ya"] }
+
+      it { is_expected.to be false }
+    end
+
     context "with a simple number" do
       let(:compared_number) { real_number }
 
@@ -236,7 +250,7 @@ RSpec.describe VectorNumber do
     subject(:hash) { composite_number.hash }
 
     it "is equal for equal vectors" do
-      expect(hash).to eq num(5, "y", :a, mult: :invisible).hash
+      expect(hash).to eq num(2, "y", :a, 3).hash
     end
 
     it "is usually not equal for different vectors" do
