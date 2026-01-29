@@ -201,13 +201,14 @@ end
 class VectorNumber
   MULT_STRINGS: Hash[Symbol, String]
 
-  def to_s: (?mult: (Symbol | String)) -> String
+  def to_s: (?mult: (Symbol | String)) { (unit_type, coefficient_type, ?Integer index, ?String operator) -> String } -> String
 
   def inspect: () -> String
 
   private
 
   def build_string: (String operator) -> String
+                  | (String operator) { (unit_type, coefficient_type, ?Integer index, ?String operator) -> String } -> String
 
   def value_to_s: (unit_type unit, coefficient_type coefficient, String operator) -> String
 end

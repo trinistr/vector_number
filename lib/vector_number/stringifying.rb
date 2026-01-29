@@ -19,29 +19,43 @@ class VectorNumber
 
   # Return string representation of the vector.
   #
+  # An optional block can be used to provide customized substrings
+  # for each unit and coefficient pair.
+  # Care needs to be taken in handling +VectorNumber::R+ and +VectorNumber::I+ units.
+  #
   # @example
   #   VectorNumber[5, "s"].to_s # => "5 + 1⋅\"s\""
   #   VectorNumber["s", 5].to_s # => "1⋅\"s\" + 5"
   # @example with :mult argument
   #   VectorNumber[5, :s].to_s(mult: :asterisk) # => "5 + 1*s"
-  #   VectorNumber[5, :s].to_s(mult: "~~~") # => "5 + 1~~~s"
+  #   (-VectorNumber[5, :s]).to_s(mult: "~~~") # => "-5 - 1~~~s"
+  # @example with a block
+  #   VectorNumber[5, :s].to_s { |k, v| "#{format("%+.0f", v)}%#{k}" } # => "+5%1+1%s"
+  #   VectorNumber[5, :s].to_s(mult: :cross) { |k, v, i, op|
+  #     "#{',' unless i.zero?}#{v}#{op+k.to_s unless k == VectorNumber::R}"
+  #   } # => "5,1×s"
   #
   # @param mult [Symbol, String]
   #   text to use between coefficient and unit,
   #   can be one of the keys in {MULT_STRINGS} or an arbitrary string
+  # @yieldparam unit [Object]
+  # @yieldparam coefficient [Numeric]
+  # @yieldparam index [Integer]
+  # @yieldparam operator [String]
+  # @yieldreturn [String] a string for this unit and coefficient
   # @return [String]
   # @raise [ArgumentError]
   #   if +mult+ is not a String and is not in {MULT_STRINGS}'s keys
   #
   # @since 0.1.0
-  def to_s(mult: :dot)
+  def to_s(mult: :dot, &block)
     if !mult.is_a?(String) && !MULT_STRINGS.key?(mult)
       raise ArgumentError, "unknown key #{mult.inspect}", caller
     end
     return "0" if zero?
 
     operator = mult.is_a?(String) ? mult : MULT_STRINGS[mult]
-    build_string(operator)
+    build_string(operator, &block)
   end
 
   # Return string representation of the vector.
@@ -67,12 +81,16 @@ class VectorNumber
   def build_string(operator)
     result = +""
     each_with_index do |(unit, coefficient), index|
-      if index.zero?
-        result << "-" if coefficient.negative?
+      if block_given?
+        result << (yield unit, coefficient, index, operator)
       else
-        result << (coefficient.positive? ? " + " : " - ")
+        if index.zero?
+          result << "-" if coefficient.negative?
+        else
+          result << (coefficient.positive? ? " + " : " - ")
+        end
+        result << value_to_s(unit, coefficient.abs, operator)
       end
-      result << value_to_s(unit, coefficient.abs, operator)
     end
     result
   end

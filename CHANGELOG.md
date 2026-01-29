@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
+**Added**
+- Block parameter in `#to_s`, allowing to fully customize string representation.
+
 **Changed**
 - [🍄 BREAKING] Removed options in their entirety. The only way to specify multiplication symbol is in call to `#to_s`.
   - Constructors' signatures now include `**nil` to prevent mistakes.
