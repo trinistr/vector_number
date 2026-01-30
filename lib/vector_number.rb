@@ -151,11 +151,13 @@ class VectorNumber
   # Create new VectorNumber from an array of +values+,
   # possibly modifying coefficients with a block.
   #
+  # Using +VectorNumber.new([values...])+ directly is more efficient than +VectorNumber[values...]+.
+  #
   # +values+ can be:
   # - an array of values (see {.[]});
   # - a VectorNumber to copy;
   # - a hash in the format returned by {#to_h};
-  # - +nil+ to specify a 0-dimensional vector (same as an empty array or hash).
+  # - +nil+ to specify a 0-sized vector (same as an empty array or hash).
   #
   # Using a hash as +values+ is an advanced technique which allows to quickly
   # construct a VectorNumber with desired units and coefficients,

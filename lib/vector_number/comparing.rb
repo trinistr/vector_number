@@ -67,8 +67,6 @@ class VectorNumber
 
   # Generate an Integer hash value for self.
   #
-  # Hash values are stable during runtime, but not between processes.
-  #
   # @example
   #   VectorNumber["b", "a"].hash # => 3081872088394655324
   #   VectorNumber["a", "b"].hash # => 3081872088394655324

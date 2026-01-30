@@ -18,12 +18,7 @@ Features:
 - Enjoy a mix of vector-, complex- and polynomial-like behavior at appropriate times.
 - No dependencies, no extensions. It just works!
 
-Similar projects:
-- [vector_space](https://github.com/tomstuart/vector_space) aims to provide typed vector spaces with limited dimensions and nice formatting;
-- [named_vector](https://rubygems.org/gems/named_vector) provides simple vectors with named dimensions;
-- various quaternion libraries like [quaternion](https://github.com/tanahiro/quaternion) or [rmath3d](https://github.com/vaiorabbit/rmath3d).
-
-However, none of them have been updated in *years*.
+Other people have created some similar gems over the years, like [vector_space](https://github.com/tomstuart/vector_space) or [named_vector](https://rubygems.org/gems/named_vector) but they don't have the characterics that I wanted, and none of them have been updated in *years*.
 
 ## Table of contents
 
@@ -31,10 +26,12 @@ However, none of them have been updated in *years*.
   - [Ruby engine support status](#ruby-engine-support-status)
 - [Usage](#usage)
   - [Basics](#basics)
+    - [Getting values back](#getting-values-back)
   - [(Somewhat) advanced usage](#somewhat-advanced-usage)
     - [Frozenness](#frozenness)
     - [Numerical behavior](#numerical-behavior)
     - [Enumeration and hash-like behavior](#enumeration-and-hash-like-behavior)
+- [Conceptual basis](#conceptual-basis)
 - [Development](#development)
 - [Contributing](#contributing)
 - [License](#license)
@@ -54,8 +51,8 @@ gem "vector_number"
 ### Ruby engine support status
 
 VectorNumber is developed on MRI (CRuby) but should work on other engines too.
-- TruffleRuby: there are some minor differences in behavior, but otherwise works as expected.
-- JRuby: significant problems, but may work, currently not tested.
+- TruffleRuby: minor differences in behavior, but otherwise works as expected.
+- JRuby: minor differences in behavior, but otherwise works as expected.
 - Other engines: untested, but should work, depending on compatibility with MRI.
 
 ## Usage
@@ -66,12 +63,12 @@ VectorNumber is developed on MRI (CRuby) but should work on other engines too.
 
 ### Basics
 
-VectorNumbers are mostly useful for tallying up heterogeneous objects:
+VectorNumbers are mostly useful for summing up heterogeneous objects:
 ```ruby
-sum = [4, "death", "death", 13, nil].reduce(VectorNumber[], :+)
+sum = VectorNumber[4] + "death" + "death" + nil
 sum # => (17 + 2⋅"death" + 1⋅)
-sum.to_h # => {1=>17, "death"=>2, nil=>1}
-sum.to_a # => [[1, 17], ["death", 2], [nil, 1]]
+sum.to_h # => {unit/1 => 17, "death" => 2, nil => 1}
+sum.to_a # => [[unit/1, 17], ["death", 2], [nil, 1]]
 
 # Alternatively, the same result can be equivalently (and more efficiently)
 # achieved by passing all values to a constructor:
@@ -88,9 +85,28 @@ VectorNumber["string", "string", "string", "str"] # => (3⋅"string" + 1⋅"str"
 # Multiply and divide by any real number:
 VectorNumber[:s] * 2 + VectorNumber["string"] * 0.3 # => (2⋅s + 0.3⋅"string")
 VectorNumber[:s] / VectorNumber[3] # => (1/3⋅s)
-# Multiplication even works when the left operand is a regular number:
-1/3r * VectorNumber[[]] # => (1/3⋅[])
 ```
+
+Ruby numbers rely on `#coerce` to promote values to a common type. This allows using regular numbers as first operand in arithmetic operations:
+```ruby
+2 + VectorNumber["string"] # => (2 + 1⋅"string")
+1/3r * VectorNumber[[]] # => (1/3⋅[])
+13 / VectorNumber[2] # => (13/2)
+```
+
+> [!NOTE]
+> VectorNumbers don't perform "integer division" to prevent unexpected loss of precision. `#div` and rounding methods can achieve this if required.
+
+#### Getting values back
+The simplest way to get a value for a specific unit is to use the `#[]` method:
+```ruby
+VectorNumber["string", "string", "string", "str"]["string"] # => 3
+VectorNumber["string", "string", "string", "str"]["str"] # => 1
+VectorNumber["string", "string", "string", "str"]["nonexistent"] # => 0
+```
+
+> [!NOTE]
+> Accessing a unit that doesn't exist returns 0, not `nil` as you might expect.
 
 ### (Somewhat) advanced usage
 
@@ -118,8 +134,17 @@ VectorNumbers implement `each` (`each_pair`) in the same way as Hash does, allow
 
 There are also the usual `[]`, `unit?` (`key?`), `units` (`keys`), `coefficients` (`values`) methods. `to_h` and `to_a` can be used if a regular Hash or Array is needed.
 
-> [!NOTE]
-> Be aware that `[]` always returns `0` for "missing" units. `unit?` will return `false` for them.
+## Conceptual basis
+
+VectorNumbers are based on the concept of a vector space over the field of real numbers (real vector space). In the case of VectorNumber, the dimensionality of the vector space is countably infinite, as most distinct objects in Ruby signify a separate dimension.
+
+For most dimensions, an object is that distinct dimension's unit. There are two exceptions currently: real unit (1) and imaginary unit (i) which define the real and imaginary dimensions and subsume all real and complex numbers. A VectorNumber can not be a unit itself. Distinction of objects is determined by `eql?`, same as for Hash.
+
+Length of a VectorNumber in any given dimension is given by a real number, called its coefficient. All dimensions are linearly independent — change in one coefficient does not affect any other coefficient. There is no distinction between a dimension explicitly specified as having a 0 coefficient (or arriving at 0 through calculation) and a dimension not specified at all.
+
+This might be more easily imagined as a geometric vector. For example, this is a graphic representation of a vector `3 * VectorNumber[1] + 2 * VectorNumber[1i] + 3 * VectorNumber["string"] + 4.5 * VectorNumber[[1,2,3]]` in the vector space:
+
+![Vector space](doc/vector_space.svg)
 
 ## Development
 

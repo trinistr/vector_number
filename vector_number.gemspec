@@ -34,5 +34,5 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { File.basename(_1) }
 
   spec.rdoc_options = ["--main", "README.md"]
-  spec.extra_rdoc_files = ["README.md"]
+  spec.extra_rdoc_files = ["README.md", "doc/vector_space.svg"]
 end

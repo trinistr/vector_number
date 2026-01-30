@@ -5,7 +5,10 @@ class VectorNumber
   #
   # Mostly modelled after {::Complex}.
 
-  # Whether this VectorNumber can be considered strictly numeric — real or complex.
+  # Returns +true+ if all non-zero dimensions in this VectorNumber are numeric (real or complex),
+  # and +false+ otherwise.
+  #
+  # This is exactly the opposite of {#nonnumeric?}.
   #
   # @example
   #   VectorNumber[2].numeric? # => true
@@ -28,7 +31,10 @@ class VectorNumber
       (0...dimensions).count { (unit = NUMERIC_UNITS[_1]) && @data[unit].nonzero? } == size
   end
 
-  # Whether this VectorNumber contains any non-numeric parts.
+  # Returns +true+ if this VectorNumber contains any non-zero dimensions with non-numeric units,
+  # and +false+ otherwise.
+  #
+  # This is exactly the opposite of {#numeric?}.
   #
   # @example
   #   VectorNumber[2].nonnumeric? # => false

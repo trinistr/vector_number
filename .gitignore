@@ -3,7 +3,6 @@
 /.yardoc
 /_yardoc/
 /coverage/
-/doc/
 /pkg/
 /spec/reports/
 /tmp/
@@ -11,3 +10,6 @@
 # remote rubocop configuration
 .rubocop-*yml
 rubocop-*yml
+
+/doc/*
+!/doc/vector_space.svg
