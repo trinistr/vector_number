@@ -85,14 +85,18 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
 
     it "applies transformation before compaction" do
       expect(new_number.size).to eq 3
-      expect(new_number).to contain_exactly [1, 1.5r], [2, 1], ["s", 2]
+      expect(new_number).to contain_exactly(
+        [described_class::R, 1.5r], [described_class::I, 1], ["s", 2]
+      )
     end
 
     context "when transformation returns real vector number" do
       let(:block) { ->(v) { num(v + 1) } }
 
       it "works exactly the same as with a normal real number" do
-        expect(new_number).to contain_exactly [1, 1.5r], [2, 1], ["s", 2]
+        expect(new_number).to contain_exactly(
+          [described_class::R, 1.5r], [described_class::I, 1], ["s", 2]
+        )
       end
     end
 

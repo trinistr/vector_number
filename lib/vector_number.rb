@@ -73,11 +73,14 @@
 # - {#to_h}: convert to Hash
 #
 # **Miscellaneous** **methods**
-# - {#size}: number of non-zero coefficients
-# - {#dup}/{#+}: return self
-# - {#clone}: return self
+# - {.numeric_unit?}: check if a unit represents a numeric dimension
+# - {#size}: number of non-zero dimensions
 # - {#to_s}: return string representation suitable for printing
 # - {#inspect}: return string representation suitable for display
+# - {#dup}/{#+}: return self
+# - {#clone}: return self
+#
+# @since 0.1.0
 class VectorNumber
   require_relative "vector_number/comparing"
   require_relative "vector_number/converting"
@@ -88,18 +91,24 @@ class VectorNumber
   require_relative "vector_number/stringifying"
   require_relative "vector_number/version"
 
-  # Get a unit for +n+th numeric dimension, where 1 is real, 2 is imaginary.
+  require_relative "vector_number/special_unit"
+
+  # List of special numeric unit constants.
   #
-  # @since 0.2.0
-  UNIT = ->(n) { n }.freeze
-  # Constant for real unit.
+  # @since <<next>>
+  NUMERIC_UNITS = [SpecialUnit.new("1", "").freeze, SpecialUnit.new("i", "i").freeze].freeze
+  # Constant for real unit (1).
   #
-  # @since 0.2.0
-  R = UNIT[1]
-  # Constant for imaginary unit.
+  # Its string representation is an empty string.
   #
-  # @since 0.1.0
-  I = UNIT[2]
+  # @since <<next>>
+  R = NUMERIC_UNITS[0]
+  # Constant for imaginary unit (i).
+  #
+  # Its string representation is "i".
+  #
+  # @since <<next>>
+  I = NUMERIC_UNITS[1]
 
   # @group Creation
   # Create new VectorNumber from a list of values.
@@ -118,6 +127,22 @@ class VectorNumber
     new(values)
   end
   # @endgroup
+
+  # Check if an object is a unit representing a numeric dimension
+  # (real or imaginary unit).
+  #
+  # @example
+  #   VectorNumber.numeric_unit?(VectorNumber::R) # => true
+  #   VectorNumber.numeric_unit?(VectorNumber::I) # => true
+  #   VectorNumber.numeric_unit?(:i) # => false
+  #
+  # @param unit [Object]
+  # @return [Boolean]
+  #
+  # @since 0.6.0
+  def self.numeric_unit?(unit)
+    NUMERIC_UNITS.include?(unit)
+  end
 
   # Number of non-zero dimensions.
   #

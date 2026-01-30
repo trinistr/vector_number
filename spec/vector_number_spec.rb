@@ -11,8 +11,20 @@ RSpec.describe VectorNumber, :aggregate_failures do
 
     it "creates a new VectorNumber" do
       expect(number).to be_a described_class
-      expect(number.to_a).to contain_exactly [1, 5], ["a", 1]
+      expect(number.to_a).to contain_exactly [described_class::R, 5], ["a", 1]
       expect(number).to be_frozen
+    end
+  end
+
+  describe ".numeric_unit?" do
+    it "returns true for special numeric units" do
+      expect(described_class.numeric_unit?(described_class::R)).to be true
+      expect(described_class.numeric_unit?(described_class::I)).to be true
+    end
+
+    it "returns false for regular units" do
+      expect(described_class.numeric_unit?(:a)).to be false
+      expect(described_class.numeric_unit?(1)).to be false
     end
   end
 

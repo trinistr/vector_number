@@ -43,9 +43,11 @@ RSpec.describe VectorNumber do
       end
 
       include_examples "yields values", for_number: :zero_number, values: []
-      include_examples "yields values", for_number: :real_number, values: [[1, 1.5r]]
-      include_examples "yields values", for_number: :composite_number,
-                                        values: [["y", 1], [:a, 1], [1, 5]]
+      include_examples "yields values",
+                       for_number: :real_number, values: [[described_class::R, 1.5r]]
+      include_examples "yields values",
+                       for_number: :composite_number,
+                       values: [["y", 1], [:a, 1], [described_class::R, 5]]
     end
   end
 
@@ -65,8 +67,9 @@ RSpec.describe VectorNumber do
     end
 
     include_examples "returns units", for_number: :zero_number, values: []
-    include_examples "returns units", for_number: :real_number, values: [1]
-    include_examples "returns units", for_number: :composite_number, values: [1, "y", :a]
+    include_examples "returns units", for_number: :real_number, values: [described_class::R]
+    include_examples "returns units",
+                     for_number: :composite_number, values: [described_class::R, "y", :a]
   end
 
   include_examples "has an alias", :keys, :units
@@ -100,15 +103,15 @@ RSpec.describe VectorNumber do
     context "without a block" do
       it "returns plain vector representation without calling #each" do
         # Can't actually test for not calling #each, as objects are frozen and can't be mocked.
-        expect(hash).to eq(1 => 5, "y" => 1, :a => 1)
+        expect(hash).to eq(described_class::R => 5, "y" => 1, :a => 1)
       end
     end
 
     context "with a block" do
-      let(:block) { ->(u, v) { [u, u.is_a?(Numeric) ? v : v * 0.5] } }
+      let(:block) { ->(u, v) { [u, described_class.numeric_unit?(u) ? v : v * 0.5] } }
 
       it "returns transformed plain vector representation" do
-        expect(hash).to eq(1 => 5, "y" => 0.5, :a => 0.5)
+        expect(hash).to eq(described_class::R => 5, "y" => 0.5, :a => 0.5)
       end
     end
   end

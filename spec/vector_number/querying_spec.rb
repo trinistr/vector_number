@@ -9,7 +9,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
 
   describe "#numeric?" do
     context "when dimensions = 0" do
-      it "considers numbers which contain no parts to be numeric" do
+      it "considers numbers which contain no parts (0) to be numeric" do
         expect(null_number.numeric?(0)).to be true
         expect(zero_number.numeric?(0)).to be true
         expect(real_number.numeric?(0)).to be false
@@ -19,7 +19,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     context "when dimensions = 1" do
-      it "considers numbers which contain only real part to be numeric" do
+      it "considers numbers which contain only real part or 0 to be numeric" do
         expect(null_number.numeric?(1)).to be true
         expect(zero_number.numeric?(1)).to be true
         expect(real_number.numeric?(1)).to be true
@@ -46,6 +46,10 @@ RSpec.describe VectorNumber, :aggregate_failures do
         expect(imaginary_number.numeric?(3)).to be true
         expect(composite_number.numeric?(3)).to be false
       end
+
+      it "does not consider nil to be a numeric dimension" do
+        expect(num(nil).numeric?(3)).to be false
+      end
     end
 
     context "when dimensions < 0" do
@@ -57,7 +61,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
 
   describe "#nonnumeric?" do
     context "when dimensions = 0" do
-      it "considers numbers which contain any parts to be non-numeric" do
+      it "considers numbers which contain any parts (non-0) to be non-numeric" do
         expect(null_number.nonnumeric?(0)).to be false
         expect(zero_number.nonnumeric?(0)).to be false
         expect(real_number.nonnumeric?(0)).to be true
@@ -77,7 +81,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     context "when dimensions = 2" do
-      it "considers number which contain non-numeric units to be non-numeric" do
+      it "considers numbers which contain non-numeric units to be non-numeric" do
         expect(null_number.nonnumeric?(2)).to be false
         expect(zero_number.nonnumeric?(2)).to be false
         expect(real_number.nonnumeric?(2)).to be false
@@ -87,12 +91,16 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     context "when dimensions > 2" do
-      it "considers number which contain non-numeric units to be non-numeric" do
+      it "considers numbers which contain non-numeric units to be non-numeric" do
         expect(null_number.nonnumeric?(3)).to be false
         expect(zero_number.nonnumeric?(3)).to be false
         expect(real_number.nonnumeric?(3)).to be false
         expect(imaginary_number.nonnumeric?(3)).to be false
         expect(composite_number.nonnumeric?(3)).to be true
+      end
+
+      it "considers nil to be a non-numeric dimension" do
+        expect(num(nil).nonnumeric?(3)).to be true
       end
     end
 

@@ -16,7 +16,7 @@ class VectorNumber
   # @param dimensions [Integer] number of dimensions to consider "numeric"
   #   - 0 — zero
   #   - 1 — real number
-  #   - 2 — complex number, etc.
+  #   - 2 — complex number
   # @return [Boolean]
   # @raise [ArgumentError] if +dimensions+ is negative
   #
@@ -24,7 +24,8 @@ class VectorNumber
   def numeric?(dimensions = 2)
     raise ArgumentError, "`dimensions` must be non-negative" unless dimensions >= 0
 
-    size <= dimensions && (1..dimensions).count { @data[UNIT[_1]].nonzero? } == size
+    size <= dimensions &&
+      (0...dimensions).count { (unit = NUMERIC_UNITS[_1]) && @data[unit].nonzero? } == size
   end
 
   # Whether this VectorNumber contains any non-numeric parts.

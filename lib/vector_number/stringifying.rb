@@ -19,9 +19,10 @@ class VectorNumber
 
   # Return string representation of the vector.
   #
-  # An optional block can be used to provide customized substrings
+  # An optional block can be supplied to provide customized substrings
   # for each unit and coefficient pair.
   # Care needs to be taken in handling +VectorNumber::R+ and +VectorNumber::I+ units.
+  # {.numeric_unit?} can be used to check if a particular unit needs special handling.
   #
   # @example
   #   VectorNumber[5, "s"].to_s # => "5 + 1⋅\"s\""
@@ -82,7 +83,7 @@ class VectorNumber
     result = +""
     each_with_index do |(unit, coefficient), index|
       if block_given?
-        result << (yield unit, coefficient, index, operator)
+        result << (yield unit, coefficient, index, operator).to_s
       else
         if index.zero?
           result << "-" if coefficient.negative?
@@ -100,11 +101,8 @@ class VectorNumber
   # @param operator [String]
   # @return [String]
   def value_to_s(unit, coefficient, operator)
-    case unit
-    when R
-      coefficient.to_s
-    when I
-      "#{coefficient}i"
+    if NUMERIC_UNITS.include?(unit)
+      "#{coefficient}#{unit}"
     else
       unit = unit.inspect if unit.is_a?(String)
       "#{coefficient}#{operator}#{unit}"

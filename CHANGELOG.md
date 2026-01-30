@@ -8,11 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Next]
 
 **Added**
-- Block parameter in `#to_s`, allowing to fully customize string representation.
+- Block parameter in `#to_s`, allowing to customize string conversion.
+- `VectorNumber::SpecialUnit` class for representing special numerical units. It mostly exists to provide its `#to_s` method.
+  - [🍄 BREAKING] `R` and `I` constants are now instances of `SpecialUnit` class.
+- `.numeric_unit?` method and `NUMERIC_UNITS` constant for checking units.
 
-**Changed**
+**Removed**
 - [🍄 BREAKING] Removed options in their entirety. The only way to specify multiplication symbol is in call to `#to_s`.
   - Constructors' signatures now include `**nil` to prevent mistakes.
+- `UNIT` constant. Use `NUMERIC_UNITS` instead (though you shouldn't anyway).
+
+**Changed**
 - `VectorNumber#to_s` now calls `#inspect` on Strings instead of just using `String#to_s`. This prevents issues with embedded quotation marks.
   - As a a side effect, String units are now surrounded by double quotes, not single.
 
@@ -27,7 +33,7 @@ This update changes code structure, aligning it more closely with the intended d
 - Update documentation. Add a listing of all methods and general information to class's documentation. Group methods by type.
 
 **Fixed**
-- `eql?` now correctly tests equality using `eql?`, not `==`. `v1.eql?(v2) -> v1.hash == v2.hash` should now always hold.
+- `#eql?` now correctly tests equality using `eql?`, not `==`. `v1.eql?(v2) -> v1.hash == v2.hash` should now always hold.
 
 [Compare v0.4.3...v0.5.0](https://github.com/trinistr/vector_number/compare/v0.4.3...v0.5.0)
 
@@ -165,15 +171,15 @@ README was updated to reflect this change.
 - Add `#*` and `#/` for working with real numbers.
 - Add `#fdiv`, `#truncate`, `#nonnumeric?` and `#integer?`.
 
+**Removed**
+- Remove `#to_str`, as VectorNumber is not a String-like object.
+  - Due to this, `Kernel.BigDecimal` no longer works without refinements.
+
 **Changed**
 - Allow to use fully real VectorNumbers as real numbers.
 
 **Fixed**
 - Fix reversed result in refined `#<=>`.
-
-**Removed**
-- Remove `#to_str`, as VectorNumber is not a String-like object.
-- Due to the above, `Kernel.BigDecimal` no longer works without refinements.
 
 [Compare v0.2.0...v0.2.1](https://github.com/trinistr/vector_number/compare/v0.2.0...v0.2.1)
 

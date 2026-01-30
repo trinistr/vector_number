@@ -18,13 +18,15 @@ class VectorNumber
 
   VERSION: String
 
-  UNIT: ^(Integer) -> Complex
-  R: Complex
-  I: Complex
+  NUMERIC_UNITS: list[SpecialUnit]
+  R: SpecialUnit
+  I: SpecialUnit
 
   # ---- Public methods ----
 
   def self.[]: (*unit_type values) -> instance
+
+  def self.numeric_unit?: (unit_type unit) -> bool
 
   def size: -> Integer
 
@@ -224,5 +226,16 @@ class VectorNumber
       def BigDecimal: (untyped value, exception: bool) -> BigDecimal?
                     | (untyped value, Integer ndigits, exception: bool) -> BigDecimal?
     end
+  end
+end
+
+class VectorNumber
+  # Class for representing special numerical units.
+  class SpecialUnit
+    def initialize: (Object unit, String text) -> void
+
+    def to_s: () -> String
+    
+    def inspect: () -> String
   end
 end

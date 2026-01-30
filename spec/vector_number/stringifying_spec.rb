@@ -80,7 +80,7 @@ RSpec.describe VectorNumber do
         let(:block) { proc { |unit, coefficient| "#{coefficient}#{unit}," } }
 
         it "uses the block to format each unit-coefficient pair" do
-          expect(string).to eq "1y,1a,-311,"
+          expect(string).to eq "1y,1a,-31,"
         end
       end
 
@@ -88,7 +88,7 @@ RSpec.describe VectorNumber do
         let(:block) { proc { |unit, coefficient, index| "#{index}:#{coefficient}#{unit}," } }
 
         it "allows to use index for extra formatting" do
-          expect(string).to eq "0:1y,1:1a,2:-311,"
+          expect(string).to eq "0:1y,1:1a,2:-31,"
         end
       end
 
@@ -98,15 +98,15 @@ RSpec.describe VectorNumber do
         end
 
         it "allows to use defined multiplication operator" do
-          expect(string).to eq "0:1⋅y,1:1⋅a,2:-31⋅1,"
+          expect(string).to eq "0:1⋅y,1:1⋅a,2:-31⋅,"
         end
 
         it "passes specified :mult operator to the block" do
           with_string = composite_number.to_s(mult: "#", &block)
-          expect(with_string).to eq "0:1#y,1:1#a,2:-31#1,"
+          expect(with_string).to eq "0:1#y,1:1#a,2:-31#,"
 
           with_symbol = composite_number.to_s(mult: :cross, &block)
-          expect(with_symbol).to eq "0:1×y,1:1×a,2:-31×1,"
+          expect(with_symbol).to eq "0:1×y,1:1×a,2:-31×,"
         end
       end
     end
