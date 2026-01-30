@@ -10,8 +10,6 @@ class VectorNumber
   #   VectorNumber["a"].real # => 0
   #
   # @return [Integer, Float, Rational, BigDecimal]
-  #
-  # @since 0.1.0
   def real = @data[R]
 
   # Return imaginary part of the number.
@@ -21,8 +19,6 @@ class VectorNumber
   #   VectorNumber["a", Complex(1, 2r)].imag # => (2/1)
   #
   # @return [Integer, Float, Rational, BigDecimal]
-  #
-  # @since 0.1.0
   def imaginary = @data[I]
 
   # @since 0.2.1
@@ -42,15 +38,12 @@ class VectorNumber
   #
   # @return [Integer]
   # @raise [RangeError] if any non-real part is non-zero
-  #
-  # @since 0.1.0
   def to_i
     raise_convert_error(Integer) unless numeric?(1)
 
     real.to_i
   end
 
-  # @since 0.1.0
   alias to_int to_i
 
   # Return value as a Float if only real part is non-zero.
@@ -66,8 +59,6 @@ class VectorNumber
   #
   # @return [Float]
   # @raise [RangeError] if any non-real part is non-zero
-  #
-  # @since 0.1.0
   def to_f
     raise_convert_error(Float) unless numeric?(1)
 
@@ -87,8 +78,6 @@ class VectorNumber
   #
   # @return [Rational]
   # @raise [RangeError] if any non-real part is non-zero
-  #
-  # @since 0.1.0
   def to_r
     raise_convert_error(Rational) unless numeric?(1)
 
@@ -117,8 +106,6 @@ class VectorNumber
   #
   # @see Kernel.BigDecimal
   # @see NumericRefinements
-  #
-  # @since 0.1.0
   def to_d(ndigits = nil)
     raise_convert_error(BigDecimal) unless numeric?(1)
 
@@ -141,8 +128,6 @@ class VectorNumber
   #
   # @return [Complex]
   # @raise [RangeError] if any non-real, non-imaginary part is non-zero
-  #
-  # @since 0.1.0
   def to_c
     raise_convert_error(Complex) unless numeric?(2)
 

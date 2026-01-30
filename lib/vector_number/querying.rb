@@ -51,8 +51,6 @@ class VectorNumber
   #   VectorNumber["a"].mult(Float::INFINITY).finite? # => false
   #
   # @return [Boolean]
-  #
-  # @since 0.1.0
   def finite?
     all? { |_u, v| v.finite? }
   end
@@ -67,8 +65,6 @@ class VectorNumber
   #   VectorNumber["a"].mult(-Float::INFINITY).infinite? # => 1
   #
   # @return [1, nil]
-  #
-  # @since 0.1.0
   def infinite?
     finite? ? nil : 1 # rubocop:disable Style/ReturnNilInPredicateMethodDefinition
   end
@@ -84,8 +80,6 @@ class VectorNumber
   # @see #size
   #
   # @return [Boolean]
-  #
-  # @since 0.1.0
   def zero? = size.zero?
 
   # Returns +self+ if there are any non-zero coefficients, +nil+ otherwise.
@@ -100,8 +94,6 @@ class VectorNumber
   # @see #size
   #
   # @return [VectorNumber, nil]
-  #
-  # @since 0.1.0
   def nonzero?
     zero? ? nil : self # rubocop:disable Style/ReturnNilInPredicateMethodDefinition
   end
@@ -116,8 +108,6 @@ class VectorNumber
   #   VectorNumber[0].positive? # => false
   #
   # @return [Boolean]
-  #
-  # @since 0.1.0
   def positive?
     !zero? && all? { |_u, c| c.positive? }
   end
@@ -132,8 +122,6 @@ class VectorNumber
   #   VectorNumber[0].negative? # => false
   #
   # @return [Boolean]
-  #
-  # @since 0.1.0
   def negative?
     !zero? && all? { |_u, c| c.negative? }
   end
@@ -145,8 +133,6 @@ class VectorNumber
   # @see #numeric?
   #
   # @return [false]
-  #
-  # @since 0.1.0
   def real? = false
 
   # Always returns +false+, as vectors are not +Integer+s.

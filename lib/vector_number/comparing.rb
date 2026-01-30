@@ -58,8 +58,6 @@ class VectorNumber
   #
   # @param other [Object]
   # @return [Boolean]
-  #
-  # @since 0.1.0
   def eql?(other)
     return true if equal?(other)
     return false unless other.is_a?(VectorNumber)

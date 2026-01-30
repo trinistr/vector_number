@@ -4,8 +4,6 @@ class VectorNumber
   # Predefined symbols for multiplication to display between unit and coefficient.
   #
   # @return [Hash{Symbol => String}]
-  #
-  # @since 0.1.0
   MULT_STRINGS = {
     asterisk: "*", # U+002A
     cross: "×", # U+00D7
@@ -47,8 +45,6 @@ class VectorNumber
   # @return [String]
   # @raise [ArgumentError]
   #   if +mult+ is not a String and is not in {MULT_STRINGS}'s keys
-  #
-  # @since 0.1.0
   def to_s(mult: :dot, &block)
     if !mult.is_a?(String) && !MULT_STRINGS.key?(mult)
       raise ArgumentError, "unknown key #{mult.inspect}", caller
@@ -69,8 +65,6 @@ class VectorNumber
   # @return [String]
   #
   # @see to_s
-  #
-  # @since 0.1.0
   def inspect
     "(#{self})"
   end

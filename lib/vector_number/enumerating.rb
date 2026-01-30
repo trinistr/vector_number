@@ -7,8 +7,6 @@ class VectorNumber
   # @example using Enumerable methods
   #   VectorNumber["a", "b", 6].include?(["a", 1]) # => true
   #   VectorNumber["a", "b", 6].select { |u, c| u.is_a?(String) } # => [["a", 1], ["b", 1]]
-  #
-  # @since 0.1.0
   include ::Enumerable
 
   # Iterate through every pair of unit and coefficient.
@@ -34,8 +32,6 @@ class VectorNumber
   #
   # @see Enumerable
   # @see Enumerator
-  #
-  # @since 0.1.0
   def each(&block)
     return to_enum { size } unless block_given?
 
@@ -43,7 +39,6 @@ class VectorNumber
     self
   end
 
-  # @since 0.1.0
   alias each_pair each
 
   # Get a list of units with non-zero coefficients.
@@ -53,11 +48,8 @@ class VectorNumber
   #   VectorNumber.new.keys # => []
   #
   # @return [Array<Object>]
-  #
-  # @since 0.1.0
   def units = @data.keys
 
-  # @since 0.1.0
   alias keys units
 
   # Get a list of non-zero coefficients.
@@ -67,11 +59,8 @@ class VectorNumber
   #   VectorNumber.new.values # => []
   #
   # @return [Array<Numeric>]
-  #
-  # @since 0.1.0
   def coefficients = @data.values
 
-  # @since 0.1.0
   alias values coefficients
 
   # Get mutable hash with vector's data.
@@ -83,8 +72,6 @@ class VectorNumber
   #   VectorNumber["a", "b", 6].to_h["c"] # => 0
   #
   # @return [Hash{Object => Numeric}]
-  #
-  # @since 0.1.0
   def to_h(&block)
     # TODO: Remove block argument.
     if block_given?

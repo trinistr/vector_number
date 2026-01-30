@@ -121,8 +121,6 @@ class VectorNumber
   #   VectorNumber["a", "b", "a"] # => (2⋅'a' + 1⋅'b')
   #
   # @param values [Array<Object>] values to put in the number
-  #
-  # @since 0.1.0
   def self.[](*values, **nil)
     new(values)
   end
@@ -147,8 +145,6 @@ class VectorNumber
   # Number of non-zero dimensions.
   #
   # @return [Integer]
-  #
-  # @since 0.1.0
   attr_reader :size
 
   # @group Creation
