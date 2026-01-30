@@ -40,6 +40,7 @@ StackProf.run(mode: :cpu, raw: true, out: "tmp/stackprof.dump") do
     ips.report("various (+)") { VectorNumber[Complex(12, -4556.2), V, "asdf", :asdsafsdf, "asdf"] }
 
     ips.report("to_s") { V.to_s }
+    ips.report("to_s block") { V.to_s { |u, v| "#{v}#{u}" } }
   end
 end
 
