@@ -9,4 +9,5 @@
 /tmp/
 
 # remote rubocop configuration
-.rubocop-*
+.rubocop-*yml
+rubocop-*yml

@@ -7,8 +7,7 @@ plugins:
   - rubocop-rake
   - rubocop-rspec
   - rubocop-thread_safety
-  # https://github.com/ksss/rubocop-yard/issues/37
-  # - rubocop-yard
+  - rubocop-yard
 
 # These make no sense for a single-class library.
 Metrics/ClassLength:
