@@ -13,12 +13,12 @@ Gem::Specification.new do |spec|
     VectorNumber provides a Numeric-like experience for doing arithmetics on heterogeneous objects, with more advanced operations based on real vector spaces available when needed.
 
     Features:
-    - Add and subtract (almost) any object, with no setup or declaration.
-    - Multiply and divide vectors by any real number to create 1.35 of an array and -2 of a string. What does that mean? Only you know!
-    - Use vectors instead of inbuilt numbers in most situtations with no difference in behavior. Or, use familiar methods from numerics with sane semantics!
-    - Enumerate vectors in a hash-like fashion, or transform to an array or hash as needed.
-    - Enjoy a mix of vector-, complex- and polynomial-like behavior at appropriate times.
-    - No dependencies, no extensions. It just works!
+    * Add and subtract (almost) any object, with no setup or declaration.
+    * Multiply and divide vectors by any real number to create 1.35 of an array and -2 of a string. What does that mean? Only you know!
+    * Use vectors instead of inbuilt numbers in most situtations with no difference in behavior. Or, use familiar methods from numerics with sane semantics!
+    * Enumerate vectors in a hash-like fashion, or transform to an array or hash as needed.
+    * Enjoy a mix of vector-, complex- and polynomial-like behavior at appropriate times.
+    * No dependencies, no extensions. It just works!
   TEXT
 
   spec.metadata["homepage_uri"] = spec.homepage

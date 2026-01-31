@@ -9,7 +9,7 @@ class VectorNumber
   # - {#to_s}
   # - {#inspect}
   #
-  # @since <<next>>
+  # @since 0.6.0
   class SpecialUnit
     # @api private
     # @param unit [#to_s] name for {#inspect}

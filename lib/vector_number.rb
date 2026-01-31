@@ -95,19 +95,19 @@ class VectorNumber
 
   # List of special numeric unit constants.
   #
-  # @since <<next>>
+  # @since 0.6.0
   NUMERIC_UNITS = [SpecialUnit.new("1", "").freeze, SpecialUnit.new("i", "i").freeze].freeze
   # Constant for real unit (1).
   #
   # Its string representation is an empty string.
   #
-  # @since <<next>>
+  # @since 0.6.0
   R = NUMERIC_UNITS[0]
   # Constant for imaginary unit (i).
   #
   # Its string representation is "i".
   #
-  # @since <<next>>
+  # @since 0.6.0
   I = NUMERIC_UNITS[1]
 
   # @group Creation

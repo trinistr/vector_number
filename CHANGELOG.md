@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
+[Compare v0.6.0...main](https://github.com/trinistr/vector_number/compare/v0.6.0...main)
+
+## [v0.6.0] — 2026-01-31
+
+In this update, stringification of VectorNumbers has been streamlined. It is both more powerful and more efficient.
+
 **Added**
 - Block parameter in `#to_s`, allowing to customize string conversion.
 - `VectorNumber::SpecialUnit` class for representing special numerical units. It mostly exists to provide its `#to_s` method.
@@ -22,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `VectorNumber#to_s` now calls `#inspect` on Strings instead of just using `String#to_s`. This prevents issues with embedded quotation marks.
   - As a a side effect, String units are now surrounded by double quotes, not single.
 
-[Compare v0.5.0...main](https://github.com/trinistr/vector_number/compare/v0.5.0...main)
+[Compare v0.5.0...v0.6.0](https://github.com/trinistr/vector_number/compare/v0.5.0...v0.6.0)
 
 ## [v0.5.0] — 2026-01-23
 
@@ -197,6 +203,7 @@ README was updated to reflect this change.
 - Initial work.
 
 [Next]: https://github.com/trinistr/vector_number/tree/main
+[v0.6.0]: https://github.com/trinistr/vector_number/tree/v0.6.0
 [v0.5.0]: https://github.com/trinistr/vector_number/tree/v0.5.0
 [v0.4.3]: https://github.com/trinistr/vector_number/tree/v0.4.3
 [v0.4.2]: https://github.com/trinistr/vector_number/tree/v0.4.2
