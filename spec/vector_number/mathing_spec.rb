@@ -790,13 +790,17 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(result).to eq (number / other).floor
     end
 
+    it "correctly rounds everything towards -∞" do
+      expect(num(-1, "str").neg.div(10)).to eq num("str").neg
+    end
+
     context "when dividing Integer by a real vector number" do
       let(:number) { rand(2..10) }
 
       let(:other) { num(value) }
       let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
-      it "returns quotient" do
+      it "returns quotient rounded down" do
         expect(result).to eq number.div(value)
       end
     end
@@ -807,7 +811,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       let(:other) { num(value) }
       let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
-      it "returns quotient" do
+      it "returns quotient rounded down" do
         expect(result).to eq number.div(value)
       end
     end
@@ -818,7 +822,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       let(:other) { num(value) }
       let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
-      it "returns quotient" do
+      it "returns quotient rounded down" do
         expect(result).to eq number.div(value)
       end
     end
@@ -829,8 +833,67 @@ RSpec.describe VectorNumber, :aggregate_failures do
       let(:other) { num(value) }
       let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
-      it "returns quotient" do
+      it "returns quotient rounded down" do
         expect(result).to eq number.div(value)
+      end
+    end
+  end
+
+  describe "#ceildiv" do
+    subject(:result) { number.ceildiv(other) }
+
+    let(:number) { num(32.14, -123.45i, 128r / 9, :a, :a) }
+    let(:other) { rand(-10.0..10.0) }
+
+    include_examples "invalid division"
+
+    it "calls (value / other).ceil on each component" do
+      expect(result.to_a).to match_array([
+        [VectorNumber::R, ((32.14 + (128r / 9)) / other).ceil],
+        [VectorNumber::I, (-123.45 / other).ceil],
+        [:a, (2 / other).ceil],
+      ].reject { |(_u, c)| c.zero? })
+    end
+
+    it "is equal to ⌈a/b⌉" do
+      expect(result).to eq (number / other).ceil
+    end
+
+    it "correctly rounds everything towards +∞" do
+      # This also tests that (1/10) is not 0.
+      expect(num(-1, "str").neg.ceildiv(10)).to eq num(1)
+    end
+
+    context "when dividing Integer by a real vector number" do
+      let(:number) { rand(2..10) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "returns quotient rounded up" do
+        expect(result).to eq number.ceildiv(value)
+      end
+    end
+
+    context "when dividing Float or Rational by a real vector number" do
+      let(:number) { [-rand(6.0..7.0), rand(10r..100r)].sample }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "raises NoMethodError" do
+        expect { result }.to raise_error(NoMethodError)
+      end
+    end
+
+    context "when dividing BigDecimal by a real vector number", :bigdecimal do
+      let(:number) { rand(BigDecimal("-100")..BigDecimal("-10")) }
+
+      let(:other) { num(value) }
+      let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
+
+      it "raises NoMethodError" do
+        expect { result }.to raise_error(NoMethodError)
       end
     end
   end

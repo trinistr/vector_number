@@ -90,6 +90,8 @@ class VectorNumber
 
   def div: (real_number | instance) -> instance
 
+  def ceildiv: (real_number | instance) -> instance
+
   def %: (real_number | instance) -> instance
   alias modulo %
 

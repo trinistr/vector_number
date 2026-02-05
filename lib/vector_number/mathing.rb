@@ -190,18 +190,20 @@ class VectorNumber
     check_divisibility(other)
 
     other = other.real
+    # @type var other: Float
     new { _1.fdiv(other) }
   end
 
   # Divide all coefficients by a real +other+,
   # converting results to integers using +#floor+.
   #
-  # This is requal to +(self / other).floor+.
+  # This is equal to +(self / other).floor+.
   #
   # @example
   #   VectorNumber[10].div(3) # => (3)
   #   VectorNumber["a"].div(2) # => (0)
   #   VectorNumber["a"].div(VectorNumber[2]) # => (0)
+  #   VectorNumber[-10, "string"].div(100) # => (-1)
   #   # Can't divide by a non-real:
   #   VectorNumber["a"].div(VectorNumber["b"]) # RangeError
   # @example numeric types can be divided in reverse
@@ -223,7 +225,40 @@ class VectorNumber
     check_divisibility(other)
 
     other = other.real
+    # @type var other: Float
     new { _1.div(other) }
+  end
+
+  # Divide all coefficients by a real +other+,
+  # converting results to integers using +#ceil+.
+  #
+  # This is equal to +(self / other).ceil+.
+  #
+  # @example
+  #   VectorNumber[10].ceildiv(3) # => (4)
+  #   VectorNumber["a"].ceildiv(2) # => (1⋅"a")
+  #   (VectorNumber["a"] - 3).ceildiv(2) # => (1⋅"a" - 1)
+  #   VectorNumber[-10, "string"].ceildiv(100) # => (1⋅"string")
+  #   # Can't divide by a non-real:
+  #   VectorNumber["a"].ceildiv(VectorNumber["b"]) # RangeError
+  #
+  # @see #div
+  # @see #ceil
+  # @see Integer#ceildiv
+  #
+  # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
+  # @return [VectorNumber]
+  # @raise [RangeError] if +other+ is not a number or is not a real number
+  # @raise [ZeroDivisionError] if +other+ is zero
+  #
+  # @since <<next>>
+  def ceildiv(other)
+    check_divisibility(other)
+
+    other = other.real
+    other = Rational(other) if other.integer?
+    # @type var other: Float
+    new { (_1 / other).ceil }
   end
 
   # Return the modulus of dividing self by a real +other+ as a vector.
@@ -260,6 +295,7 @@ class VectorNumber
     check_divisibility(other)
 
     other = other.real
+    # @type var other: Float
     new { _1 % other }
   end
 
@@ -324,6 +360,7 @@ class VectorNumber
     check_divisibility(other)
 
     other = other.real
+    # @type var other: Float
     new { _1.remainder(other) }
   end
 

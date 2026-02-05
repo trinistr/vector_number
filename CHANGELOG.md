@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
+**Added**
+- `#ceildiv` method, inspired by `Integer#ceildiv`. Works similarly to `#div`, but rounds up instead of down.
+
 [Compare v0.6.0...main](https://github.com/trinistr/vector_number/compare/v0.6.0...main)
 
 ## [v0.6.0] — 2026-01-31
