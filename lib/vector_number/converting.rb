@@ -9,7 +9,7 @@ class VectorNumber
   #   VectorNumber[23, "a"].real # => 23
   #   VectorNumber["a"].real # => 0
   #
-  # @return [Integer, Float, Rational, BigDecimal]
+  # @return [Numeric]
   def real = @data[R]
 
   # Return imaginary part of the number.
@@ -18,7 +18,7 @@ class VectorNumber
   #   VectorNumber[23, "a"].imaginary # => 0
   #   VectorNumber["a", Complex(1, 2r)].imag # => (2/1)
   #
-  # @return [Integer, Float, Rational, BigDecimal]
+  # @return [Numeric]
   def imaginary = @data[I]
 
   # @since 0.2.1

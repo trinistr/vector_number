@@ -107,7 +107,7 @@ class VectorNumber
   #   2 * VectorNumber[5] # => (10)
   #   2 * VectorNumber["a"] # => (2⋅"a")
   #
-  # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
+  # @param other [Numeric, VectorNumber]
   # @return [VectorNumber]
   # @raise [RangeError] if +other+ is not a number or +other+ can't be multiplied by this one
   #
@@ -144,7 +144,7 @@ class VectorNumber
   #   # Can't divide by a non-real:
   #   2 / VectorNumber["a"] # RangeError
   #
-  # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
+  # @param other [Numeric, VectorNumber]
   # @return [VectorNumber]
   # @raise [RangeError] if +other+ is not a number or is not a real number
   # @raise [ZeroDivisionError] if +other+ is zero
@@ -180,7 +180,7 @@ class VectorNumber
   #   2.fdiv(VectorNumber[10]) # => 0.2 (Float)
   #   2.0.fdiv(VectorNumber[10]) # => (0.2) (VectorNumber)
   #
-  # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
+  # @param other [Numeric, VectorNumber]
   # @return [VectorNumber]
   # @raise [RangeError] if +other+ is not a number or is not a real number
   # @raise [ZeroDivisionError] if +other+ is zero
@@ -215,7 +215,7 @@ class VectorNumber
   # @see #%
   # @see #floor
   #
-  # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
+  # @param other [Numeric, VectorNumber]
   # @return [VectorNumber]
   # @raise [RangeError] if +other+ is not a number or is not a real number
   # @raise [ZeroDivisionError] if +other+ is zero
@@ -246,7 +246,7 @@ class VectorNumber
   # @see #ceil
   # @see Integer#ceildiv
   #
-  # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
+  # @param other [Numeric, VectorNumber]
   # @return [VectorNumber]
   # @raise [RangeError] if +other+ is not a number or is not a real number
   # @raise [ZeroDivisionError] if +other+ is zero
@@ -285,7 +285,7 @@ class VectorNumber
   # @see #remainder
   # @see Numeric#%
   #
-  # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
+  # @param other [Numeric, VectorNumber]
   # @return [VectorNumber]
   # @raise [RangeError] if +other+ is not a number or is not a real number
   # @raise [ZeroDivisionError] if +other+ is zero
@@ -319,7 +319,7 @@ class VectorNumber
   # @see #div
   # @see #%
   #
-  # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
+  # @param other [Numeric, VectorNumber]
   # @return [Array(VectorNumber, VectorNumber)]
   # @raise [RangeError] if +other+ is not a number or is not a real number
   # @raise [ZeroDivisionError] if +other+ is zero
@@ -350,7 +350,7 @@ class VectorNumber
   # @see #%
   # @see Numeric#remainder
   #
-  # @param other [Integer, Float, Rational, BigDecimal, VectorNumber]
+  # @param other [Numeric, VectorNumber]
   # @return [VectorNumber]
   # @raise [RangeError] if +other+ is not a number or is not a real number
   # @raise [ZeroDivisionError] if +other+ is zero
