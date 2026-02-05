@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class VectorNumber
-  # @group Mathematical operations
+  # @group Arithmetic operations
   #
   # All operators (like +*+) have aliases (like +mult+)
   # to make method chaining easier and more natural.

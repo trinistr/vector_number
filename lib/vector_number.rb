@@ -32,20 +32,21 @@
 # - {#real?}: +false+
 #
 # **Unary** **math** **operations**
-# - {#+}/{#dup}: return self
 # - {#-@}/{#neg}: negate value
 # - {#abs}/{#magnitude}: return absolute value (magnitude, length)
 # - {#abs2}: return square of absolute value
 #
 # **Arithmetic** **operations**
+# - {#-@}/{#neg}: negate value
 # - {#coerce}: convert any object to a VectorNumber
-# - {#+}/{#add}: add object
-# - {#-}/{#sub}: subtract object
+# - {#+}/{#add}: add object (vector addition)
+# - {#-}/{#sub}: subtract object (vector subtraction)
 # - {#*}/{#mult}: multiply (scale) by a real number
 # - {#/}/{#quo}: divide (scale) by a real number
 # - {#fdiv}: divide (scale) by a real number, using +fdiv+
-# - {#div}: perform integer division
-# - {#%}/{#modulo}: return modulus from integer division
+# - {#div}: perform integer division, rounding towards -∞
+# - {#ceildiv}: perform integer division, rounding towards +∞
+# - {#%}/{#modulo}: return modulus from integer division ({#div})
 # - {#divmod}: combination of {#div} and {#modulo}
 # - {#remainder}: return remainder from integer division
 #
@@ -75,7 +76,7 @@
 # **Miscellaneous** **methods**
 # - {.numeric_unit?}: check if a unit represents a numeric dimension
 # - {#size}: number of non-zero dimensions
-# - {#to_s}: return string representation suitable for printing
+# - {#to_s}: return string representation suitable for output
 # - {#inspect}: return string representation suitable for display
 # - {#dup}/{#+}: return self
 # - {#clone}: return self
@@ -126,6 +127,8 @@ class VectorNumber
   end
   # @endgroup
 
+  # @group Miscellaneous methods
+
   # Check if an object is a unit representing a numeric dimension
   # (real or imaginary unit).
   #
@@ -148,7 +151,8 @@ class VectorNumber
   attr_reader :size
 
   # @group Creation
-  # Create new VectorNumber from an array of +values+,
+
+  # Create new VectorNumber from +values+,
   # possibly modifying coefficients with a block.
   #
   # Using +VectorNumber.new([values...])+ directly is more efficient than +VectorNumber[values...]+.
@@ -174,8 +178,8 @@ class VectorNumber
   #   VectorNumber.new(["a", "b", "c", 3], &:-@) # => (-1⋅"a" - 1⋅"b" - 1⋅"c" - 3)
   #   VectorNumber.new(["a", "b", "c", 3], &:digits) # RangeError
   # @example using hash for values
-  #   v = VectorNumber.new({1 => 15, "a" => 3.4, nil => -3}) # => (15 + 3.4⋅"a" - 3⋅)
-  #   v.to_h # => {1 => 15, "a" => 3.4, nil => -3}
+  #   v = VectorNumber.new({VectorNumber::R => 15, "a" => 3.4, nil => -3}) # => (15 + 3.4⋅"a" - 3⋅)
+  #   v.to_h # => {unit/1 => 15, "a" => 3.4, nil => -3}
   #
   # @param values [Array, VectorNumber, Hash{Object => Numeric}, nil] values for this vector
   # @yieldparam coefficient [Numeric] a real number

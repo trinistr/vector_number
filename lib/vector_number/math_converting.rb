@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class VectorNumber
-  # @group Mathematical operations
+  # @group Arithmetic operations
 
   # Calculate the absolute value of the vector (its length).
   #

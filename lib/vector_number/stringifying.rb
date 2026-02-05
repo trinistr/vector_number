@@ -15,7 +15,7 @@ class VectorNumber
 
   # @group Miscellaneous methods
 
-  # Return string representation of the vector.
+  # Return string representation of the vector suitable for output.
   #
   # An optional block can be supplied to provide customized substrings
   # for each unit and coefficient pair.
@@ -55,7 +55,7 @@ class VectorNumber
     build_string(operator, &block)
   end
 
-  # Return string representation of the vector.
+  # Return string representation of the vector suitable for display.
   #
   # This is similar to +Complex#inspect+: it returns result of {#to_s} in round brackets.
   #
