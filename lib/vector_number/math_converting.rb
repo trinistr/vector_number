@@ -3,36 +3,6 @@
 class VectorNumber
   # @group Arithmetic operations
 
-  # Calculate the absolute value of the vector (its length).
-  #
-  # @example
-  #   VectorNumber[5.3].abs # => 5.3
-  #   VectorNumber[-5.3i].magnitude # => 5.3
-  #   VectorNumber[-5.3i, "i"].abs # => 5.3935146240647205
-  #
-  # @return [Float]
-  #
-  # @since 0.2.2
-  def abs
-    Math.sqrt(abs2)
-  end
-
-  alias magnitude abs
-
-  # Calculate the square of absolute value.
-  #
-  # @example
-  #   VectorNumber[5.3].abs2 # => 5.3
-  #   VectorNumber[-5.3i].abs2 # => 5.3
-  #   VectorNumber[-5.3i, "i"].abs2 # => 29.09
-  #
-  # @return [Float]
-  #
-  # @since 0.2.2
-  def abs2
-    coefficients.sum(&:abs2)
-  end
-
   # Return a new vector with every coefficient truncated using their +#truncate+.
   #
   # @example

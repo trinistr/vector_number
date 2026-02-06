@@ -24,6 +24,7 @@ Vs = VectorNumber[:s]
 Vpi = VectorNumber[:pi] * Math::PI
 # ((V1 * 3.3) + (Va * 4.5) - Vs)
 V = VectorNumber[3.3] + (4.5 * VectorNumber["a"]) - VectorNumber[:s]
+V2a = VectorNumber[2, "a"]
 
 # Run benchmark
 FileUtils.mkdir_p("tmp")

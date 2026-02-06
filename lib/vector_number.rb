@@ -31,11 +31,6 @@
 # - {#integer?}: +false+
 # - {#real?}: +false+
 #
-# **Unary** **math** **operations**
-# - {#-@}/{#neg}: negate value
-# - {#abs}/{#magnitude}: return absolute value (magnitude, length)
-# - {#abs2}: return square of absolute value
-#
 # **Arithmetic** **operations**
 # - {#-@}/{#neg}: negate value
 # - {#coerce}: convert any object to a VectorNumber
@@ -55,6 +50,19 @@
 # - {#ceil}: round each coefficient up towards +∞
 # - {#floor}: round each coefficient down towards -∞
 # - {#truncate}: truncate each coefficient towards 0
+#
+# **Vector** **operations**
+# - {#abs}/{#magnitude}: return absolute value (magnitude/length)
+# - {#abs2}: return square of absolute value
+# - {#subspace_basis}: return an array of vectors forming orthonormal basis
+# - {#uniform_vector}: return a new vector with coefficients set to 1
+# - {#unit_vector}: return a unit vector in the direction of this vector
+# - {#dot_product}: calculate the dot product with another vector
+# - {#angle}: calculate the angle between this vector and another
+# - {#vector_projection}: calculate the vector projection onto another vector
+# - {#scalar_projection}: calculate the scalar projection onto another vector
+# - {#vector_rejection}: calculate the vector rejection from another vector
+# - {#scalar_rejection}: calculate the scalar rejection from another vector
 #
 # **Type** **conversion**
 # - {#real}: return real part
@@ -90,6 +98,7 @@ class VectorNumber
   require_relative "vector_number/mathing"
   require_relative "vector_number/querying"
   require_relative "vector_number/stringifying"
+  require_relative "vector_number/vectoring"
   require_relative "vector_number/version"
 
   require_relative "vector_number/special_unit"
