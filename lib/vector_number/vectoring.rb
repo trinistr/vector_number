@@ -3,7 +3,9 @@
 class VectorNumber
   # @group Vector operations
 
-  # Calculate the absolute value of the vector (its length).
+  # Calculate the absolute value of the vector (its magnitude/length).
+  #
+  # This is also known as Euclidean norm or 2-norm.
   #
   # @example
   #   VectorNumber[5.3].abs # => 5.3
@@ -17,7 +19,10 @@ class VectorNumber
     Math.sqrt(abs2)
   end
 
+  # @since 0.2.2
   alias magnitude abs
+  # @since <<next>>
+  alias euclidean_norm abs
 
   # Calculate the square of absolute value.
   #
@@ -26,12 +31,45 @@ class VectorNumber
   #   VectorNumber[-5.3i].abs2 # => 5.3
   #   VectorNumber[-5.3i, "i"].abs2 # => 29.09
   #
-  # @return [Float]
+  # @return [Numeric]
   #
   # @since 0.2.2
   def abs2
     @data.values.sum(&:abs2)
   end
+
+  # Calculate the p-norm of the vector.
+  #
+  # @example
+  #   VectorNumber[5.3].p_norm(2) # => 5.3
+  #   VectorNumber[-5.3i].p_norm(2) # => 5.3
+  #   VectorNumber[-5.3i, "i"].p_norm(2) # => 5.3935146240647205
+  #
+  # @return [Float]
+  #
+  # @since <<next>>
+  def p_norm(power)
+    @data.values.sum { _1.abs**power }**(1.0 / power)
+  end
+
+  # Calculate the maximum norm (infinity norm) of the vector.
+  #
+  # @example
+  #   VectorNumber[5.3].maximum_norm # => 5.3
+  #   VectorNumber[-5.3i].maximum_norm # => 5.3
+  #   VectorNumber[-5.3i, "i"].maximum_norm # => 5.3
+  #   VectorNumber["a", "s"].maximum_norm # => 1
+  #
+  # @return [Numeric]
+  #
+  # @since <<next>>
+  def maximum_norm
+    return 0 if zero?
+
+    @data.values.map(&:abs).max
+  end
+
+  alias infinity_norm maximum_norm
 
   # Return an array of vectors forming orthonormal basis
   # of linear subspace this vector belongs to.

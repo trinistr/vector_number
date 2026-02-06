@@ -106,11 +106,6 @@ end
 
 # Various mathematical operations that are also conversions.
 class VectorNumber
-  def abs: () -> Float
-  alias magnitude abs
-
-  def abs2: () -> Float
-
   def truncate: (?Integer) -> instance
 
   def ceil: (?Integer) -> instance
@@ -220,6 +215,16 @@ end
 
 # Vector operations.
 class VectorNumber
+  def abs: () -> Float
+  alias magnitude abs
+  alias euclidean_norm abs
+
+  def abs2: () -> Float
+
+  def p_norm: (Numeric power) -> Numeric
+
+  def maximum_norm: () -> Numeric
+
   def subspace_basis: () -> Array[instance]
 
   def uniform_vector: () -> instance

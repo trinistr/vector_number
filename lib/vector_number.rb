@@ -52,8 +52,10 @@
 # - {#truncate}: truncate each coefficient towards 0
 #
 # **Vector** **operations**
-# - {#abs}/{#magnitude}: return absolute value (magnitude/length)
+# - {#abs}/{#magnitude}/{#euclidean_norm}: return absolute value (magnitude/length)
 # - {#abs2}: return square of absolute value
+# - {#p_norm}: return p-norm of the vector
+# - {#maximum_norm}/{#infinity_norm}: return maximum norm (infinity norm) of the vector
 # - {#subspace_basis}: return an array of vectors forming orthonormal basis
 # - {#uniform_vector}: return a new vector with coefficients set to 1
 # - {#unit_vector}: return a unit vector in the direction of this vector
