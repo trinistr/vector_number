@@ -870,9 +870,17 @@ RSpec.describe VectorNumber, :aggregate_failures do
       let(:other) { num(value) }
       let(:value) { [rand(2..10), -rand(6.0..7.0), rand(10r..100r)].sample }
 
-      it "returns quotient rounded up" do
-        expect(result).to eq number.ceildiv(value)
+      if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2.0")
+        it "returns quotient rounded up" do
+          expect(result).to eq number.ceildiv(value)
+        end
+      # :nocov:
+      else
+        it "raises NoMethodError" do
+          expect { result }.to raise_error(NoMethodError)
+        end
       end
+      # :nocov:
     end
 
     context "when dividing Float or Rational by a real vector number" do
