@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Added**
 - `#ceildiv` method, inspired by `Integer#ceildiv`. Works similarly to `#div`, but rounds up instead of down.
+- A host of binary vector operations:
+  - `#dot_product` (aliased as `#inner_product` and `#scalar_product`)
+  - `#angle`
+  - `#scalar_projection`
+  - `#vector_projection`
+  - `#scalar_rejection`
+  - `#vector_rejection`
+- Some utility methods related to linear subspaces:
+  - `#subspace_basis`
+  - `#unit_vector`
+  - `#uniform_vector`
+- Methods for calculating norms:
+  - `#p_norm`
+  - `#maximum_norm` (aliased as `#infinity_norm`)
+  - 2-norm (Euclidean norm) can already be calculated using `#magnitude`.
+
+**Changed**
+- `#abs` is now an alias of `#magnitude`, instead of the other way around.
 
 [Compare v0.6.0...main](https://github.com/trinistr/vector_number/compare/v0.6.0...main)
 
