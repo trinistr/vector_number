@@ -85,7 +85,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
 
   describe "#uniform_vector" do
     it "returns a vector with same dimensions but all components equal to 1" do
-      expect(zero_number.uniform_vector).to eq num(0)
+      expect(zero_number.uniform_vector).to eq zero_number
       expect(real_number.uniform_vector).to eq num(1)
       expect(complex_number.uniform_vector).to eq num(1, 1i)
       expect(composite_number.uniform_vector).to eq num(1, 1i, "y", :a)
@@ -114,7 +114,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
     it "returns 0 if either of the vectors is zero" do
       expect(zero_number.dot_product(num(1))).to eq 0
       expect(num(1).dot_product(zero_number)).to eq 0
-      expect(zero_number.dot_product(num(0))).to eq 0
+      expect(zero_number.dot_product(zero_number)).to eq 0
     end
 
     it "returns 0 if vectors don't have dimensions in common" do
@@ -210,14 +210,14 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     it "returns zero vector if vectors don't have dimensions in common" do
-      expect(real_number.vector_projection(num(:a))).to eq num(0)
-      expect(complex_number.vector_projection(num("y"))).to eq num(0)
-      expect(composite_number.vector_projection(num(:b, "f"))).to eq num(0)
+      expect(real_number.vector_projection(num(:a))).to eq zero_number
+      expect(complex_number.vector_projection(num("y"))).to eq zero_number
+      expect(composite_number.vector_projection(num(:b, "f"))).to eq zero_number
     end
 
     it "returns zero vector if vectors are orthogonal" do
-      expect(num(1, 1i).vector_projection(num(1, -1i))).to eq num(0)
-      expect(num(1, "a").vector_projection(num("a", -1))).to eq num(0)
+      expect(num(1, 1i).vector_projection(num(1, -1i))).to eq zero_number
+      expect(num(1, "a").vector_projection(num("a", -1))).to eq zero_number
     end
 
     it "returns self if other is the same vector" do
@@ -227,11 +227,13 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     it "returns zero vector if self is a zero vector" do
-      expect(zero_number.vector_projection(num(1))).to eq num(0)
+      expect(zero_number.vector_projection(real_number)).to eq zero_number
+      expect(zero_number.vector_projection(composite_number)).to eq zero_number
     end
 
     it "raises ZeroDivisionError if other is a zero vector" do
-      expect { real_number.vector_projection(num(0)) }.to raise_error(ZeroDivisionError)
+      expect { real_number.vector_projection(zero_number) }.to raise_error(ZeroDivisionError)
+      expect { zero_number.vector_projection(zero_number) }.to raise_error(ZeroDivisionError)
     end
 
     it "automatically promotes other to a VectorNumber" do
@@ -278,11 +280,13 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     it "returns zero if self is a zero vector" do
-      expect(zero_number.scalar_projection(num(1))).to eq 0.0
+      expect(zero_number.scalar_projection(real_number)).to eq 0.0
+      expect(zero_number.scalar_projection(composite_number)).to eq 0.0
     end
 
     it "raises ZeroDivisionError if other is a zero vector" do
-      expect { real_number.scalar_projection(num(0)) }.to raise_error(ZeroDivisionError)
+      expect { real_number.scalar_projection(zero_number) }.to raise_error(ZeroDivisionError)
+      expect { zero_number.scalar_projection(zero_number) }.to raise_error(ZeroDivisionError)
     end
 
     it "automatically promotes other to a VectorNumber" do
@@ -323,17 +327,19 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     it "returns zero vector if other is the same vector" do
-      expect(num(1, 1i).vector_rejection(num(1, 1i))).to eq num(0)
-      expect(num(1, "a").vector_rejection(num(1, "a"))).to eq num(0)
-      expect(composite_number.vector_rejection(composite_number)).to eq num(0)
+      expect(num(1, 1i).vector_rejection(num(1, 1i))).to eq zero_number
+      expect(num(1, "a").vector_rejection(num(1, "a"))).to eq zero_number
+      expect(composite_number.vector_rejection(composite_number)).to eq zero_number
     end
 
     it "returns zero vector if self is a zero vector" do
-      expect(zero_number.vector_rejection(num(1))).to eq num(0)
+      expect(zero_number.vector_rejection(real_number)).to eq zero_number
+      expect(zero_number.vector_rejection(composite_number)).to eq zero_number
     end
 
     it "raises ZeroDivisionError if other is a zero vector" do
-      expect { real_number.vector_rejection(num(0)) }.to raise_error(ZeroDivisionError)
+      expect { real_number.vector_rejection(zero_number) }.to raise_error(ZeroDivisionError)
+      expect { zero_number.vector_rejection(zero_number) }.to raise_error(ZeroDivisionError)
     end
 
     it "automatically promotes other to a VectorNumber" do
@@ -366,11 +372,13 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     it "returns zero if self is a zero vector" do
-      expect(zero_number.scalar_rejection(num(1))).to eq 0.0
+      expect(zero_number.scalar_rejection(real_number)).to eq 0.0
+      expect(zero_number.scalar_rejection(composite_number)).to eq 0.0
     end
 
     it "raises ZeroDivisionError if other is a zero vector" do
-      expect { real_number.scalar_rejection(num(0)) }.to raise_error(ZeroDivisionError)
+      expect { real_number.scalar_rejection(zero_number) }.to raise_error(ZeroDivisionError)
+      expect { zero_number.scalar_rejection(zero_number) }.to raise_error(ZeroDivisionError)
     end
 
     it "automatically promotes other to a VectorNumber" do

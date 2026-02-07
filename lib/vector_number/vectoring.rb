@@ -123,7 +123,7 @@ class VectorNumber
   #
   # @since <<next>>
   def unit_vector
-    check_directionality(self)
+    has_direction?
 
     self / magnitude
   end
@@ -181,11 +181,11 @@ class VectorNumber
   #
   # @since <<next>>
   def angle(other)
-    check_directionality(self)
+    has_direction?
     return 0.0 if equal?(other)
 
     other = new([other]) unless other.is_a?(VectorNumber)
-    check_directionality(other)
+    has_direction?(other)
     return Math::PI / 2.0 if (product = dot_product(other)).zero?
 
     Math.acos(product / magnitude / other.magnitude)
@@ -211,10 +211,10 @@ class VectorNumber
   #
   # @since <<next>>
   def vector_projection(other)
-    return self if equal?(other)
+    return self if equal?(other) && has_direction?
 
     other = new([other]) unless other.is_a?(VectorNumber)
-    check_directionality(other)
+    has_direction?(other)
 
     other * dot_product(other) / other.abs2
   end
@@ -241,10 +241,10 @@ class VectorNumber
   #
   # @since <<next>>
   def scalar_projection(other)
-    return magnitude if equal?(other)
+    return magnitude if equal?(other) && has_direction?
 
     other = new([other]) unless other.is_a?(VectorNumber)
-    check_directionality(other)
+    has_direction?(other)
 
     dot_product(other) / other.magnitude
   end
@@ -270,10 +270,10 @@ class VectorNumber
   #
   # @since <<next>>
   def vector_rejection(other)
-    return VectorNumber[0] if equal?(other)
+    return VectorNumber[0] if equal?(other) && has_direction?
 
     other = new([other]) unless other.is_a?(VectorNumber)
-    check_directionality(other)
+    has_direction?(other)
 
     self - vector_projection(other)
   end
@@ -300,17 +300,19 @@ class VectorNumber
   #
   # @since <<next>>
   def scalar_rejection(other)
-    return 0.0 if equal?(other)
+    return 0.0 if equal?(other) && has_direction?
 
     other = new([other]) unless other.is_a?(VectorNumber)
-    check_directionality(other)
+    has_direction?(other)
 
     (abs2 - dot_product(other)**2 / other.abs2)**0.5
   end
 
   private
 
-  def check_directionality(vector)
+  def has_direction?(vector = self)
     raise ZeroDivisionError, "direction is undefined for a zero vector", caller if vector.zero?
+
+    true
   end
 end
