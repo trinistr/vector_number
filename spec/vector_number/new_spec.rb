@@ -132,4 +132,10 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
       expect { new_number }.to raise_error ArgumentError
     end
   end
+
+  context "when keyword arguments are passed" do
+    it "raises ArgumentError" do
+      expect { described_class.new([1], mult: :dot) }.to raise_error ArgumentError
+    end
+  end
 end

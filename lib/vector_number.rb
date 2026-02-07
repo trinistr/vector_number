@@ -134,6 +134,8 @@ class VectorNumber
   #
   # @param values [Array<Object>] values to put in the number
   def self.[](*values, **nil)
+    raise ArgumentError, "no block accepted" if block_given?
+
     new(values)
   end
   # @endgroup

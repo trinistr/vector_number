@@ -14,6 +14,14 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(number.to_a).to contain_exactly [described_class::R, 5], ["a", 1]
       expect(number).to be_frozen
     end
+
+    it "raises ArgumentError if keyword arguments are passed" do
+      expect { described_class[1, 2, 3, a: 4] }.to raise_error ArgumentError
+    end
+
+    it "raises ArgumentError if a block is passed" do
+      expect { described_class[1, 2, 3] { 4 } }.to raise_error ArgumentError
+    end
   end
 
   describe ".numeric_unit?" do

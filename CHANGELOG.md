@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Changed**
 - `#abs` is now an alias of `#magnitude`, instead of the other way around.
+- `VectorNumber.[]` now raises `ArgumentError` if a block is passed. Previously, block was silently ignored.
 
 [Compare v0.6.0...main](https://github.com/trinistr/vector_number/compare/v0.6.0...main)
 
