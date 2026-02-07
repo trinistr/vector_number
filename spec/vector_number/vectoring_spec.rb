@@ -220,6 +220,12 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(num(1, "a").vector_projection(num("a", -1))).to eq num(0)
     end
 
+    it "returns self if other is the same vector" do
+      expect(real_number.vector_projection(real_number)).to eq real_number
+      expect(complex_number.vector_projection(complex_number)).to eq complex_number
+      expect(composite_number.vector_projection(composite_number)).to eq composite_number
+    end
+
     it "returns zero vector if self is a zero vector" do
       expect(zero_number.vector_projection(num(1))).to eq num(0)
     end
@@ -263,6 +269,12 @@ RSpec.describe VectorNumber, :aggregate_failures do
     it "returns zero if vectors are orthogonal" do
       expect(num(1, 1i).scalar_projection(num(1, -1i))).to eq 0.0
       expect(num(1, "a").scalar_projection(num("a", -1))).to eq 0.0
+    end
+
+    it "returns magnitude if other is the same vector" do
+      expect(real_number.scalar_projection(real_number)).to eq real_number.magnitude
+      expect(complex_number.scalar_projection(complex_number)).to eq complex_number.magnitude
+      expect(composite_number.scalar_projection(composite_number)).to eq composite_number.magnitude
     end
 
     it "returns zero if self is a zero vector" do

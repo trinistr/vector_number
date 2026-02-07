@@ -247,7 +247,7 @@ class VectorNumber
 
   private
 
-  def check_angularity: (in_value_type vector) -> void
+  def check_directionality: (in_value_type vector) -> void
 end
 
 class VectorNumber

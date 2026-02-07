@@ -211,6 +211,8 @@ class VectorNumber
   #
   # @since <<next>>
   def vector_projection(other)
+    return self if equal?(other)
+
     other = new([other]) unless other.is_a?(VectorNumber)
     check_directionality(other)
 
@@ -239,6 +241,8 @@ class VectorNumber
   #
   # @since <<next>>
   def scalar_projection(other)
+    return magnitude if equal?(other)
+
     other = new([other]) unless other.is_a?(VectorNumber)
     check_directionality(other)
 
@@ -266,6 +270,8 @@ class VectorNumber
   #
   # @since <<next>>
   def vector_rejection(other)
+    return VectorNumber[0] if equal?(other)
+
     other = new([other]) unless other.is_a?(VectorNumber)
     check_directionality(other)
 
@@ -274,7 +280,8 @@ class VectorNumber
 
   # Calculate the scalar rejection of this vector from +other+ vector.
   #
-  # Scalar rejection is equal to {#magnitude} of {#vector_rejection}.
+  # Scalar rejection is equal to {#magnitude} of {#vector_rejection},
+  # and is always non-negative.
   # If +other+ is not a VectorNumber, it is automatically promoted.
   #
   # @example
@@ -293,10 +300,12 @@ class VectorNumber
   #
   # @since <<next>>
   def scalar_rejection(other)
+    return 0.0 if equal?(other)
+
     other = new([other]) unless other.is_a?(VectorNumber)
     check_directionality(other)
 
-    vector_rejection(other).magnitude
+    (abs2 - dot_product(other)**2 / other.abs2)**0.5
   end
 
   private
