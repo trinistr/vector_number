@@ -52,15 +52,15 @@
 # - {#truncate}: truncate each coefficient towards 0
 #
 # **Vector** **operations**
-# - {#abs}/{#magnitude}/{#euclidean_norm}: return absolute value (magnitude/length)
-# - {#abs2}: return square of absolute value
-# - {#p_norm}: return p-norm of the vector
-# - {#maximum_norm}/{#infinity_norm}: return maximum norm (infinity norm) of the vector
+# - {#magnitude}/{#abs}: calculate magnitude (length/absolute value)
+# - {#abs2}: calculate square of absolute value
+# - {#p_norm}: calculate p-norm of the vector
+# - {#maximum_norm}/{#infinity_norm}: calculate maximum norm of the vector
 # - {#subspace_basis}: return an array of vectors forming orthonormal basis
 # - {#uniform_vector}: return a new vector with coefficients set to 1
 # - {#unit_vector}: return a unit vector in the direction of this vector
-# - {#dot_product}: calculate the dot product with another vector
-# - {#angle}: calculate the angle between this vector and another
+# - {#dot_product}/{#inner_product}/{#scalar_product}: calculate the inner product of vectors
+# - {#angle}: calculate angle between vectors
 # - {#vector_projection}: calculate the vector projection onto another vector
 # - {#scalar_projection}: calculate the scalar projection onto another vector
 # - {#vector_rejection}: calculate the vector rejection from another vector

@@ -3,26 +3,24 @@
 class VectorNumber
   # @group Vector operations
 
-  # Calculate the absolute value of the vector (its magnitude/length).
+  # Calculate the magnitude of the vector (its length/absolute value).
   #
   # This is also known as Euclidean norm or 2-norm.
   #
   # @example
-  #   VectorNumber[5.3].abs # => 5.3
+  #   VectorNumber[5.3].magnitude # => 5.3
   #   VectorNumber[-5.3i].magnitude # => 5.3
   #   VectorNumber[-5.3i, "i"].abs # => 5.3935146240647205
   #
-  # @return [Float]
+  # @return [Numeric]
   #
   # @since 0.2.2
-  def abs
-    Math.sqrt(abs2)
+  def magnitude
+    abs2**0.5
   end
 
   # @since 0.2.2
-  alias magnitude abs
-  # @since <<next>>
-  alias euclidean_norm abs
+  alias abs magnitude
 
   # Calculate the square of absolute value.
   #
@@ -44,12 +42,15 @@ class VectorNumber
   #   VectorNumber[5.3].p_norm(2) # => 5.3
   #   VectorNumber[-5.3i].p_norm(2) # => 5.3
   #   VectorNumber[-5.3i, "i"].p_norm(2) # => 5.3935146240647205
+  #   VectorNumber[-5.3i, "i"].p_norm(1) # => 6.3
+  #   VectorNumber[-5.3i, "i"].p_norm(0.5) # => 10.904345773288535
   #
-  # @return [Float]
+  # @param p [Numeric]
+  # @return [Numeric]
   #
   # @since <<next>>
-  def p_norm(power)
-    @data.values.sum { _1.abs**power }**(1.0 / power)
+  def p_norm(p) # rubocop:disable Naming/MethodParameterName
+    @data.values.sum { _1.abs**p }**(1.0 / p)
   end
 
   # Calculate the maximum norm (infinity norm) of the vector.
@@ -127,7 +128,7 @@ class VectorNumber
     self / magnitude
   end
 
-  # Calculate the dot (inner/scalar) product of this vector with +other+ vector.
+  # Calculate the dot product (inner product/scalar product) of this vector with +other+ vector.
   #
   # If +other+ is not a VectorNumber, it is automatically promoted.
   #
@@ -135,10 +136,11 @@ class VectorNumber
   #   VectorNumber[2].dot_product(VectorNumber[3]) # => 6
   #   v = VectorNumber[2, "a"]
   #   v.dot_product(VectorNumber[3, "s"]) # => 6
-  #   v.dot_product(3) # => 6
-  #   v.dot_product("b") # => 0
-  #   v.dot_product(0) # => 0
-  #   VectorNumber[0].dot_product(v) # => 0
+  #   v.inner_product(3) # => 6
+  #   v.scalar_product("b") # => 0.0
+  #   v.dot_product(0) # => 0.0
+  #   v.inner_product(2 * VectorNumber[-0.5, "a"]) # => 0.0
+  #   VectorNumber[0].scalar_product(v) # => 0.0
   #   v.dot_product(v) == v.abs2 # => true
   #
   # @param other [VectorNumber, Object]
@@ -146,10 +148,12 @@ class VectorNumber
   #
   # @since <<next>>
   def dot_product(other)
-    return 0 if zero?
+    return 0.0 if zero?
     return abs2 if equal?(other)
 
     other = new([other]) unless other.is_a?(VectorNumber)
+    return 0.0 if other.zero?
+
     @data.sum { |u, c| c * other[u] }
   end
 
@@ -172,7 +176,7 @@ class VectorNumber
   #   VectorNumber[0].angle(v) # ZeroDivisionError
   #
   # @param other [VectorNumber, Object]
-  # @return [Float]
+  # @return [Numeric]
   # @raise [ZeroDivisionError] if +self+ or +other+ is a zero vector
   #
   # @since <<next>>
@@ -184,7 +188,7 @@ class VectorNumber
     check_directionality(other)
     return Math::PI / 2.0 if (product = dot_product(other)).zero?
 
-    Math.acos(product / (magnitude * other.magnitude))
+    Math.acos(product / magnitude / other.magnitude)
   end
 
   # Calculate the vector projection of this vector onto +other+ vector.
@@ -197,6 +201,7 @@ class VectorNumber
   #   v.vector_projection(1) # => (2.0)
   #   v.vector_projection("b") # => (0)
   #   v.vector_projection(-v) # => (-2.0 - 1.0⋅"a")
+  #   v.vector_projection(2 * VectorNumber[-0.5, "a"]) # => (0)
   #   VectorNumber[0].vector_projection(v) # => (0)
   #   v.vector_projection(0) # ZeroDivisionError
   #
@@ -214,7 +219,8 @@ class VectorNumber
 
   # Calculate the scalar projection of this vector onto +other+ vector.
   #
-  # Scalar projection is equal to {#magnitude} of {#vector_projection}.
+  # Absolute value of scalar projection is equal to {#magnitude} of {#vector_projection}.
+  # Sign of scalar projection depends on the {#angle} between vectors.
   # If +other+ is not a VectorNumber, it is automatically promoted.
   #
   # @example
@@ -223,11 +229,12 @@ class VectorNumber
   #   v.scalar_projection(1) # => 2.0
   #   v.scalar_projection("b") # => 0.0
   #   v.scalar_projection(-v) # => -2.23606797749979
+  #   v.scalar_projection(2 * VectorNumber[-0.5, "a"]) # => 0.0
   #   VectorNumber[0].scalar_projection(v) # => 0
   #   v.scalar_projection(0) # ZeroDivisionError
   #
   # @param other [VectorNumber, Object]
-  # @return [Float]
+  # @return [Numeric]
   # @raise [ZeroDivisionError] if +other+ is a zero vector
   #
   # @since <<next>>
@@ -249,6 +256,7 @@ class VectorNumber
   #   v.vector_rejection(1) # => (1⋅"a")
   #   v.vector_rejection("b") # => (2 + 1⋅"a")
   #   v.vector_rejection(-v) # => (0)
+  #   v.vector_rejection(2 * VectorNumber[-0.5, "a"]) # => (2 + 1⋅"a")
   #   VectorNumber[0].vector_rejection(v) # => (0)
   #   v.vector_rejection(0) # ZeroDivisionError
   #
@@ -275,11 +283,12 @@ class VectorNumber
   #   v.scalar_rejection(1) # => 1.0
   #   v.scalar_rejection("b") # => 2.23606797749979
   #   v.scalar_rejection(-v) # => 0.0
+  #   v.scalar_rejection(2 * VectorNumber[-0.5, "a"]) # => 2.23606797749979
   #   VectorNumber[0].scalar_rejection(v) # => 0.0
   #   v.scalar_rejection(0) # ZeroDivisionError
   #
   # @param other [VectorNumber, Object]
-  # @return [Float]
+  # @return [Numeric]
   # @raise [ZeroDivisionError] if +other+ is a zero vector
   #
   # @since <<next>>
