@@ -144,7 +144,7 @@ Length of a VectorNumber in any given dimension is given by a real number, calle
 
 This might be more easily imagined as a geometric vector. For example, this is a graphic representation of a vector `3 * VectorNumber[1] + 2 * VectorNumber[1i] + 3 * VectorNumber["string"] + 4.5 * VectorNumber[[1,2,3]]` in the vector space:
 
-![Vector space](doc/vector_space.svg)
+![Vector in vector space](https://raw.githubusercontent.com/trinistr/vector_number/main/doc/vector_space.svg)
 
 ## Development
 
