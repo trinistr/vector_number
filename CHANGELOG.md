@@ -29,7 +29,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `#abs` is now an alias of `#magnitude`, instead of the other way around.
 - `VectorNumber.[]` now raises `ArgumentError` if a block is passed. Previously, block was silently ignored.
 
-[Compare v0.6.0...main](https://github.com/trinistr/vector_number/compare/v0.6.0...main)
+[Compare v0.6.1...main](https://github.com/trinistr/vector_number/compare/v0.6.1...main)
+
+## [v0.6.1] — 2026-02-08
+
+This version removes the image file added to the gem in version 0.6.0. It was not displayed on RubyDoc.info and bloated the gem.
+
+[Compare v0.6.0...v0.6.1](https://github.com/trinistr/vector_number/compare/v0.6.0...v0.6.1)
 
 ## [v0.6.0] — 2026-01-31
 
@@ -225,6 +231,7 @@ README was updated to reflect this change.
 - Initial work.
 
 [Next]: https://github.com/trinistr/vector_number/tree/main
+[v0.6.1]: https://github.com/trinistr/vector_number/tree/v0.6.1
 [v0.6.0]: https://github.com/trinistr/vector_number/tree/v0.6.0
 [v0.5.0]: https://github.com/trinistr/vector_number/tree/v0.5.0
 [v0.4.3]: https://github.com/trinistr/vector_number/tree/v0.4.3
