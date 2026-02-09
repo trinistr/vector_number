@@ -101,7 +101,8 @@ class VectorNumber
       unit = unit.inspect if String === unit
       "#{coefficient}#{operator}#{unit}"
     end
-  rescue NoMethodError => e
+  rescue NameError => e
+    # NameError because https://github.com/jruby/jruby/issues/9222
     raise unless e.receiver.equal?(unit)
 
     "#{coefficient}#{operator}#{Kernel.instance_method(:inspect).bind_call(unit)}"
