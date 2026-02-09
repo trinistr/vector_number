@@ -60,7 +60,7 @@ class VectorNumber
   # @return [Boolean]
   def eql?(other)
     return true if equal?(other)
-    return false unless other.is_a?(VectorNumber)
+    return false unless self.class === other
 
     size.eql?(other.size) && @data.eql?(other.to_h)
   end

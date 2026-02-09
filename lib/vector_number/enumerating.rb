@@ -68,8 +68,8 @@ class VectorNumber
   # Returned hash has a default value of 0.
   #
   # @example
-  #   VectorNumber["a", "b", 6].to_h # => {"a"=>1, "b"=>1, 1=>6}
-  #   VectorNumber["a", "b", 6].to_h["c"] # => 0
+  #   VectorNumber["a", "b", 6, 1i].to_h # => {"a" => 1, "b" => 1, unit/1 => 6, unit/i => 1}
+  #   VectorNumber["a", "b", 6, 1i].to_h["c"] # => 0
   #
   # @return [Hash{Object => Numeric}]
   def to_h(&block)

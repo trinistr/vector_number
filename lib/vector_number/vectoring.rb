@@ -151,7 +151,7 @@ class VectorNumber
     return 0.0 if zero?
     return abs2 if equal?(other)
 
-    other = new([other]) unless other.is_a?(VectorNumber)
+    other = new([other]) unless VectorNumber === other
     return 0.0 if other.zero?
 
     @data.sum { |u, c| c * other[u] }
@@ -184,7 +184,7 @@ class VectorNumber
     has_direction?
     return 0.0 if equal?(other)
 
-    other = new([other]) unless other.is_a?(VectorNumber)
+    other = new([other]) unless VectorNumber === other
     has_direction?(other)
     return Math::PI / 2.0 if (product = dot_product(other)).zero?
 
@@ -213,7 +213,7 @@ class VectorNumber
   def vector_projection(other)
     return self if equal?(other) && has_direction?
 
-    other = new([other]) unless other.is_a?(VectorNumber)
+    other = new([other]) unless VectorNumber === other
     has_direction?(other)
 
     other * dot_product(other) / other.abs2
@@ -243,7 +243,7 @@ class VectorNumber
   def scalar_projection(other)
     return magnitude if equal?(other) && has_direction?
 
-    other = new([other]) unless other.is_a?(VectorNumber)
+    other = new([other]) unless VectorNumber === other
     has_direction?(other)
 
     dot_product(other) / other.magnitude
@@ -272,7 +272,7 @@ class VectorNumber
   def vector_rejection(other)
     return VectorNumber[0] if equal?(other) && has_direction?
 
-    other = new([other]) unless other.is_a?(VectorNumber)
+    other = new([other]) unless VectorNumber === other
     has_direction?(other)
 
     self - vector_projection(other)
@@ -302,7 +302,7 @@ class VectorNumber
   def scalar_rejection(other)
     return 0.0 if equal?(other) && has_direction?
 
-    other = new([other]) unless other.is_a?(VectorNumber)
+    other = new([other]) unless VectorNumber === other
     has_direction?(other)
 
     (abs2 - dot_product(other)**2 / other.abs2)**0.5

@@ -160,7 +160,7 @@ To release a new version, run `rake version:{major|minor|patch}`, and then run `
 
 Bug reports and pull requests are welcome on GitHub at [https://github.com/trinistr/vector_number]().
 
-### Checklist for a new or updated feature
+**Checklist for a new or updated feature**
 
 - Running `rake spec` reports 100% coverage (unless it's impossible to achieve in one run).
 - Running `rake rubocop` reports no offenses.

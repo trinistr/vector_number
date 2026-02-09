@@ -228,7 +228,7 @@ class VectorNumber
     when true, nil
       self
     when false
-      raise ArgumentError, "can't unfreeze #{self.class}"
+      raise ArgumentError, "can't unfreeze VectorNumber"
     else
       raise ArgumentError, "unexpected value for freeze: #{freeze.class}"
     end
@@ -243,7 +243,7 @@ class VectorNumber
   # @yieldreturn [Numeric] new coefficient
   # @return [VectorNumber]
   def new(from = self, &transform)
-    self.class.new(from, &transform)
+    VectorNumber.new(from, &transform)
   end
 
   # Check if +other+ is a real number.
@@ -253,13 +253,13 @@ class VectorNumber
   # @param value [Object]
   # @return [Boolean]
   def real_number?(value)
-    (value.is_a?(Numeric) && value.real?) || (value.is_a?(self.class) && value.numeric?(1))
+    (Numeric === value && value.real?) || (VectorNumber === value && value.numeric?(1))
   end
 
   # @param values [Array, Hash{Object => Numeric}, VectorNumber, nil]
   # @return [void]
   def initialize_from(values)
-    @data = values.to_h and return if values.is_a?(VectorNumber)
+    @data = values.to_h and return if VectorNumber === values
 
     @data = Hash.new(0)
     case values

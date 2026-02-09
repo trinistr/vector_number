@@ -46,12 +46,12 @@ class VectorNumber
   # @raise [ArgumentError]
   #   if +mult+ is not a String and is not in {MULT_STRINGS}'s keys
   def to_s(mult: :dot, &block)
-    if !mult.is_a?(String) && !MULT_STRINGS.key?(mult)
+    if !(String === mult) && !MULT_STRINGS.key?(mult)
       raise ArgumentError, "unknown key #{mult.inspect}", caller
     end
     return "0" if zero?
 
-    operator = mult.is_a?(String) ? mult : MULT_STRINGS[mult]
+    operator = (String === mult) ? mult : MULT_STRINGS[mult]
     build_string(operator, &block)
   end
 
@@ -98,7 +98,7 @@ class VectorNumber
     if NUMERIC_UNITS.include?(unit)
       "#{coefficient}#{unit}"
     else
-      unit = unit.inspect if unit.is_a?(String)
+      unit = unit.inspect if String === unit
       "#{coefficient}#{operator}#{unit}"
     end
   end

@@ -110,7 +110,7 @@ class VectorNumber
     raise_convert_error(BigDecimal) unless numeric?(1)
 
     return BigDecimal(real, ndigits) if ndigits
-    return BigDecimal(real, Float::DIG) if real.is_a?(Float)
+    return BigDecimal(real, Float::DIG) if Float === real
 
     BigDecimal(real)
   end

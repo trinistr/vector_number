@@ -117,7 +117,7 @@ class VectorNumber
       other = other.real
       # @type var other: Float
       new { _1 * other }
-    elsif real_number?(self) && other.is_a?(self.class)
+    elsif real_number?(self) && VectorNumber === other
       # @type var other: untyped
       other * self
     else
