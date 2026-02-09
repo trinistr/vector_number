@@ -98,8 +98,7 @@ class VectorNumber
     if NUMERIC_UNITS.include?(unit)
       "#{coefficient}#{unit}"
     else
-      unit = unit.inspect if String === unit
-      "#{coefficient}#{operator}#{unit}"
+      "#{coefficient}#{operator}#{unit.inspect}"
     end
   end
 end
