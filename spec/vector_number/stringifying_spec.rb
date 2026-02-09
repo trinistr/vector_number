@@ -40,7 +40,7 @@ RSpec.describe VectorNumber do
         let(:number) { composite_number }
 
         it "formats every value appropiately" do
-          expect(string).to eq "1⋅\"y\" + 1⋅a - 31"
+          expect(string).to eq "1⋅\"y\" + 1⋅:a - 31"
         end
       end
     end
@@ -53,7 +53,7 @@ RSpec.describe VectorNumber do
         let(:char) { described_class::MULT_STRINGS[mult] }
 
         it "inserts multiplication symbol properly" do
-          expect(string).to eq "1#{char}\"y\" + 1#{char}a - 31"
+          expect(string).to eq "1#{char}\"y\" + 1#{char}:a - 31"
         end
       end
 
@@ -62,7 +62,7 @@ RSpec.describe VectorNumber do
         let(:char) { %w[* & ^ @ !].sample(rand(1..3)).shuffle.join }
 
         it "inserts whatever user provided" do
-          expect(string).to eq "1#{char}\"y\" + 1#{char}a - 31"
+          expect(string).to eq "1#{char}\"y\" + 1#{char}:a - 31"
         end
       end
 
