@@ -64,7 +64,9 @@ class VectorNumber
 
     size.eql?(other.size) && @data.eql?(other.to_h)
   rescue NoMethodError => e
+    # :nocov:
     raise unless e.receiver.equal?(other)
+    # :nocov:
 
     # Should only happen if `other.class` is undefined.
     false
