@@ -9,6 +9,7 @@ class VectorNumber
 
   type list[T] = Array[T]
 
+  type vector_instance = VectorNumber
   type plain_instance = Hash[unit_type, coefficient_type]
   type units_list_type = list[unit_type]
   type coefficients_list_type = list[coefficient_type]
@@ -24,14 +25,14 @@ class VectorNumber
 
   # ---- Public methods ----
 
-  def self.[]: (*unit_type values) -> instance
+  def self.[]: (*unit_type values) -> vector_instance
 
   def self.numeric_unit?: (unit_type unit) -> bool
 
   def size: -> Integer
 
   def initialize:
-    (?(units_list_type | plain_instance | instance)? values)
+    (?(units_list_type | plain_instance | vector_instance)? values)
     ?{ (coefficient_type coefficient) -> coefficient_type }
     -> void
 
@@ -45,22 +46,22 @@ class VectorNumber
   @size: Integer
   @data: plain_instance
 
-  def new: () { (coefficient_type value) -> coefficient_type } -> instance
-         | (in_value_type) { (coefficient_type value) -> coefficient_type } -> instance
-         | () -> instance
-         | (in_value_type) -> instance
+  def new: () { (coefficient_type value) -> coefficient_type } -> vector_instance
+         | (in_value_type) { (coefficient_type value) -> coefficient_type } -> vector_instance
+         | () -> vector_instance
+         | (in_value_type) -> vector_instance
 
   def real_number?: (real_number value) -> true
-                  | (instance) -> bool
+                  | (vector_instance) -> bool
                   | (in_value_type value) -> false
 
-  def initialize_from: ((units_list_type | plain_instance | instance)? values) -> void
+  def initialize_from: ((units_list_type | plain_instance | vector_instance)? values) -> void
 
-  def add_value_to_data: ((instance | Numeric | unit_type) value) -> void
+  def add_value_to_data: ((vector_instance | Numeric | unit_type) value) -> void
 
   def add_numeric_value_to_data: (Numeric value) -> void
 
-  def add_vector_to_data: ((instance | plain_instance) vector) -> void
+  def add_vector_to_data: ((vector_instance | plain_instance) vector) -> void
 
   def apply_transform: () ?{ (coefficient_type value) -> coefficient_type } -> void
 
@@ -69,50 +70,50 @@ end
 
 # Methods for performing actual math.
 class VectorNumber
-  def coerce: (in_value_type) -> [instance, self]
+  def coerce: (in_value_type) -> [vector_instance, self]
 
-  def -@: () -> instance
+  def -@: () -> vector_instance
   alias neg -@
 
-  def +: (in_value_type) -> instance
+  def +: (in_value_type) -> vector_instance
   alias add +
 
-  def -: (in_value_type) -> instance
+  def -: (in_value_type) -> vector_instance
   alias sub -
 
-  def *: (real_number | instance) -> instance
+  def *: (real_number | vector_instance) -> vector_instance
   alias mult *
 
-  def /: (real_number | instance) -> instance
+  def /: (real_number | vector_instance) -> vector_instance
   alias quo /
 
-  def fdiv: (real_number | instance) -> instance
+  def fdiv: (real_number | vector_instance) -> vector_instance
 
-  def div: (real_number | instance) -> instance
+  def div: (real_number | vector_instance) -> vector_instance
 
-  def ceildiv: (real_number | instance) -> instance
+  def ceildiv: (real_number | vector_instance) -> vector_instance
 
-  def %: (real_number | instance) -> instance
+  def %: (real_number | vector_instance) -> vector_instance
   alias modulo %
 
-  def divmod: (real_number | instance) -> [instance, instance]
+  def divmod: (real_number | vector_instance) -> [vector_instance, vector_instance]
 
-  def remainder: (real_number | instance) -> instance
+  def remainder: (real_number | vector_instance) -> vector_instance
 
   private
 
-  def check_divisibility: (real_number | instance) -> void
+  def check_divisibility: (real_number | vector_instance) -> void
 end
 
 # Various mathematical operations that are also conversions.
 class VectorNumber
-  def truncate: (?Integer) -> instance
+  def truncate: (?Integer) -> vector_instance
 
-  def ceil: (?Integer) -> instance
+  def ceil: (?Integer) -> vector_instance
 
-  def floor: (?Integer) -> instance
+  def floor: (?Integer) -> vector_instance
 
-  def round: (?Integer, ?half: (:up | :down | :even)) -> instance
+  def round: (?Integer, ?half: (:up | :down | :even)) -> vector_instance
 end
 
 # Methods for converting to different number classes.
@@ -225,11 +226,11 @@ class VectorNumber
 
   def maximum_norm: () -> Numeric
 
-  def subspace_basis: () -> Array[instance]
+  def subspace_basis: () -> Array[vector_instance]
 
-  def uniform_vector: () -> instance
+  def uniform_vector: () -> vector_instance
 
-  def unit_vector: () -> instance
+  def unit_vector: () -> vector_instance
 
   def dot_product: (in_value_type other) -> coefficient_type
   alias inner_product dot_product
@@ -239,11 +240,11 @@ class VectorNumber
 
   def scalar_projection: (in_value_type other) -> coefficient_type
 
-  def vector_projection: (in_value_type other) -> instance
+  def vector_projection: (in_value_type other) -> vector_instance
 
   def scalar_rejection: (in_value_type other) -> coefficient_type
 
-  def vector_rejection: (in_value_type other) -> instance
+  def vector_rejection: (in_value_type other) -> vector_instance
 
   private
 
