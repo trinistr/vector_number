@@ -25,13 +25,13 @@ class VectorNumber
     # @note Currently only applies to Complex on *3.1*,
     #   as other numeric classes rely on +#coerce+.
     # @example without refinements
-    #   VectorNumber[2] <=> Complex(1, 0) #=> 1
-    #   Complex(1, 0) <=> VectorNumber[2] #=> nil
+    #   VectorNumber[2] <=> Complex(1, 0) # => 1
+    #   Complex(1, 0) <=> VectorNumber[2] # => nil
     # @example with refinements
     #   require "vector_number/numeric_refinements"
     #   using VectorNumber::NumericRefinements
-    #   VectorNumber[2] <=> Complex(1, 0) #=> 1
-    #   Complex(1, 0) <=> VectorNumber[2] #=> -1
+    #   VectorNumber[2] <=> Complex(1, 0) # => 1
+    #   Complex(1, 0) <=> VectorNumber[2] # => -1
     #
     # @since 0.2.1
     module CommutativeShuttle
@@ -63,7 +63,7 @@ class VectorNumber
     # @example with refinements
     #   require "vector_number/numeric_refinements"
     #   using VectorNumber::NumericRefinements
-    #   BigDecimal(VectorNumber[2]) #=> 0.2e1
+    #   BigDecimal(VectorNumber[2]) # => 0.2e1
     #
     # @since 0.2.1
     module BigDecimalToD

@@ -15,11 +15,11 @@ class VectorNumber
   # @example
   #   v = VectorNumber["a", "b", 6]
   #   units = []
-  #   v.each { |u, c| units << u unless u.is_a?(Numeric) } # => (1⋅'a' + 1⋅'b' + 6)
+  #   v.each { |u, c| units << u unless VectorNumber.numeric_unit?(u) } # => (1⋅"a" + 1⋅"b" + 6)
   #   units # => ["a", "b"]
   # @example Enumerator
   #   v.each.size # => 3
-  #   (v.each + [["d", 0]]).map(&:first) # => ["a", "b", 1, "d"]
+  #   (v.each + [["d", 0]]).map(&:first) # => ["a", "b", unit/1, "d"]
   #   v.each_pair.peek # => ["a", 1]
   #
   # @overload each
@@ -44,7 +44,7 @@ class VectorNumber
   # Get a list of units with non-zero coefficients.
   #
   # @example
-  #   VectorNumber["a", "b", 6].units # => ["a", "b", 1]
+  #   VectorNumber["a", "b", 6].units # => ["a", "b", unit/1]
   #   VectorNumber.new.keys # => []
   #
   # @return [Array<Object>]

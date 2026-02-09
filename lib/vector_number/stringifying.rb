@@ -26,13 +26,13 @@ class VectorNumber
   #   VectorNumber[5, "s"].to_s # => "5 + 1⋅\"s\""
   #   VectorNumber["s", 5].to_s # => "1⋅\"s\" + 5"
   # @example with :mult argument
-  #   VectorNumber[5, :s].to_s(mult: :asterisk) # => "5 + 1*s"
-  #   (-VectorNumber[5, :s]).to_s(mult: "~~~") # => "-5 - 1~~~s"
+  #   VectorNumber[5, :s].to_s(mult: :asterisk) # => "5 + 1*:s"
+  #   (-VectorNumber[5, :s]).to_s(mult: "~~~") # => "-5 - 1~~~:s"
   # @example with a block
   #   VectorNumber[5, :s].to_s { |k, v| "#{format("%+.0f", v)}%#{k}" } # => "+5%1+1%s"
   #   VectorNumber[5, :s].to_s(mult: :cross) { |k, v, i, op|
-  #     "#{',' unless i.zero?}#{v}#{op+k.to_s unless k == VectorNumber::R}"
-  #   } # => "5,1×s"
+  #     "#{',' unless i.zero?}#{v}#{op+k.inspect unless k == VectorNumber::R}"
+  #   } # => "5,1×:s"
   #
   # @param mult [Symbol, String]
   #   text to use between coefficient and unit,
@@ -57,10 +57,10 @@ class VectorNumber
 
   # Return string representation of the vector suitable for display.
   #
-  # This is similar to +Complex#inspect+: it returns result of {#to_s} in round brackets.
+  # This is similar to +Complex#inspect+ — it returns result of {#to_s} in round brackets.
   #
   # @example
-  #   VectorNumber[5, :s].inspect # => "(5 + 1⋅s)"
+  #   VectorNumber[5, :s].inspect # => "(5 + 1⋅:s)"
   #
   # @return [String]
   #

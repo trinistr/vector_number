@@ -26,8 +26,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - 2-norm (Euclidean norm) can already be calculated using `#magnitude`.
 
 **Changed**
+- [🍄 BREAKING] `#to_s` now calls `#inspect` on all non-special units, better aligning with standard classes.
+  - This means that neither Strings nor Symbols are displayed completely unadorned now.
 - `#abs` is now an alias of `#magnitude`, instead of the other way around.
 - `VectorNumber.[]` now raises `ArgumentError` if a block is passed. Previously, block was silently ignored.
+- Internal changes now allow for (hopefully) full support for `BasicObject` objects, though some methods are required.
+  - `#hash` and `#eql?` are always required, same as for Hash.
+  - `#inspect` is required for `#to_s`.
 
 [Compare v0.6.1...main](https://github.com/trinistr/vector_number/compare/v0.6.1...main)
 

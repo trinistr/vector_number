@@ -191,7 +191,8 @@ class VectorNumber
   #   VectorNumber.new(["a", "b", "c", 3], &:-@) # => (-1⋅"a" - 1⋅"b" - 1⋅"c" - 3)
   #   VectorNumber.new(["a", "b", "c", 3], &:digits) # RangeError
   # @example using hash for values
-  #   v = VectorNumber.new({VectorNumber::R => 15, "a" => 3.4, nil => -3}) # => (15 + 3.4⋅"a" - 3⋅)
+  #   v = VectorNumber.new({VectorNumber::R => 15, "a" => 3.4, nil => -3})
+  #     # => (15 + 3.4⋅"a" - 3⋅nil)
   #   v.to_h # => {unit/1 => 15, "a" => 3.4, nil => -3}
   #
   # @param values [Array, VectorNumber, Hash{Object => Numeric}, nil] values for this vector
