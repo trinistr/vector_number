@@ -7,7 +7,12 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
   let(:value) { nil }
   let(:block) { nil }
 
-  let(:my_basic_class) { Class.new(BasicObject) { define_method(:hash, -> { 1 }) } }
+  let(:my_basic_class) do
+    Class.new(BasicObject) do
+      define_method(:hash, -> { 1 })
+      alias_method :eql?, :==
+    end
+  end
 
   context "when initializing with nil" do
     it "returns zero" do
