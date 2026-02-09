@@ -101,5 +101,9 @@ class VectorNumber
       unit = unit.inspect if String === unit
       "#{coefficient}#{operator}#{unit}"
     end
+  rescue NoMethodError => e
+    raise unless e.receiver.equal?(unit)
+
+    "#{coefficient}#{operator}#{Kernel.instance_method(:inspect).bind_call(unit)}"
   end
 end

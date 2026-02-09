@@ -6,10 +6,12 @@ RSpec.describe VectorNumber do
   let(:negative_number) { num(Complex(0, -3), -5) }
   let(:composite_number) { num("y", :a, 5, -36) }
 
-  describe "#to_s" do
-    context "when :mult option is not specified" do
-      subject(:string) { number.to_s }
+  let(:my_basic_class) { Class.new(BasicObject) { define_method(:hash, -> { 1 }) } }
 
+  describe "#to_s" do
+    subject(:string) { number.to_s }
+
+    context "when :mult option is not specified" do
       context "with zero" do
         let(:number) { zero_number }
 
@@ -110,6 +112,25 @@ RSpec.describe VectorNumber do
         end
       end
     end
+
+    context "when a BasicObject is inside the vector" do
+      let(:number) { num(value) }
+      let(:value) { my_basic_class.new }
+
+      it "applies Kernel#inspect to the value" do
+        expect(string).to eq "1⋅#{Kernel.instance_method(:inspect).bind_call(value)}"
+      end
+    end
+
+    context "when a freak NoMethodError happens" do
+      let(:number) { num(1) }
+
+      before { stub_const("#{described_class}::NUMERIC_UNITS", Object.new) }
+
+      it "re-raises the error" do
+        expect { string }.to raise_error NoMethodError
+      end
+    end
   end
 
   describe "#inspect" do
@@ -119,6 +140,15 @@ RSpec.describe VectorNumber do
 
     it "returns string representation surrounded by brackets" do
       expect(string).to eq "(#{number})"
+    end
+
+    context "when a BasicObject is inside the vector" do
+      let(:number) { num(value) }
+      let(:value) { my_basic_class.new }
+
+      it "applies Kernel#inspect to the value" do
+        expect(string).to eq "(1⋅#{Kernel.instance_method(:inspect).bind_call(value)})"
+      end
     end
   end
 end

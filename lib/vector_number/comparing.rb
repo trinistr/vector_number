@@ -63,8 +63,10 @@ class VectorNumber
     return false unless self.class == other.class
 
     size.eql?(other.size) && @data.eql?(other.to_h)
-  rescue NoMethodError
-    # Should only happen if `other.class` doesn't exist.
+  rescue NoMethodError => e
+    raise unless e.receiver.equal?(other)
+
+    # Should only happen if `other.class` is undefined.
     false
   end
 

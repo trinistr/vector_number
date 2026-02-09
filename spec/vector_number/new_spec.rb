@@ -7,6 +7,8 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
   let(:value) { nil }
   let(:block) { nil }
 
+  let(:my_basic_class) { Class.new(BasicObject) { define_method(:hash, -> { 1 }) } }
+
   context "when initializing with nil" do
     it "returns zero" do
       expect(new_number).to be_zero
@@ -57,21 +59,34 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
         expect(new_number).to eql num(18.25r, 4.1i, "s", "s")
       end
     end
+
+    context "when array contains a BasicObject" do
+      let(:value) { ["a", 14, basic_object, []] }
+      let(:basic_object) { my_basic_class.new }
+
+      it "successfully adds it" do
+        expect(new_number.size).to eq 4
+        expect(new_number.to_a)
+          .to eq [["a", 1], [described_class::R, 14], [basic_object, 1], [[], 1]]
+      end
+    end
   end
 
   context "when initializing with a hash" do
-    let(:value) { { 1 => -123, "u r" => 0xC001, Encoding::UTF_8 => 1.337 } }
+    # Note how this has the proper unit for 1 and also just `1`.
+    let(:value) { { described_class::R => 5, 1 => -123, basic_object => 0xC001, Encoding::UTF_8 => 1.337 } }
+    let(:basic_object) { my_basic_class.new }
 
-    it "treats hash as a plain vector and copies values from it" do
+    it "treats hash as a plain vector and copies keys and values from it direcly" do
       expect(new_number).to be_a described_class
       expect(new_number).to be_frozen
       expect(new_number.to_a).to contain_exactly(
-        [1, -123], ["u r", 49_153], [Encoding::UTF_8, 1.337]
+        [described_class::R, 5], [1, -123], [basic_object, 49_153], [Encoding::UTF_8, 1.337]
       )
     end
 
     context "when it contains non-real values" do
-      let(:value) { { 1 => -123i, "u r" => Object.new, Encoding::UTF_8 => num } }
+      let(:value) { { described_class::R => -123i, basic_object => Object.new, Encoding::UTF_8 => num } }
 
       it "raises RangeError" do
         expect { new_number }.to raise_error RangeError
@@ -118,6 +133,14 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
 
     context "when transformation returns non-numeric value" do
       let(:block) { ->(v) { "a" * v } }
+
+      it "raises RangeError" do
+        expect { new_number }.to raise_error RangeError
+      end
+    end
+
+    context "when transformation returns BasicObject value" do
+      let(:block) { ->(_) { BasicObject.new } }
 
       it "raises RangeError" do
         expect { new_number }.to raise_error RangeError

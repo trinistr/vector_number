@@ -230,7 +230,8 @@ class VectorNumber
     when false
       raise ArgumentError, "can't unfreeze VectorNumber"
     else
-      raise ArgumentError, "unexpected value for freeze: #{freeze.class}"
+      raise ArgumentError,
+            "unexpected value for freeze: #{Kernel.instance_method(:class).bind_call(freeze)}"
     end
   end
 
@@ -270,7 +271,8 @@ class VectorNumber
     when nil
       # Do nothing, as there are no values.
     else
-      raise ArgumentError, "unsupported type for values: #{values.class}"
+      raise ArgumentError,
+            "unsupported type for values: #{Kernel.instance_method(:class).bind_call(values)}"
     end
   end
 

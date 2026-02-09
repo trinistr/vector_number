@@ -96,10 +96,11 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
 
     context "when something else is passed as freeze argument" do
-      let(:args) { { freeze: "true" } }
-
       it "raises ArgumentError the same as Numeric" do
-        expect { clone }.to raise_error ArgumentError, "unexpected value for freeze: String"
+        expect { number.clone(freeze: "true") }
+          .to raise_error ArgumentError, "unexpected value for freeze: String"
+        expect { number.clone(freeze: BasicObject.new) }
+          .to raise_error ArgumentError, "unexpected value for freeze: BasicObject"
       end
     end
   end

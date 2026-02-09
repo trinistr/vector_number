@@ -369,7 +369,11 @@ class VectorNumber
   # @raise [RangeError] unless +other+ is a real number
   # @raise [ZeroDivisionError]
   def check_divisibility(other)
-    raise RangeError, "can't divide #{self} by #{other.inspect}", caller unless real_number?(other)
+    unless real_number?(other)
+      raise RangeError,
+            "can't divide #{self} by #{Kernel.instance_method(:inspect).bind_call(other)}",
+            caller
+    end
     raise ZeroDivisionError, "divided by 0", caller if other.zero?
   end
 end
