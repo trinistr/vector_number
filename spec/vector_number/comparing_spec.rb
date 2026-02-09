@@ -7,16 +7,35 @@ RSpec.describe VectorNumber do
   describe "#==" do
     subject { (rand > 0.5) ? compared_number == other : other == compared_number }
 
+    let(:compared_number) { num([13, 8.7.i, "oui", "ya", Object.new].sample(3)) }
+
     context "when comparing to itself" do
-      let(:compared_number) { num([13, 8.7.i, "oui", "ya", Object.new].sample(3)) }
       let(:other) { compared_number }
 
       it { is_expected.to be true }
     end
 
+    context "when comparing to an exact equal value of the same class" do
+      let(:other) { described_class.new(compared_number) }
+
+      it { is_expected.to be true }
+    end
+
+    context "when comparing to an equal value of a subclass" do
+      let(:other) { subclass.new(compared_number) }
+      let(:subclass) { Class.new(described_class) }
+
+      it { is_expected.to be true }
+    end
+
     context "when comparing to a random object" do
-      let(:compared_number) { num([13, 8.7.i, "oui", "ya", Object.new].sample(3)) }
       let(:other) { Object.new }
+
+      it { is_expected.to be false }
+    end
+
+    context "when comparing to a random basic object" do
+      let(:other) { BasicObject.new }
 
       it { is_expected.to be false }
     end
@@ -146,11 +165,39 @@ RSpec.describe VectorNumber do
   describe "#eql?" do
     subject { (rand > 0.5) ? compared_number.eql?(other) : other.eql?(compared_number) }
 
+    let(:compared_number) { num([13, 8.7.i, "oui", "ya", Object.new].sample(3)) }
+
     context "when comparing to itself" do
-      let(:compared_number) { num([13, 8.7.i, "oui", "ya", Object.new].sample(3)) }
       let(:other) { compared_number }
 
       it { is_expected.to be true }
+    end
+
+    context "when comparing to an exact equal value of the same class" do
+      let(:other) { described_class.new(compared_number) }
+
+      it { is_expected.to be true }
+    end
+
+    context "when comparing to an equal value of a subclass" do
+      let(:other) { subclass.new(compared_number) }
+      let(:subclass) { Class.new(described_class) }
+
+      it { is_expected.to be false }
+    end
+
+    context "when comparing to a random object" do
+      let(:other) { Object.new }
+
+      it { is_expected.to be false }
+    end
+
+    context "when comparing to a random basic object" do
+      subject { compared_number.eql?(other) }
+
+      let(:other) { BasicObject.new }
+
+      it { is_expected.to be false }
     end
 
     context "with a simple number" do
@@ -249,6 +296,8 @@ RSpec.describe VectorNumber do
   describe "#hash" do
     subject(:hash) { composite_number.hash }
 
+    let(:subclass) { Class.new(described_class) }
+
     it "is equal for equal vectors" do
       expect(hash).to eq num(2, "y", :a, 3).hash
     end
@@ -259,6 +308,10 @@ RSpec.describe VectorNumber do
 
     it "is usually not equal for different classes" do
       expect(hash).not_to eq({ VectorNumber::R => 5, "y" => 1, :a => 1 }.hash)
+    end
+
+    it "is usually not equal for subclasses" do
+      expect(hash).not_to eq subclass.new(composite_number).hash
     end
   end
 

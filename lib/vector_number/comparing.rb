@@ -60,9 +60,12 @@ class VectorNumber
   # @return [Boolean]
   def eql?(other)
     return true if equal?(other)
-    return false unless self.class === other
+    return false unless self.class == other.class
 
     size.eql?(other.size) && @data.eql?(other.to_h)
+  rescue NoMethodError
+    # Should only happen if `other.class` doesn't exist.
+    false
   end
 
   # Generate an Integer hash value for self.
