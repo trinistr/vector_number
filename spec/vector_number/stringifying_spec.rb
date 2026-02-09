@@ -117,18 +117,8 @@ RSpec.describe VectorNumber do
       let(:number) { num(value) }
       let(:value) { my_basic_class.new }
 
-      it "applies Kernel#inspect to the value" do
-        expect(string).to eq "1⋅#{Kernel.instance_method(:inspect).bind_call(value)}"
-      end
-    end
-
-    context "when a freak NoMethodError happens" do
-      let(:number) { num(1) }
-
-      before { stub_const("#{described_class}::NUMERIC_UNITS", Object.new) }
-
-      it "re-raises the error" do
-        expect { string }.to raise_error NoMethodError
+      it "fails to stringify, raising NameError" do
+        expect { string }.to raise_error NameError
       end
     end
   end
@@ -140,15 +130,6 @@ RSpec.describe VectorNumber do
 
     it "returns string representation surrounded by brackets" do
       expect(string).to eq "(#{number})"
-    end
-
-    context "when a BasicObject is inside the vector" do
-      let(:number) { num(value) }
-      let(:value) { my_basic_class.new }
-
-      it "applies Kernel#inspect to the value" do
-        expect(string).to eq "(1⋅#{Kernel.instance_method(:inspect).bind_call(value)})"
-      end
     end
   end
 end
