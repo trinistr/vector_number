@@ -26,6 +26,14 @@ class VectorNumber
       @text
     end
 
+    # Support for PP, outputs the same text as {#inspect}.
+    #
+    # @param pp [PP]
+    # @return [void]
+    def pretty_print(pp)
+      pp.text(inspect)
+    end
+
     # Get string representation of the unit for debugging.
     #
     # @return [String]

@@ -6,6 +6,12 @@ rescue LoadError
   # Ok, either there is no bigdecimal, or it is always available.
 end
 
+begin
+  require "pp"
+rescue LoadError
+  # Ok, we will skip tests for #pretty_print
+end
+
 Dir["#{__dir__}/support/**/*.rb"].each { require _1 unless _1.end_with?("coverage_helper.rb") }
 
 # Require coverage helper before the gem to ensure proper coverage reporting.
@@ -46,5 +52,10 @@ RSpec.configure do |config|
   # Skip tests using BigDecimal if no support is available.
   config.before(:context, :bigdecimal) do
     skip "BigDecimal is not defined, test will not be run" unless defined?(BigDecimal)
+  end
+
+  # Skip tests using pp if no support is available.
+  config.before(:context, :pretty_print) do
+    skip "PP is not defined, test will not be run" unless defined?(PP)
   end
 end

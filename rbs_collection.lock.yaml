@@ -9,4 +9,12 @@ gems:
     revision: c1111c70e0d5ebc152cc14a3dfb29c3ceb5874f9
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
+- name: pp
+  version: '0'
+  source:
+    type: stdlib
+- name: prettyprint
+  version: '0'
+  source:
+    type: stdlib
 gemfile_lock_path: Gemfile.lock

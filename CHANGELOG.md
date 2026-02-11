@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `#p_norm`
   - `#maximum_norm` (aliased as `#infinity_norm`)
   - 2-norm (Euclidean norm) can already be calculated using `#magnitude`.
+- `#pretty_print` method to support `PP` which works much in the same way as `#inspect`. This is mainly useful in interactive sessions.
 
 **Changed**
 - [🍄 BREAKING] `#to_s` now calls `#inspect` on all non-special units, better aligning with standard classes.

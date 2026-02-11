@@ -16,9 +16,16 @@ RSpec.describe VectorNumber::SpecialUnit do
   end
 
   describe "#inspect" do
-    it "returns string representation for debugging" do
+    it "returns string representation for debugging, including identifier" do
       expect(described_class.new(13, "asd").inspect).to eq "unit/13"
       expect(described_class.new(:i, "asd").inspect).to eq "unit/i"
+    end
+  end
+
+  describe "#pretty_print", :pretty_print do
+    it "prints the same text as #inspect" do
+      unit = described_class.new("AA!#{rand(1000).to_s(36)}", "m")
+      expect(unit.pretty_print_inspect).to eq unit.inspect
     end
   end
 
