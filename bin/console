@@ -21,6 +21,7 @@ Vs = VectorNumber[:s]
 Vpi = VectorNumber[:pi] * Math::PI
 V = ((V1 * 3.3) + (Va * 4.5) - Vs)
 V2a = VectorNumber[2, "a"]
+Vaz = ("a".."az").to_a.sum(VectorNumber[])
 
 # Quickly benchmark one thing
 def benchmark(&block) # rubocop:disable Style/TopLevelMethodDefinition

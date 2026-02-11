@@ -126,10 +126,28 @@ RSpec.describe VectorNumber do
   describe "#inspect" do
     subject(:string) { number.inspect }
 
-    let(:number) { [zero_number, real_number, negative_number, composite_number].sample }
+    let(:number) { [real_number, negative_number, composite_number].sample }
 
     it "returns string representation surrounded by brackets" do
       expect(string).to eq "(#{number})"
+    end
+
+    it "returns (0) for a zero vector" do
+      expect(zero_number.inspect).to eq "(0)"
+    end
+  end
+
+  describe "#pretty_print", :pretty_print do
+    subject(:string) { number.pretty_print_inspect }
+
+    let(:number) { composite_number }
+
+    it "outputs the same string representation as #inspect" do
+      expect(number.pretty_print_inspect).to eq number.inspect
+    end
+
+    it "outputs (0) for a zero vector" do
+      expect(zero_number.pretty_print_inspect).to eq "(0)"
     end
   end
 end

@@ -58,4 +58,6 @@ end
 group :optional do
   # Development and testing use BigDecimal, though it is not required for the gem.
   gem "bigdecimal"
+  # Again, support for PP is integrated and tested, but not required.
+  gem "pp"
 end

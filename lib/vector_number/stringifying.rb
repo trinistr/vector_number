@@ -69,6 +69,27 @@ class VectorNumber
     "(#{self})"
   end
 
+  # Support for PP, outputs the same text as {#inspect}.
+  #
+  # @param pp [PP]
+  # @return [void]
+  def pretty_print(pp) # rubocop:disable Metrics/AbcSize
+    pp.text("(0)") and return if zero?
+
+    pp.group(1, "(", ")") do
+      # This should use `pp.fill_breakable`, but PrettyPrint::SingleLine doesn't support it.
+      pp.seplist(@data, -> { fill_breakable(pp) }, :each_with_index) do |(unit, coefficient), i|
+        pp.text("-") if coefficient.negative?
+        unless i.zero?
+          pp.text("+") if coefficient.positive?
+          fill_breakable(pp)
+        end
+        pp.text(coefficient.abs.to_s)
+        (SpecialUnit === unit) ? pp.text(unit.to_s) : pp.text("⋅#{unit.inspect}")
+      end
+    end
+  end
+
   private
 
   # @param operator [String]
@@ -100,5 +121,9 @@ class VectorNumber
     else
       "#{coefficient}#{operator}#{unit.inspect}"
     end
+  end
+
+  def fill_breakable(pp)
+    pp.group { pp.breakable }
   end
 end

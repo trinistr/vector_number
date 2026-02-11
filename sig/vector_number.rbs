@@ -212,6 +212,8 @@ class VectorNumber
                   | (String operator) { (unit_type, coefficient_type, ?Integer index, ?String operator) -> String } -> String
 
   def value_to_s: (unit_type unit, coefficient_type coefficient, String operator) -> String
+
+  def fill_breakable: (PP pp) -> void
 end
 
 # Vector operations.
