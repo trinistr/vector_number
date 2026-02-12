@@ -51,7 +51,8 @@ class VectorNumber
   #
   # @since 0.2.2
   def floor(digits = 0)
-    new { _1.floor(digits) }
+    # Why is there a problem here, but not in #truncate and #ceil? I dunno.
+    new { _1.floor(digits) } # steep:ignore BlockBodyTypeMismatch
   end
 
   # Return a new vector with every coefficient rounded using their +#round+.
@@ -77,7 +78,7 @@ class VectorNumber
   # @see Float#round
   #
   # @since 0.2.2
-  def round(digits = 0, half: :up)
+  def round(digits = 0, half: :up) # rubocop:disable Metrics/MethodLength
     if defined?(BigDecimal)
       bd_mode =
         case half
@@ -85,10 +86,16 @@ class VectorNumber
         when :even then :half_even
         else :half_up
         end
-      new { (BigDecimal === _1) ? _1.round(digits, bd_mode) : _1.round(digits, half: half) }
+      new do |c|
+        if BigDecimal === c
+          c.round(digits, bd_mode)
+        else
+          c.round(digits, half: half) # steep:ignore UnresolvedOverloading
+        end
+      end
     # :nocov:
     else
-      new { _1.round(digits, half: half) }
+      new { _1.round(digits, half: half) } # steep:ignore UnresolvedOverloading
     end
     # :nocov:
   end

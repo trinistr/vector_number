@@ -293,10 +293,10 @@ class VectorNumber
   # @param value [Numeric]
   # @return [void]
   def add_numeric_value_to_data(value)
-    @data[R] += value.real
+    @data[R] += value.real # steep:ignore UnresolvedOverloading
     # Most numbers will be real, and this extra condition appreciably speeds up addition,
     # while having no noticeable impact on complex numbers.
-    @data[I] += value.imaginary unless value.real?
+    @data[I] += value.imaginary unless value.real? # steep:ignore UnresolvedOverloading
   end
 
   # @param vector [VectorNumber, Hash{Object => Numeric}]
@@ -305,7 +305,7 @@ class VectorNumber
     vector.each_pair do |unit, coefficient|
       raise RangeError, "#{coefficient} is not a real number" unless real_number?(coefficient)
 
-      @data[unit] += coefficient.real
+      @data[unit] += coefficient.real # steep:ignore UnresolvedOverloading
     end
   end
 

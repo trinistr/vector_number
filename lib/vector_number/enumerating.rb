@@ -35,6 +35,7 @@ class VectorNumber
   def each(&block)
     return to_enum { size } unless block_given?
 
+    # @type var block: ^([unit_type, coefficient_type]) -> untyped
     @data.each(&block)
     self
   end
@@ -75,6 +76,7 @@ class VectorNumber
   def to_h(&block)
     # TODO: Remove block argument.
     if block_given?
+      # @type var block: ^(unit_type, coefficient_type) -> each_value_type
       @data.to_h(&block)
     else
       @data.dup

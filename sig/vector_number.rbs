@@ -139,11 +139,12 @@ class VectorNumber
   def raise_convert_error: (Class) -> void
 end
 
+# Methods for enumeration and hash-like stuff.
 class VectorNumber
   include _Each[each_value_type]
   include Enumerable[each_value_type]
 
-  def each: () { (unit_type unit, coefficient_type coefficient) -> void } -> self
+  def each: () { (each_value_type) -> void } -> self
           | () -> Enumerator[each_value_type, Integer]
           | ...
   alias each_pair each
@@ -154,8 +155,7 @@ class VectorNumber
   def coefficients: () -> coefficients_list_type
   alias values coefficients
 
-  def to_h: () -> plain_instance
-          | () { (unit_type, coefficient_type) -> each_value_type } -> plain_instance
+  def to_h: () ?{ (unit_type, coefficient_type) -> each_value_type } -> plain_instance
 
   def []: (unit_type unit) -> coefficient_type
 

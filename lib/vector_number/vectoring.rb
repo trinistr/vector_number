@@ -50,7 +50,7 @@ class VectorNumber
   #
   # @since <<next>>
   def p_norm(p) # rubocop:disable Naming/MethodParameterName
-    @data.values.sum { _1.abs**p }**(1.0 / p)
+    @data.values.sum { _1.abs**p }**(1.0 / p) # steep:ignore UnresolvedOverloading
   end
 
   # Calculate the maximum norm (infinity norm) of the vector.
@@ -154,7 +154,7 @@ class VectorNumber
     other = new([other]) unless VectorNumber === other
     return 0.0 if other.zero?
 
-    @data.sum { |u, c| c * other[u] }
+    @data.sum { |u, c| c * other[u] } # steep:ignore UnresolvedOverloading
   end
 
   # @since <<next>>
@@ -305,7 +305,7 @@ class VectorNumber
     other = new([other]) unless VectorNumber === other
     has_direction?(other)
 
-    (abs2 - dot_product(other)**2 / other.abs2)**0.5
+    (abs2 - dot_product(other)**2 / other.abs2)**0.5 # steep:ignore NoMethod
   end
 
   private

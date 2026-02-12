@@ -190,8 +190,7 @@ class VectorNumber
     check_divisibility(other)
 
     other = other.real
-    # @type var other: Float
-    new { _1.fdiv(other) }
+    new { _1.fdiv(other) } # steep:ignore BlockBodyTypeMismatch
   end
 
   # Divide all coefficients by a real +other+,
