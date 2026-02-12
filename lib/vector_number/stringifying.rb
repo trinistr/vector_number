@@ -118,7 +118,7 @@ class VectorNumber
   # @param operator [String]
   # @return [String]
   def value_to_s(unit, coefficient, operator)
-    if NUMERIC_UNITS.include?(unit)
+    if NUMERIC_UNITS.include?(unit) # steep:ignore ArgumentTypeMismatch
       "#{coefficient}#{unit}"
     else
       "#{coefficient}#{operator}#{unit.inspect}"

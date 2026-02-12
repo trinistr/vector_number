@@ -162,7 +162,7 @@ class VectorNumber
   #
   # @since 0.6.0
   def self.numeric_unit?(unit)
-    NUMERIC_UNITS.include?(unit)
+    NUMERIC_UNITS.include?(unit) # steep:ignore ArgumentTypeMismatch
   end
 
   # Number of non-zero dimensions.

@@ -1,13 +1,20 @@
 # A class to add together anything.
 class VectorNumber
-  # ---- Generic types ----
-  type real_number = Integer | Float | Rational | BigDecimal
+  # ---- Reguired interface for units ----
+  interface _Unit
+    def hash: () -> Integer
+    def eql?: (any_value other) -> bool
+    def inspect: () -> String
+  end
 
-  type in_value_type = untyped
-  type unit_type = untyped
-  type coefficient_type = real_number
+  # ---- Generic types ----
+  type any_value = BasicObject
 
   type list[T] = Array[T]
+  type real_number = Integer | Float | Rational | BigDecimal
+
+  type unit_type = (any_value & _Unit | Numeric)
+  type coefficient_type = real_number
 
   type vector_instance = VectorNumber
   type plain_instance = Hash[unit_type, coefficient_type]
@@ -47,13 +54,13 @@ class VectorNumber
   @data: plain_instance
 
   def new: () { (coefficient_type value) -> coefficient_type } -> vector_instance
-         | (in_value_type) { (coefficient_type value) -> coefficient_type } -> vector_instance
+         | ((vector_instance | plain_instance | units_list_type) values) { (coefficient_type value) -> coefficient_type } -> vector_instance
          | () -> vector_instance
-         | (in_value_type) -> vector_instance
+         | ((vector_instance | plain_instance | units_list_type) values) -> vector_instance
 
   def real_number?: (real_number value) -> true
                   | (vector_instance) -> bool
-                  | (in_value_type value) -> false
+                  | (any_value value) -> false
 
   def initialize_from: ((units_list_type | plain_instance | vector_instance)? values) -> void
 
@@ -70,15 +77,15 @@ end
 
 # Methods for performing actual math.
 class VectorNumber
-  def coerce: (in_value_type) -> [vector_instance, self]
+  def coerce: (unit_type | vector_instance) -> [vector_instance, self]
 
   def -@: () -> vector_instance
   alias neg -@
 
-  def +: (in_value_type) -> vector_instance
+  def +: (unit_type | vector_instance) -> vector_instance
   alias add +
 
-  def -: (in_value_type) -> vector_instance
+  def -: (unit_type | vector_instance) -> vector_instance
   alias sub -
 
   def *: (real_number | vector_instance) -> vector_instance
@@ -190,13 +197,13 @@ end
 
 # Methods for comparing with other numbers.
 class VectorNumber
-  def ==: (in_value_type other) -> bool
+  def ==: (any_value other) -> bool
 
-  def eql?: (in_value_type other) -> bool
+  def eql?: (any_value other) -> bool
 
   def hash: () -> Integer
 
-  def <=>: (in_value_type other) -> Integer?
+  def <=>: (any_value other) -> Integer?
 end
 
 # Methods for querying state of the number.
@@ -259,30 +266,30 @@ class VectorNumber
 
   def unit_vector: () -> vector_instance
 
-  def dot_product: (in_value_type other) -> coefficient_type
+  def dot_product: ((vector_instance | unit_type) other) -> coefficient_type
   alias inner_product dot_product
   alias scalar_product dot_product
 
-  def angle: (in_value_type other) -> Float
+  def angle: ((vector_instance | unit_type) other) -> Float
 
-  def scalar_projection: (in_value_type other) -> coefficient_type
+  def scalar_projection: ((vector_instance | unit_type) other) -> coefficient_type
 
-  def vector_projection: (in_value_type other) -> vector_instance
+  def vector_projection: ((vector_instance | unit_type) other) -> vector_instance
 
-  def scalar_rejection: (in_value_type other) -> coefficient_type
+  def scalar_rejection: ((vector_instance | unit_type) other) -> coefficient_type
 
-  def vector_rejection: (in_value_type other) -> vector_instance
+  def vector_rejection: ((vector_instance | unit_type) other) -> vector_instance
 
   private
 
-  def has_direction?: (?in_value_type vector) -> void
+  def has_direction?: (?vector_instance vector) -> void
 end
 
 class VectorNumber
   # Refinements of Numeric classes to better work with VectorNumber and similar classes.
   module NumericRefinements
     module CommutativeShuttle
-      def <=>: (in_value_type other) -> Integer?
+      def <=>: (untyped other) -> Integer?
     end
 
     module BigDecimalToD

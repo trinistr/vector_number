@@ -62,6 +62,7 @@ class VectorNumber
     return true if equal?(other)
     return false unless self.class == other.class
 
+    # @type var other : vector_instance
     size.eql?(other.size) && @data.eql?(other.to_h)
   rescue NoMethodError => e
     # :nocov:
