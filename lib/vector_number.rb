@@ -5,7 +5,7 @@
 #
 # VectorNumber inherits from +Object+ and includes +Enumerable+ and +Comparable+.
 # It implements mostly the same interface as +Numeric+ classes, but can {#coerce} any value.
-# Its behavior follows +Complex+ when possible.
+# Its behavior follows +Complex+ when reasonable.
 #
 # All instances are frozen after creation.
 #
@@ -77,11 +77,16 @@
 #
 # **Hash-like** **operations**
 # - {#each}/{#each_pair}: iterate through every pair of unit and coefficient
-# - {#[]}: get coefficient by unit
-# - {#unit?}/{#key?}: check if a unit has a non-zero coefficient
 # - {#units}/{#keys}: return an array of units
 # - {#coefficients}/#{values}: return an array of coefficients
+# - {#coefficients_at}/{#values_at}: get coefficients for multiple units
 # - {#to_h}: convert to Hash
+# - {#[]}: get coefficient by unit
+# - {#assoc}: get a 2-element array containing a given unit and associated coefficient
+# - {#dig}: digs to the coefficient
+# - {#fetch}: get the coefficient for the unit, treating 0 coefficients as missing
+# - {#fetch_coefficients}/{#fetch_values}: get coefficients for multiple units
+# - {#unit?}/{#key?}: check if a unit has a non-zero coefficient
 #
 # **Miscellaneous** **methods**
 # - {.numeric_unit?}: check if a unit represents a numeric dimension

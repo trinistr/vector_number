@@ -24,6 +24,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `#p_norm`
   - `#maximum_norm` (aliased as `#infinity_norm`)
   - 2-norm (Euclidean norm) can already be calculated using `#magnitude`.
+- Multiple hash-like methods:
+  - `#coefficients_at` (aliased as `#values_at`)
+  - `#assoc`
+  - `#dig`
+  - `#fetch`
+  - `#fetch_coefficients` (aliased as `#fetch_values`)
 - `#pretty_print` method to support `PP` which works much in the same way as `#inspect`. This is mainly useful in interactive sessions.
 
 **Changed**

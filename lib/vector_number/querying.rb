@@ -47,7 +47,9 @@ class VectorNumber
   # @raise (see #numeric?)
   #
   # @since 0.2.1
-  def nonnumeric?(dimensions = 2) = !numeric?(dimensions)
+  def nonnumeric?(dimensions = 2)
+    !numeric?(dimensions)
+  end
 
   # Returns +true+ if all coefficients are finite, +false+ otherwise.
   #
