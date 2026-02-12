@@ -145,7 +145,7 @@ class VectorNumber
   include Enumerable[each_value_type]
 
   def each: () { (each_value_type) -> void } -> self
-          | () -> Enumerator[each_value_type, Integer]
+          | () -> Enumerator[each_value_type, VectorNumber]
           | ...
   alias each_pair each
 
@@ -176,6 +176,16 @@ class VectorNumber
 
   def unit?: (unit_type unit) -> bool
   alias key? unit?
+
+  def transform_coefficients: () { (coefficient_type value) -> coefficient_type } -> vector_instance
+                            | (Hash[coefficient_type, coefficient_type] mapping) ?{ (coefficient_type unit) -> coefficient_type } -> vector_instance
+                            | () -> Enumerator[coefficient_type, VectorNumber]
+  alias transform_values transform_coefficients
+
+  def transform_units: () { (unit_type unit) -> unit_type } -> vector_instance
+                     | (Hash[unit_type, unit_type] mapping) ?{ (unit_type unit) -> unit_type } -> vector_instance
+                     | () -> Enumerator[unit_type, VectorNumber]
+  alias transform_keys transform_units
 end
 
 # Methods for comparing with other numbers.

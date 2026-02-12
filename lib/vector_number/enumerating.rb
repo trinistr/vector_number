@@ -184,7 +184,7 @@ class VectorNumber
   #   @param unit [Object]
   #   @param default_value [Any]
   #   @return [Any]
-  # @overload fetch(unit) { |unit| ... }
+  # @overload fetch(unit)
   #   @param unit [Object]
   #   @yieldparam unit [Object]
   #   @yieldreturn [Any]
@@ -212,7 +212,7 @@ class VectorNumber
   # @overload fetch_coefficients(*units)
   #   @param units [Array<Object>]
   #   @return [Array<Numeric>]
-  # @overload fetch_coefficients(*units) { |unit| ... }
+  # @overload fetch_coefficients(*units)
   #   @param units [Array<Object>]
   #   @yieldparam unit [Object]
   #   @yieldreturn [Any]
@@ -242,4 +242,99 @@ class VectorNumber
 
   # @since 0.2.4
   alias key? unit?
+
+  # Return a new VectorNumber with coefficients transformed
+  # by the mapping hash and/or a block.
+  #
+  # An optional +mapping+ argument can be provided to map coefficients to new coefficients.
+  # Any coefficient not given in +mapping+ will be mapped using the provided block,
+  # or remain the same if no block is given.
+  # If neither +mapping+ nor block is given, an enumerator is returned.
+  #
+  # @example
+  #   VectorNumber["a", "b", 6].transform_coefficients { _1 * 2 } # => (2⋅"a" + 2⋅"b" + 12)
+  #   VectorNumber["a", "b", 6].transform_values(1 => 2) # => (2⋅"a" - 2⋅"b" + 6)
+  #   VectorNumber["a", "b", 6].transform_coefficients(1 => 2) { _1 / 2 } # => (2⋅"a" - 2⋅"b" + 3)
+  #   VectorNumber["a", "b", 6].transform_values # => Enumerator
+  #
+  # @overload transform_coefficients(mapping)
+  #   @param mapping [Hash{Numeric => Numeric}]
+  #   @return [VectorNumber]
+  # @overload transform_coefficients
+  #   @yieldparam coefficient [Numeric]
+  #   @yieldreturn [Numeric]
+  #   @return [VectorNumber]
+  # @overload transform_coefficients(mapping)
+  #   @param mapping [Hash{Numeric => Numeric}]
+  #   @yieldparam coefficient [Numeric]
+  #   @yieldreturn [Numeric]
+  #   @return [VectorNumber]
+  # @overload transform_coefficients
+  #   @return [Enumerator]
+  #
+  # @since <<next>>
+  def transform_coefficients(mapping = nil, &transform)
+    if mapping
+      if block_given?
+        # @type var transform: ^(coefficient_type) -> coefficient_type
+        new { |c| mapping.fetch(c) { yield(c) } }
+      else
+        new { |c| mapping.fetch(c, c) }
+      end
+    elsif block_given?
+      # @type var transform: ^(coefficient_type) -> coefficient_type
+      new(&transform)
+    else
+      to_enum(:transform_coefficients) { size } # rubocop:disable Lint/ToEnumArguments
+    end
+  end
+
+  alias transform_values transform_coefficients
+
+  # Return a new VectorNumber with units transformed
+  # by the mapping hash and/or a block.
+  #
+  # An optional +mapping+ argument can be provided to map units to new units.
+  # Any unit not given in +mapping+ will be mapped using the provided block,
+  # or remain the same if no block is given.
+  # If neither +mapping+ nor block is given, an enumerator is returned.
+  #
+  # No validation of units is done, careless transformations can lead to invalid results.
+  #
+  # @example
+  #   VectorNumber["a", "b", 6].transform_units("a" => "c") # => (1⋅"c" + 1⋅"b" + 6)
+  #   VectorNumber["a", "b", 6].transform_keys { _1.is_a?(String) ? _1.to_sym : _1 }
+  #     # => (1⋅:a + 1⋅:b + 6)
+  #   VectorNumber["a", "b", 6].transform_units("a" => "c") { _1.to_s }
+  #     # => (1⋅"c" + 1⋅"b" + 6⋅"")
+  #   VectorNumber["a", "b", 6].transform_keys # => Enumerator
+  #
+  # @overload transform_units(mapping)
+  #   @param mapping [Hash{Object => Object}]
+  #   @return [VectorNumber]
+  # @overload transform_units
+  #   @yieldparam unit [Object]
+  #   @yieldreturn [Object]
+  #   @return [VectorNumber]
+  # @overload transform_units(mapping)
+  #   @param mapping [Hash{Object => Object}]
+  #   @yieldparam unit [Object]
+  #   @yieldreturn [Object]
+  #   @return [VectorNumber]
+  # @overload transform_units
+  #   @return [Enumerator]
+  #
+  # @since <<next>>
+  def transform_units(mapping = nil, &block)
+    if block_given?
+      # @type var block: ^(unit_type unit) -> unit_type
+      mapping ? new(@data.transform_keys(mapping, &block)) : new(@data.transform_keys(&block))
+    elsif mapping
+      new(@data.transform_keys(mapping))
+    else
+      to_enum(:transform_units) { size } # rubocop:disable Lint/ToEnumArguments
+    end
+  end
+
+  alias transform_keys transform_units
 end

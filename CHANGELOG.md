@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `#dig`
   - `#fetch`
   - `#fetch_coefficients` (aliased as `#fetch_values`)
+  - `#transform_coefficients` (aliased as `#transform_values`)
+  - `#transform_units` (aliased as `#transform_keys`)
 - `#pretty_print` method to support `PP` which works much in the same way as `#inspect`. This is mainly useful in interactive sessions.
 
 **Changed**

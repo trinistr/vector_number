@@ -302,4 +302,86 @@ RSpec.describe VectorNumber do
   end
 
   include_examples "has an alias", :key?, :unit?
+
+  describe "#transform_coefficients" do
+    subject(:transformed_number) { number.transform_coefficients(mapping, &transform) }
+
+    let(:number) { described_class["a", "b", 6] }
+    let(:mapping) { nil }
+    let(:transform) { nil }
+
+    context "without a mapping hash or transformation block" do
+      it "returns Enumerator with expected size" do
+        expect(transformed_number).to be_a Enumerator
+        expect(transformed_number.size).to eq number.size
+      end
+    end
+
+    context "with a mapping hash" do
+      let(:mapping) { { 1 => 2, 2 => 3 } }
+
+      it "replaces coefficients which are members of the mapping" do
+        expect(transformed_number).to eq described_class["a", "b", 3] * 2
+      end
+    end
+
+    context "with a transformation block" do
+      let(:transform) { ->(coefficient) { coefficient * 2 } }
+
+      it "transforms coefficients with the block" do
+        expect(transformed_number).to eq described_class["a", "a", "b", "b", 12]
+      end
+    end
+
+    context "with both a mapping hash and a transformation block" do
+      let(:mapping) { { 1 => 2 } }
+      let(:transform) { ->(c) { c / 2 } }
+
+      it "applies mapping if possible and block for every other coefficient" do
+        expect(transformed_number).to eq described_class["a", "a", "b", "b", 3]
+      end
+    end
+  end
+
+  include_examples "has an alias", :transform_values, :transform_coefficients
+
+  describe "#transform_units" do
+    subject(:transformed_number) { number.transform_units(mapping, &transform) }
+
+    let(:number) { described_class["a", "b", 6] }
+    let(:mapping) { nil }
+    let(:transform) { nil }
+
+    context "without a mapping hash or block" do
+      it "returns Enumerator with expected size" do
+        expect(transformed_number).to be_a Enumerator
+        expect(transformed_number.size).to eq number.size
+      end
+    end
+
+    context "with a mapping hash" do
+      let(:mapping) { { "a" => "c", "d" => "e" } }
+
+      it "replaces units which are members of the mapping" do
+        expect(transformed_number).to eq described_class["c", "b", 6]
+      end
+    end
+
+    context "with a transformation block" do
+      let(:transform) { lambda(&:to_s) }
+
+      it "transforms units with the block" do
+        expect(transformed_number).to eq described_class["a", "b", "", "", "", "", "", ""]
+      end
+    end
+
+    context "with both a mapping hash and a transformation block" do
+      let(:mapping) { { "a" => "c" } }
+      let(:transform) { ->(unit) { unit.to_s * 2 } }
+
+      it "applies mapping if possible and block for every other unit" do
+        expect(transformed_number).to eq described_class["c", "bb", "", "", "", "", "", ""]
+      end
+    end
+  end
 end

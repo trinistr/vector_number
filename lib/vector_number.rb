@@ -87,6 +87,8 @@
 # - {#fetch}: get the coefficient for the unit, treating 0 coefficients as missing
 # - {#fetch_coefficients}/{#fetch_values}: get coefficients for multiple units
 # - {#unit?}/{#key?}: check if a unit has a non-zero coefficient
+# - {#transform_coefficients}/{#transform_values}: return a new vector with transformed coefficients
+# - {#transform_units}/{#transform_keys}: return a new vector with transformed units
 #
 # **Miscellaneous** **methods**
 # - {.numeric_unit?}: check if a unit represents a numeric dimension
