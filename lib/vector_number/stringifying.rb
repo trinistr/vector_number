@@ -37,7 +37,7 @@ class VectorNumber
   # @param mult [Symbol, String]
   #   text to use between coefficient and unit,
   #   can be one of the keys in {MULT_STRINGS} or an arbitrary string
-  # @yieldparam unit [Object]
+  # @yieldparam unit [Any]
   # @yieldparam coefficient [Numeric]
   # @yieldparam index [Integer]
   # @yieldparam operator [String]
@@ -113,7 +113,7 @@ class VectorNumber
     result
   end
 
-  # @param unit [Object]
+  # @param unit [Any]
   # @param coefficient [Numeric]
   # @param operator [String]
   # @return [String]

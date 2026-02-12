@@ -25,7 +25,7 @@ class VectorNumber
   #   VectorNumber["a", 14] == 14 # => false
   #   VectorNumber["a"] == "a" # => false
   #
-  # @param other [Object]
+  # @param other [Any]
   # @return [Boolean]
   #
   # @since 0.2.0
@@ -56,7 +56,7 @@ class VectorNumber
   #   VectorNumber["a", 14].eql? 14 # => false
   #   VectorNumber["a"].eql? "a" # => false
   #
-  # @param other [Object]
+  # @param other [Any]
   # @return [Boolean]
   def eql?(other)
     return true if equal?(other)
@@ -108,7 +108,7 @@ class VectorNumber
   # @see Comparable
   # @see NumericRefinements
   #
-  # @param other [Object]
+  # @param other [Any]
   # @return [Integer]
   # @return [nil] if +self+ or +other+ isn't a real number.
   #

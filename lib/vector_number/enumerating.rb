@@ -23,7 +23,7 @@ class VectorNumber
   #   v.each_pair.peek # => ["a", 1]
   #
   # @overload each
-  #   @yieldparam unit [Object]
+  #   @yieldparam unit [Any]
   #   @yieldparam coefficient [Numeric]
   #   @yieldreturn [void]
   #   @return [VectorNumber] self
@@ -118,7 +118,7 @@ class VectorNumber
   # @see #assoc
   # @see #fetch
   #
-  # @param unit [Object]
+  # @param unit [Any]
   # @return [Numeric]
   #
   # @since 0.2.4
@@ -135,7 +135,7 @@ class VectorNumber
   #
   # @see #[]
   #
-  # @param unit [Object]
+  # @param unit [Any]
   # @return [Array(Object, Numeric)]
   #
   # @since <<next>>
@@ -178,15 +178,15 @@ class VectorNumber
   # @see #unit?
   #
   # @overload fetch(unit)
-  #   @param unit [Object]
+  #   @param unit [Any]
   #   @return [Numeric]
   # @overload fetch(unit, default_value)
-  #   @param unit [Object]
+  #   @param unit [Any]
   #   @param default_value [Any]
   #   @return [Any]
   # @overload fetch(unit)
-  #   @param unit [Object]
-  #   @yieldparam unit [Object]
+  #   @param unit [Any]
+  #   @yieldparam unit [Any]
   #   @yieldreturn [Any]
   #   @return [Any]
   # @raise [KeyError] if default value was needed, but not provided
@@ -214,7 +214,7 @@ class VectorNumber
   #   @return [Array<Numeric>]
   # @overload fetch_coefficients(*units)
   #   @param units [Array<Object>]
-  #   @yieldparam unit [Object]
+  #   @yieldparam unit [Any]
   #   @yieldreturn [Any]
   #   @return [Array<Any>]
   # @raise [KeyError] if default value was needed, but not provided
@@ -224,6 +224,7 @@ class VectorNumber
     @data.fetch_values(...) # steep:ignore UnresolvedOverloading
   end
 
+  # @since <<next>>
   alias fetch_values fetch_coefficients
 
   # Check if a unit has a non-zero coefficient.
@@ -232,7 +233,7 @@ class VectorNumber
   #   VectorNumber["a", "b", 6].unit?("a") # => true
   #   VectorNumber["a", "b", 6].key?("c") # => false
   #
-  # @param unit [Object]
+  # @param unit [Any]
   # @return [Boolean]
   #
   # @since 0.2.4
@@ -289,6 +290,7 @@ class VectorNumber
     end
   end
 
+  # @since <<next>>
   alias transform_values transform_coefficients
 
   # Return a new VectorNumber with units transformed
@@ -313,13 +315,13 @@ class VectorNumber
   #   @param mapping [Hash{Object => Object}]
   #   @return [VectorNumber]
   # @overload transform_units
-  #   @yieldparam unit [Object]
-  #   @yieldreturn [Object]
+  #   @yieldparam unit [Any]
+  #   @yieldreturn [Any]
   #   @return [VectorNumber]
   # @overload transform_units(mapping)
   #   @param mapping [Hash{Object => Object}]
-  #   @yieldparam unit [Object]
-  #   @yieldreturn [Object]
+  #   @yieldparam unit [Any]
+  #   @yieldreturn [Any]
   #   @return [VectorNumber]
   # @overload transform_units
   #   @return [Enumerator]
@@ -336,5 +338,6 @@ class VectorNumber
     end
   end
 
+  # @since <<next>>
   alias transform_keys transform_units
 end

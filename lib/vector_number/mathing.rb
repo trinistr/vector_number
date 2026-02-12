@@ -18,7 +18,7 @@ class VectorNumber
   #   5.coerce(VectorNumber["a"]) # RangeError
   #   5 + VectorNumber["a"] # => (5 + 1⋅"a")
   #
-  # @param other [Object]
+  # @param other [Any]
   # @return [Array(VectorNumber, VectorNumber)]
   #
   # @since 0.2.0
@@ -59,7 +59,7 @@ class VectorNumber
   #   10 + VectorNumber[5] # => (15)
   #   10 + VectorNumber["a"] # => (10 + 1⋅"a")
   #
-  # @param other [Object]
+  # @param other [Any]
   # @return [VectorNumber]
   #
   # @since 0.2.0
@@ -82,7 +82,7 @@ class VectorNumber
   #   3 - VectorNumber[5] # => (-2)
   #   3 - VectorNumber["a"] # => (3 - 1⋅"a")
   #
-  # @param other [Object]
+  # @param other [Any]
   # @return [VectorNumber]
   #
   # @since 0.2.0

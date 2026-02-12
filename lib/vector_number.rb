@@ -157,7 +157,7 @@ class VectorNumber
   #   VectorNumber.numeric_unit?(VectorNumber::I) # => true
   #   VectorNumber.numeric_unit?(:i) # => false
   #
-  # @param unit [Object]
+  # @param unit [Any]
   # @return [Boolean]
   #
   # @since 0.6.0
@@ -247,7 +247,7 @@ class VectorNumber
 
   # Create new VectorNumber from a value or self, optionally applying a transform.
   #
-  # @param from [Object] self if not specified
+  # @param from [VectorNumber, Array, Hash{Any => Numeric}] self if not specified
   # @yieldparam coefficient [Numeric] a real number
   # @yieldreturn [Numeric] new coefficient
   # @return [VectorNumber]
@@ -259,7 +259,7 @@ class VectorNumber
   #
   # Currently this is either a +real?+ Numeric or +numeric?(1)+ VectorNumber.
   #
-  # @param value [Object]
+  # @param value [Any]
   # @return [Boolean]
   def real_number?(value)
     (Numeric === value && value.real?) || (VectorNumber === value && value.numeric?(1))
