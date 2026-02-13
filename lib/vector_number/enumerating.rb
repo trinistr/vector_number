@@ -48,7 +48,7 @@ class VectorNumber
   #   VectorNumber["a", "b", 6].units # => ["a", "b", unit/1]
   #   VectorNumber.new.keys # => []
   #
-  # @return [Array<Object>]
+  # @return [Array<Any>]
   def units = @data.keys
 
   alias keys units
@@ -74,7 +74,7 @@ class VectorNumber
   #
   # @see #fetch_coefficients
   #
-  # @param units [Array<Object>]
+  # @param units [Array<Any>]
   # @return [Array<Numeric>]
   #
   # @since <<next>>
@@ -93,7 +93,7 @@ class VectorNumber
   #   VectorNumber["a", "b", 6, 1i].to_h # => {"a" => 1, "b" => 1, unit/1 => 6, unit/i => 1}
   #   VectorNumber["a", "b", 6, 1i].to_h["c"] # => 0
   #
-  # @return [Hash{Object => Numeric}]
+  # @return [Hash{Any => Numeric}]
   def to_h(&block)
     # TODO: Remove block argument.
     if block_given?
@@ -136,7 +136,7 @@ class VectorNumber
   # @see #[]
   #
   # @param unit [Any]
-  # @return [Array(Object, Numeric)]
+  # @return [Array(Any, Numeric)]
   #
   # @since <<next>>
   def assoc(unit)
@@ -153,6 +153,9 @@ class VectorNumber
   #   VectorNumber["a", "b", 6].dig("c") # => 0
   #   VectorNumber["a", "b", 6].dig("a", 1) # TypeError
   #   { 1 => VectorNumber["a", "b", 6] }.dig(1, "a") # => 1
+  #
+  # @param identifiers [Array<Any>]
+  # @return [Numeric]
   #
   # @since <<next>>
   def dig(*identifiers)
@@ -210,10 +213,10 @@ class VectorNumber
   # @see #unit?
   #
   # @overload fetch_coefficients(*units)
-  #   @param units [Array<Object>]
+  #   @param units [Array<Any>]
   #   @return [Array<Numeric>]
   # @overload fetch_coefficients(*units)
-  #   @param units [Array<Object>]
+  #   @param units [Array<Any>]
   #   @yieldparam unit [Any]
   #   @yieldreturn [Any]
   #   @return [Array<Any>]
@@ -312,14 +315,14 @@ class VectorNumber
   #   VectorNumber["a", "b", 6].transform_keys # => Enumerator
   #
   # @overload transform_units(mapping)
-  #   @param mapping [Hash{Object => Object}]
+  #   @param mapping [Hash{Any => Any}]
   #   @return [VectorNumber]
   # @overload transform_units
   #   @yieldparam unit [Any]
   #   @yieldreturn [Any]
   #   @return [VectorNumber]
   # @overload transform_units(mapping)
-  #   @param mapping [Hash{Object => Object}]
+  #   @param mapping [Hash{Any => Any}]
   #   @yieldparam unit [Any]
   #   @yieldreturn [Any]
   #   @return [VectorNumber]

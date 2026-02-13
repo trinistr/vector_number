@@ -143,7 +143,7 @@ class VectorNumber
   #   VectorNumber[0].scalar_product(v) # => 0.0
   #   v.dot_product(v) == v.abs2 # => true
   #
-  # @param other [VectorNumber, Object]
+  # @param other [VectorNumber, Any]
   # @return [Numeric]
   #
   # @since <<next>>
@@ -175,7 +175,7 @@ class VectorNumber
   #   v.angle(0) # ZeroDivisionError
   #   VectorNumber[0].angle(v) # ZeroDivisionError
   #
-  # @param other [VectorNumber, Object]
+  # @param other [VectorNumber, Any]
   # @return [Numeric]
   # @raise [ZeroDivisionError] if +self+ or +other+ is a zero vector
   #
@@ -205,7 +205,7 @@ class VectorNumber
   #   VectorNumber[0].vector_projection(v) # => (0)
   #   v.vector_projection(0) # ZeroDivisionError
   #
-  # @param other [VectorNumber, Object]
+  # @param other [VectorNumber, Any]
   # @return [VectorNumber]
   # @raise [ZeroDivisionError] if +other+ is a zero vector
   #
@@ -235,7 +235,7 @@ class VectorNumber
   #   VectorNumber[0].scalar_projection(v) # => 0
   #   v.scalar_projection(0) # ZeroDivisionError
   #
-  # @param other [VectorNumber, Object]
+  # @param other [VectorNumber, Any]
   # @return [Numeric]
   # @raise [ZeroDivisionError] if +other+ is a zero vector
   #
@@ -264,7 +264,7 @@ class VectorNumber
   #   VectorNumber[0].vector_rejection(v) # => (0)
   #   v.vector_rejection(0) # ZeroDivisionError
   #
-  # @param other [VectorNumber, Object]
+  # @param other [VectorNumber, Any]
   # @return [VectorNumber]
   # @raise [ZeroDivisionError] if +other+ is a zero vector
   #
@@ -294,7 +294,7 @@ class VectorNumber
   #   VectorNumber[0].scalar_rejection(v) # => 0.0
   #   v.scalar_rejection(0) # ZeroDivisionError
   #
-  # @param other [VectorNumber, Object]
+  # @param other [VectorNumber, Any]
   # @return [Numeric]
   # @raise [ZeroDivisionError] if +other+ is a zero vector
   #
