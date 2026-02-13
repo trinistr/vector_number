@@ -304,8 +304,6 @@ class VectorNumber
   # or remain the same if no block is given.
   # If neither +mapping+ nor block is given, an enumerator is returned.
   #
-  # No validation of units is done, careless transformations can lead to invalid results.
-  #
   # @example
   #   VectorNumber["a", "b", 6].transform_units("a" => "c") # => (1⋅"c" + 1⋅"b" + 6)
   #   VectorNumber["a", "b", 6].transform_keys { _1.is_a?(String) ? _1.to_sym : _1 }

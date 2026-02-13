@@ -205,11 +205,6 @@ class VectorNumber
   # - a hash in the format returned by {#to_h};
   # - +nil+ to specify a 0-sized vector (same as an empty array or hash).
   #
-  # Using a hash as +values+ is an advanced technique which allows to quickly
-  # construct a VectorNumber with desired units and coefficients,
-  # but it can also lead to unexpected results if care is not taken
-  # to provide only valid keys and values.
-  #
   # @example
   #   VectorNumber.new(1, 2, 3) # ArgumentError
   #   VectorNumber.new([1, 2, 3]) # => (6)
@@ -223,6 +218,7 @@ class VectorNumber
   #   v = VectorNumber.new({VectorNumber::R => 15, "a" => 3.4, nil => -3})
   #     # => (15 + 3.4⋅"a" - 3⋅nil)
   #   v.to_h # => {unit/1 => 15, "a" => 3.4, nil => -3}
+  #   VectorNumber.new({15 => 1}) # RangeError
   #
   # @param values [Array, VectorNumber, Hash{Object => Numeric}, nil] values for this vector
   # @yieldparam coefficient [Numeric] a real number
@@ -332,6 +328,7 @@ class VectorNumber
   # @return [void]
   def add_vector_to_data(vector)
     vector.each_pair do |unit, coefficient|
+      raise RangeError, "#{unit} is not allowed as a unit" if Numeric === unit
       raise RangeError, "#{coefficient} is not a real number" unless real_number?(coefficient)
 
       @data[unit] += coefficient.real # steep:ignore UnresolvedOverloading
