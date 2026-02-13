@@ -145,11 +145,13 @@ class VectorNumber
   #   VectorNumber[:s => 5, VectorNumber::R => 13, :l => -3, VectorNumber::I => -2.5]
   #     # => (5⋅:s + 13 - 3⋅:l - 2.5i)
   # @example mixing modes doesn't work
-  #   VectorNumber["a" => 2, "b", "a"] # SyntaxError
   #   VectorNumber["b", "a", "a" => 2] # ArgumentError
+  #   VectorNumber["a" => 2, "b", "a"] # SyntaxError
   #
-  # @param values [Array<Any>] values to add together to produce a vector
-  # @param hash_values [Hash{Any => Numeric}] units and coefficients to create a vector
+  # @overload [](*values)
+  #   @param values [Array<Any>] values to add together to produce a vector
+  # @overload [](**hash_values)
+  #   @param hash_values [Hash{Any => Numeric}] units and coefficients to create a vector
   # @return [VectorNumber]
   # @raise [ArgumentError, RangeError]
   def self.[](*values, **hash_values)
