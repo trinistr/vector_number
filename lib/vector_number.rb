@@ -130,20 +130,38 @@ class VectorNumber
   I = NUMERIC_UNITS[1]
 
   # @group Creation
-  # Create new VectorNumber from a list of values.
+  # Create new VectorNumber from a list of values or a hash.
   #
-  # @example
+  # @example list mode
   #   VectorNumber[1, 2, 3] # => (6)
   #   VectorNumber[[1, 2, 3]] # => (1⋅[1, 2, 3])
   #   VectorNumber[] # => (0)
   #   VectorNumber["b", VectorNumber["b"]] # => (2⋅'b')
   #   VectorNumber["a", "b", "a"] # => (2⋅'a' + 1⋅'b')
+  # @example hash mode
+  #   VectorNumber["a" => 2, "b" => 1.5] # => (2⋅'a' + 1.5⋅'b')
+  #   VectorNumber[:s => 5, VectorNumber::R => 13, :l => -3, VectorNumber::I => -2.5]
+  #     # => (5⋅:s + 13 - 3⋅:l - 2.5i)
+  # @example mixing modes doesn't work
+  #   VectorNumber["a" => 2, "b", "a"] # SyntaxError
+  #   VectorNumber["b", "a", "a" => 2] # ArgumentError
   #
-  # @param values [Array<Object>] values to put in the number
-  def self.[](*values, **nil)
+  # @param values [Array<Object>] values to add together to produce a vector
+  # @param hash_values [Hash{Any => Numeric}] units and coefficients to create a vector
+  def self.[](*values, **hash_values)
     raise ArgumentError, "no block accepted" if block_given?
 
-    new(values)
+    if !values.empty? # rubocop:disable Style/NegatedIfElseCondition
+      unless hash_values.empty?
+        raise ArgumentError, "either list of values or hash can be used, not both"
+      end
+
+      # @type var values : list[unit_type]
+      new(values)
+    else
+      # @type var hash_values : Hash[unit_type, coefficient_type]
+      new(hash_values)
+    end
   end
   # @endgroup
 

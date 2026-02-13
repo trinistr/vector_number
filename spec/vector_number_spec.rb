@@ -7,20 +7,36 @@ RSpec.describe VectorNumber, :aggregate_failures do
   end
 
   describe ".[]" do
-    subject(:number) { described_class[1, 4, "a"] }
+    context "with a list of values" do
+      subject(:number) { described_class[1, 4, "a"] }
 
-    it "creates a new VectorNumber" do
-      expect(number).to be_a described_class
-      expect(number.to_a).to contain_exactly [described_class::R, 5], ["a", 1]
-      expect(number).to be_frozen
+      it "creates a new VectorNumber from the list, adding values together" do
+        expect(number).to be_a described_class
+        expect(number.to_a).to contain_exactly [described_class::R, 5], ["a", 1]
+        expect(number).to be_frozen
+      end
+
+      it "raises ArgumentError if a block is passed" do
+        expect { described_class[1, 2, 3] { 4 } }.to raise_error ArgumentError
+      end
     end
 
-    it "raises ArgumentError if keyword arguments are passed" do
-      expect { described_class[1, 2, 3, a: 4] }.to raise_error ArgumentError
+    context "with a hash of values" do
+      subject(:number) { described_class[described_class::R => 5, "a" => 3.3] }
+
+      it "creates a new VectorNumber from the hash directly" do
+        expect(number).to be_a described_class
+        expect(number.to_a).to contain_exactly [described_class::R, 5], ["a", 3.3]
+        expect(number).to be_frozen
+      end
+
+      it "raises ArgumentError if a block is passed" do
+        expect { described_class["a" => 3.3, :b => 4] { 4 } }.to raise_error ArgumentError
+      end
     end
 
-    it "raises ArgumentError if a block is passed" do
-      expect { described_class[1, 2, 3] { 4 } }.to raise_error ArgumentError
+    it "raises ArgumentError if both positional and keyword arguments are passed" do
+      expect { described_class[1, 2, 3, "c" => 4] }.to raise_error ArgumentError
     end
   end
 
