@@ -130,20 +130,44 @@ class VectorNumber
   I = NUMERIC_UNITS[1]
 
   # @group Creation
-  # Create new VectorNumber from a list of values.
+  # Create new VectorNumber from a list of values or a hash.
   #
-  # @example
+  # @example list mode
   #   VectorNumber[1, 2, 3] # => (6)
   #   VectorNumber[[1, 2, 3]] # => (1⋅[1, 2, 3])
   #   VectorNumber[] # => (0)
-  #   VectorNumber["b", VectorNumber["b"]] # => (2⋅'b')
-  #   VectorNumber["a", "b", "a"] # => (2⋅'a' + 1⋅'b')
+  #   VectorNumber["b", VectorNumber["b"]] # => (2⋅"b")
+  #   VectorNumber["a", "b", "a"] # => (2⋅"a" + 1⋅"b")
+  #   VectorNumber[{"a" => 2, "b" => 1.5}] # => (1⋅{"a" => 2, "b" => 1.5})
+  # @example hash mode
+  #   VectorNumber["a" => 2, "b" => 1.5] # => (2⋅"a" + 1.5⋅"b")
+  #   VectorNumber["a" => 2, ["b"] => 1.5, {a: 2} => -1] # => (2⋅"a" + 1.5⋅["b"] - 1⋅{a: 2})
+  #   VectorNumber[:s => 5, VectorNumber::R => 13, :l => -3, VectorNumber::I => -2.5]
+  #     # => (5⋅:s + 13 - 3⋅:l - 2.5i)
+  # @example mixing modes doesn't work
+  #   VectorNumber["b", "a", "a" => 2] # ArgumentError
+  #   VectorNumber["a" => 2, "b", "a"] # SyntaxError
   #
-  # @param values [Array<Object>] values to put in the number
-  def self.[](*values, **nil)
+  # @overload [](*values)
+  #   @param values [Array<Any>] values to add together to produce a vector
+  # @overload [](**hash_values)
+  #   @param hash_values [Hash{Any => Numeric}] units and coefficients to create a vector
+  # @return [VectorNumber]
+  # @raise [ArgumentError, RangeError]
+  def self.[](*values, **hash_values)
     raise ArgumentError, "no block accepted" if block_given?
 
-    new(values)
+    if !values.empty? # rubocop:disable Style/NegatedIfElseCondition
+      unless hash_values.empty?
+        raise ArgumentError, "either list of values or hash can be used, not both"
+      end
+
+      # @type var values : list[unit_type]
+      new(values)
+    else
+      # @type var hash_values : Hash[unit_type, coefficient_type]
+      new(hash_values)
+    end
   end
   # @endgroup
 
@@ -183,11 +207,6 @@ class VectorNumber
   # - a hash in the format returned by {#to_h};
   # - +nil+ to specify a 0-sized vector (same as an empty array or hash).
   #
-  # Using a hash as +values+ is an advanced technique which allows to quickly
-  # construct a VectorNumber with desired units and coefficients,
-  # but it can also lead to unexpected results if care is not taken
-  # to provide only valid keys and values.
-  #
   # @example
   #   VectorNumber.new(1, 2, 3) # ArgumentError
   #   VectorNumber.new([1, 2, 3]) # => (6)
@@ -201,11 +220,12 @@ class VectorNumber
   #   v = VectorNumber.new({VectorNumber::R => 15, "a" => 3.4, nil => -3})
   #     # => (15 + 3.4⋅"a" - 3⋅nil)
   #   v.to_h # => {unit/1 => 15, "a" => 3.4, nil => -3}
+  #   VectorNumber.new({15 => 1}) # RangeError
   #
   # @param values [Array, VectorNumber, Hash{Object => Numeric}, nil] values for this vector
   # @yieldparam coefficient [Numeric] a real number
   # @yieldreturn [Numeric] new coefficient
-  # @raise [RangeError] if a block is used and it returns a non-number or non-real number
+  # @raise [RangeError] if a coefficient is not a real number
   def initialize(values = nil, **nil, &transform)
     initialize_from(values)
     apply_transform(&transform)
@@ -265,7 +285,7 @@ class VectorNumber
     (Numeric === value && value.real?) || (VectorNumber === value && value.numeric?(1))
   end
 
-  # @param values [Array, Hash{Object => Numeric}, VectorNumber, nil]
+  # @param values [Array, Hash{Any => Numeric}, VectorNumber, nil]
   # @return [void]
   def initialize_from(values)
     @data = values.to_h and return if VectorNumber === values
@@ -284,7 +304,7 @@ class VectorNumber
     end
   end
 
-  # @param value [VectorNumber, Numeric, Object]
+  # @param value [VectorNumber, Numeric, Any]
   # @return [void]
   def add_value_to_data(value)
     case value
@@ -306,10 +326,11 @@ class VectorNumber
     @data[I] += value.imaginary unless value.real? # steep:ignore UnresolvedOverloading
   end
 
-  # @param vector [VectorNumber, Hash{Object => Numeric}]
+  # @param vector [VectorNumber, Hash{Any => Numeric}]
   # @return [void]
   def add_vector_to_data(vector)
     vector.each_pair do |unit, coefficient|
+      raise RangeError, "#{unit} is not allowed as a unit" if Numeric === unit
       raise RangeError, "#{coefficient} is not a real number" unless real_number?(coefficient)
 
       @data[unit] += coefficient.real # steep:ignore UnresolvedOverloading

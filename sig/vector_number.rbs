@@ -33,6 +33,7 @@ class VectorNumber
   # ---- Public methods ----
 
   def self.[]: (*unit_type values) -> vector_instance
+             | (plain_instance hash_values) -> vector_instance
 
   def self.numeric_unit?: (unit_type unit) -> bool
 

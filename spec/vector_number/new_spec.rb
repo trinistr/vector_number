@@ -78,20 +78,27 @@ RSpec.describe VectorNumber, ".new", :aggregate_failures do
   end
 
   context "when initializing with a hash" do
-    # Note how this has the proper unit for 1 and also just `1`.
-    let(:value) { { described_class::R => 5, 1 => -123, basic_object => 0xC001, Encoding::UTF_8 => 1.337 } }
+    let(:value) { { described_class::R => 5, basic_object => 0xC001, Encoding::UTF_8 => 1.337 } }
     let(:basic_object) { my_basic_class.new }
 
-    it "treats hash as a plain vector and copies keys and values from it direcly" do
+    it "treats hash as a plain vector and copies keys and values from it" do
       expect(new_number).to be_a described_class
       expect(new_number).to be_frozen
       expect(new_number.to_a).to contain_exactly(
-        [described_class::R, 5], [1, -123], [basic_object, 49_153], [Encoding::UTF_8, 1.337]
+        [described_class::R, 5], [basic_object, 49_153], [Encoding::UTF_8, 1.337]
       )
     end
 
     context "when it contains non-real values" do
       let(:value) { { described_class::R => -123i, basic_object => Object.new, Encoding::UTF_8 => num } }
+
+      it "raises RangeError" do
+        expect { new_number }.to raise_error RangeError
+      end
+    end
+
+    context "when it contains numeric keys" do
+      let(:value) { [{ 1 => 1 }, { 1.0 => 1 }, { 1r => 1 }, { 1i => 1 }].sample }
 
       it "raises RangeError" do
         expect { new_number }.to raise_error RangeError

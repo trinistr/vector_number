@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Next]
 
 **Added**
+- "Hash mode" to `VectorNumber.[]`, allowing to quickly create VectorNumbers with desired coefficients.
 - `#ceildiv` method, inspired by `Integer#ceildiv`. Works similarly to `#div`, but rounds up instead of down.
 - A host of binary vector operations:
   - `#dot_product` (aliased as `#inner_product` and `#scalar_product`)
@@ -42,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Internal changes now allow for (hopefully) full support for `BasicObject` objects, though some methods are required.
   - `#hash` and `#eql?` are always required, same as for Hash.
   - `#inspect` is required for `#to_s`.
+- Incorrectly using numeric keys when initializing from a hash now raises `RangeError`.
 
 [Compare v0.6.1...main](https://github.com/trinistr/vector_number/compare/v0.6.1...main)
 
