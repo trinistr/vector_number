@@ -275,6 +275,8 @@ class VectorNumber
 
   def collinear?: ((vector_instance | unit_type) other) -> bool
 
+  def parallel?: ((vector_instance | unit_type) other) -> bool
+
   def codirectional?: ((vector_instance | unit_type) other) -> bool
 
   def opposite?: ((vector_instance | unit_type) other) -> bool

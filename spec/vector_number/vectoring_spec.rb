@@ -236,6 +236,44 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
   end
 
+  describe "#parallel?" do
+    it "returns true if vectors are parallel" do
+      expect(num(1, 1i).parallel?(num(-1, -1i))).to be true
+      expect(num(1, "a").parallel?(num("a", 1))).to be true
+      expect(num(3, "a", 4.5ri).parallel?(num(6, "a", 9i, "a"))).to be true
+    end
+
+    it "returns false if vectors are not parallel" do
+      expect(num(1, 1i).parallel?(num(1))).to be false
+      expect(num(1, "a").parallel?(num("a", -1))).to be false
+      expect(composite_number.parallel?(num("y", :a, 8, 6.2i))).to be false
+    end
+
+    it "returns true if other is the same vector" do
+      expect(real_number.parallel?(real_number)).to be true
+      expect(complex_number.parallel?(complex_number)).to be true
+      expect(composite_number.parallel?(composite_number)).to be true
+    end
+
+    it "returns true if other is an equal vector" do
+      expect(real_number.parallel?(num(999.15))).to be true
+      expect(complex_number.parallel?(num(0.12, -13.5i))).to be true
+      expect(composite_number.parallel?(num("y", :a, 8, 6.3i))).to be true
+    end
+
+    it "returns false if either vector is a zero vector" do
+      expect(zero_number.parallel?(composite_number)).to be false
+      expect(composite_number.parallel?(zero_number)).to be false
+      expect(zero_number.parallel?(0)).to be false
+    end
+
+    it "automatically promotes other to a VectorNumber" do
+      expect(real_number.parallel?(2)).to eq real_number.parallel?(num(2))
+      expect(complex_number.parallel?(1i)).to eq complex_number.parallel?(num(1i))
+      expect(composite_number.parallel?(:a)).to eq composite_number.parallel?(num(:a))
+    end
+  end
+
   describe "#codirectional?" do
     it "returns true if vectors are codirectional" do
       expect(num(1, 1i).codirectional?(num(1, 1i))).to be true

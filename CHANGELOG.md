@@ -9,11 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Added**
 - "Hash mode" to `VectorNumber.[]`, allowing to quickly create VectorNumbers with desired coefficients.
+  - Using positional arguments and keyword arguments together is prohibited.
 - `#ceildiv` method, inspired by `Integer#ceildiv`. Works similarly to `#div`, but rounds up instead of down.
 - A host of binary vector operations:
   - `#dot_product` (aliased as `#inner_product` and `#scalar_product`)
   - `#angle`
-  - `#collinear?`, `#codirectional?`, `#opposite?`
+  - `#collinear?`, `#parallel?`, `#codirectional?`, `#opposite?`
   - `#scalar_projection`, `#vector_projection`
   - `#scalar_rejection`, `#vector_rejection`
 - Some utility methods related to linear subspaces:
@@ -39,10 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - This means that neither Strings nor Symbols are displayed completely unadorned now.
 - `#abs` is now an alias of `#magnitude`, instead of the other way around.
 - `VectorNumber.[]` now raises `ArgumentError` if a block is passed. Previously, block was silently ignored.
-- Internal changes now allow for (hopefully) full support for `BasicObject` objects, though some methods are required.
-  - `#hash` and `#eql?` are always required, same as for Hash.
-  - `#inspect` is required for `#to_s`.
 - Incorrectly using numeric keys when initializing from a hash now raises `RangeError`.
+- Internal changes now (hopefully) allow for full support for `BasicObject` objects, though some methods are required.
+  - `#hash` and `#eql?` are always required.
+  - `#inspect` is required for stringification.
 
 [Compare v0.6.1...main](https://github.com/trinistr/vector_number/compare/v0.6.1...main)
 

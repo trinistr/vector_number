@@ -189,8 +189,7 @@ class VectorNumber
 
   # Determine if this vector is collinear with +other+ vector.
   #
-  # If either vector is a zero vector, they are considered collinear,
-  # but not codirectional or opposite.
+  # If either vector is a zero vector, they are considered collinear.
   #
   # @example
   #   v = VectorNumber[2, "a"]
@@ -200,6 +199,7 @@ class VectorNumber
   #   v.collinear?(VectorNumber[4, "a", "a"]) # => true
   #   v.collinear?(-VectorNumber[4, "a", "a"]) # => true
   #
+  # @see #parallel?
   # @see #codirectional?
   # @see #opposite?
   #
@@ -209,6 +209,28 @@ class VectorNumber
   # @since <<next>>
   def collinear?(other)
     !!scale_factor(other)
+  end
+
+  # Determine if this vector is collinear with +other+ vector and both are non-zero.
+  #
+  # @example
+  #   v = VectorNumber[2, "a"]
+  #   v.parallel?(2) # => false
+  #   v.parallel?(v) # => true
+  #   v.parallel?(0) # => false
+  #   v.parallel?(VectorNumber[4, "a", "a"]) # => true
+  #   v.parallel?(-VectorNumber[4, "a", "a"]) # => true
+  #
+  # @see #collinear?
+  # @see #codirectional?
+  # @see #opposite?
+  #
+  # @param other [VectorNumber, Any]
+  # @return [Boolean]
+  #
+  # @since <<next>>
+  def parallel?(other)
+    !!scale_factor(other)&.nonzero?
   end
 
   # Determine if this vector is codirectional with +other+ vector.
@@ -224,6 +246,7 @@ class VectorNumber
   #   v.codirectional?(-VectorNumber[4, "a", "a"]) # => false
   #
   # @see #collinear?
+  # @see #parallel?
   # @see #opposite?
   #
   # @param other [VectorNumber, Any]
@@ -247,6 +270,7 @@ class VectorNumber
   #   v.opposite?(-VectorNumber[4, "a", "a"]) # => true
   #
   # @see #collinear?
+  # @see #parallel?
   # @see #codirectional?
   #
   # @param other [VectorNumber, Any]

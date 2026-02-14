@@ -62,6 +62,7 @@
 # - {#dot_product}/{#inner_product}/{#scalar_product}: calculate the inner product of vectors
 # - {#angle}: calculate angle between vectors
 # - {#collinear?}: check if this vector is collinear with another vector
+# - {#parallel?}: check if this vector is parallel to another vector
 # - {#codirectional?}: check if this vector is codirectional with another vector
 # - {#opposite?}: check if this vector is opposite to another vector
 # - {#vector_projection}: calculate the vector projection onto another vector
