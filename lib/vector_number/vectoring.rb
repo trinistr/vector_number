@@ -130,17 +130,15 @@ class VectorNumber
 
   # Calculate the dot product (inner product/scalar product) of this vector with +other+ vector.
   #
-  # If +other+ is not a VectorNumber, it is automatically promoted.
-  #
   # @example
   #   VectorNumber[2].dot_product(VectorNumber[3]) # => 6
   #   v = VectorNumber[2, "a"]
   #   v.dot_product(VectorNumber[3, "s"]) # => 6
   #   v.inner_product(3) # => 6
-  #   v.scalar_product("b") # => 0.0
-  #   v.dot_product(0) # => 0.0
-  #   v.inner_product(2 * VectorNumber[-0.5, "a"]) # => 0.0
-  #   VectorNumber[0].scalar_product(v) # => 0.0
+  #   v.scalar_product("b") # => 0
+  #   v.dot_product(0) # => 0
+  #   v.inner_product(2 * VectorNumber[-0.5, "a"]) # => 0
+  #   VectorNumber[0].scalar_product(v) # => 0
   #   v.dot_product(v) == v.abs2 # => true
   #
   # @param other [VectorNumber, Any]
@@ -148,11 +146,11 @@ class VectorNumber
   #
   # @since <<next>>
   def dot_product(other)
-    return 0.0 if zero?
+    return 0 if zero?
     return abs2 if equal?(other)
 
     other = new([other]) unless VectorNumber === other
-    return 0.0 if other.zero?
+    return 0 if other.zero?
 
     @data.sum { |u, c| c * other[u] } # steep:ignore UnresolvedOverloading
   end
@@ -163,8 +161,6 @@ class VectorNumber
   alias scalar_product dot_product
 
   # Calculate the angle between this vector and +other+ vector in radians.
-  #
-  # If +other+ is not a VectorNumber, it is automatically promoted.
   #
   # @example
   #   v = VectorNumber[2, "a"]
@@ -191,9 +187,77 @@ class VectorNumber
     Math.acos(product / magnitude / other.magnitude)
   end
 
-  # Calculate the vector projection of this vector onto +other+ vector.
+  # Determine if this vector is collinear with +other+ vector.
   #
-  # If +other+ is not a VectorNumber, it is automatically promoted.
+  # If either vector is a zero vector, they are considered collinear,
+  # but not codirectional or opposite.
+  #
+  # @example
+  #   v = VectorNumber[2, "a"]
+  #   v.collinear?(2) # => false
+  #   v.collinear?(v) # => true
+  #   v.collinear?(0) # => true
+  #   v.collinear?(VectorNumber[4, "a", "a"]) # => true
+  #   v.collinear?(-VectorNumber[4, "a", "a"]) # => true
+  #
+  # @see #codirectional?
+  # @see #opposite?
+  #
+  # @param other [VectorNumber, Any]
+  # @return [Boolean]
+  #
+  # @since <<next>>
+  def collinear?(other)
+    !!scale_factor(other)
+  end
+
+  # Determine if this vector is codirectional with +other+ vector.
+  #
+  # If either vector is a zero vector, they are not considered codirectional.
+  #
+  # @example
+  #   v = VectorNumber[2, "a"]
+  #   v.codirectional?(2) # => false
+  #   v.codirectional?(v) # => true
+  #   v.codirectional?(0) # => false
+  #   v.codirectional?(VectorNumber[4, "a", "a"]) # => true
+  #   v.codirectional?(-VectorNumber[4, "a", "a"]) # => false
+  #
+  # @see #collinear?
+  # @see #opposite?
+  #
+  # @param other [VectorNumber, Any]
+  # @return [Boolean]
+  #
+  # @since <<next>>
+  def codirectional?(other)
+    scale_factor(other)&.positive? || false
+  end
+
+  # Determine if this vector is opposite with +other+ vector.
+  #
+  # If either vector is a zero vector, they are not considered opposite.
+  #
+  # @example
+  #   v = VectorNumber[2, "a"]
+  #   v.opposite?(2) # => false
+  #   v.opposite?(v) # => false
+  #   v.opposite?(0) # => false
+  #   v.opposite?(VectorNumber[4, "a", "a"]) # => false
+  #   v.opposite?(-VectorNumber[4, "a", "a"]) # => true
+  #
+  # @see #collinear?
+  # @see #codirectional?
+  #
+  # @param other [VectorNumber, Any]
+  # @return [Boolean]
+  #
+  # @since <<next>>
+  def opposite?(other)
+    scale_factor(other)&.negative? || false
+  end
+
+  # Calculate the vector projection of this vector onto +other+ vector.
   #
   # @example
   #   v = VectorNumber[2, "a"]
@@ -223,7 +287,6 @@ class VectorNumber
   #
   # Absolute value of scalar projection is equal to {#magnitude} of {#vector_projection}.
   # Sign of scalar projection depends on the {#angle} between vectors.
-  # If +other+ is not a VectorNumber, it is automatically promoted.
   #
   # @example
   #   v = VectorNumber[2, "a"]
@@ -252,7 +315,6 @@ class VectorNumber
   # Calculate the vector rejection of this vector from +other+ vector.
   #
   # Vector rejection is equal to +self - self.vector_projection(other)+.
-  # If +other+ is not a VectorNumber, it is automatically promoted.
   #
   # @example
   #   v = VectorNumber[2, "a"]
@@ -282,7 +344,6 @@ class VectorNumber
   #
   # Scalar rejection is equal to {#magnitude} of {#vector_rejection},
   # and is always non-negative.
-  # If +other+ is not a VectorNumber, it is automatically promoted.
   #
   # @example
   #   v = VectorNumber[2, "a"]
@@ -314,5 +375,20 @@ class VectorNumber
     raise ZeroDivisionError, "direction is undefined for a zero vector", caller if vector.zero?
 
     true
+  end
+
+  # @param other [VectorNumber, Any]
+  # @return [Numeric, nil] 0 for zero vectors
+  def scale_factor(other) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+    return 0 if zero?
+    return 1 if equal?(other)
+
+    other = new([other]) unless VectorNumber === other
+    return 0 if other.zero?
+    return nil if size != other.size
+
+    # Due to above `zero?` checks, we can guarantee that `@data.first` is not nil.
+    scale = @data.first.then { |u, c| Rational(other[u], c) } # steep:ignore ArgumentTypeMismatch
+    (@data.all? { |u, c| Rational(other[u], c) == scale }) ? scale : nil
   end
 end

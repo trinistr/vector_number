@@ -273,6 +273,12 @@ class VectorNumber
 
   def angle: ((vector_instance | unit_type) other) -> Float
 
+  def collinear?: ((vector_instance | unit_type) other) -> bool
+
+  def codirectional?: ((vector_instance | unit_type) other) -> bool
+
+  def opposite?: ((vector_instance | unit_type) other) -> bool
+
   def scalar_projection: ((vector_instance | unit_type) other) -> coefficient_type
 
   def vector_projection: ((vector_instance | unit_type) other) -> vector_instance
@@ -284,6 +290,8 @@ class VectorNumber
   private
 
   def has_direction?: (?vector_instance vector) -> void
+
+  def scale_factor: ((vector_instance | unit_type) other) -> Numeric?
 end
 
 class VectorNumber
