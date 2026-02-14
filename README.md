@@ -4,7 +4,7 @@
 [![CI](https://github.com/trinistr/vector_number/actions/workflows/CI.yaml/badge.svg)](https://github.com/trinistr/vector_number/actions/workflows/CI.yaml)
 
 > [!TIP]
-> You may be viewing documentation for an older (or newer) version of the gem. Look at [Changelog](https://github.com/trinistr/dicey/blob/main/CHANGELOG.md) to see all versions, including unreleased changes.
+> You may be viewing documentation for an older (or newer) version of the gem. Look at [Changelog](https://github.com/trinistr/vector_number/blob/main/CHANGELOG.md) to see all versions, including unreleased changes.
 
 ***
 
