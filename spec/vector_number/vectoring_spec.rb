@@ -198,6 +198,128 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
   end
 
+  describe "#collinear?" do
+    it "returns true if vectors are collinear" do
+      expect(num(1, 1i).collinear?(num(-1, -1i))).to be true
+      expect(num(1, "a").collinear?(num("a", 1))).to be true
+      expect(num(3, "a", 4.5ri).collinear?(num(6, "a", 9i, "a"))).to be true
+    end
+
+    it "returns false if vectors are not collinear" do
+      expect(num(1, 1i).collinear?(num(1))).to be false
+      expect(num(1, "a").collinear?(num("a", -1))).to be false
+      expect(composite_number.collinear?(num("y", :a, 8, 6.2i))).to be false
+    end
+
+    it "always returns true if other is the same vector" do
+      expect(real_number.collinear?(real_number)).to be true
+      expect(complex_number.collinear?(complex_number)).to be true
+      expect(composite_number.collinear?(composite_number)).to be true
+    end
+
+    it "returns true if other is an equal vector" do
+      expect(real_number.collinear?(num(999.15))).to be true
+      expect(complex_number.collinear?(num(0.12, -13.5i))).to be true
+      expect(composite_number.collinear?(num("y", :a, 8, 6.3i))).to be true
+    end
+
+    it "returns true if either vector is a zero vector" do
+      expect(zero_number.collinear?(composite_number)).to be true
+      expect(composite_number.collinear?(zero_number)).to be true
+      expect(zero_number.collinear?(0)).to be true
+    end
+
+    it "automatically promotes other to a VectorNumber" do
+      expect(real_number.collinear?(2)).to eq real_number.collinear?(num(2))
+      expect(complex_number.collinear?(1i)).to eq complex_number.collinear?(num(1i))
+      expect(composite_number.collinear?(:a)).to eq composite_number.collinear?(num(:a))
+    end
+  end
+
+  describe "#codirectional?" do
+    it "returns true if vectors are codirectional" do
+      expect(num(1, 1i).codirectional?(num(1, 1i))).to be true
+      expect(num(1, "a").codirectional?(num("a", 2, "a"))).to be true
+      expect(num(3, "a", 4.5ri).codirectional?(num(6, "a", 9i, "a"))).to be true
+    end
+
+    it "returns false if vectors are not collinear" do
+      expect(num(1, 1i).codirectional?(num(1))).to be false
+      expect(num(1, "a").codirectional?(num("a", -1))).to be false
+      expect(composite_number.codirectional?(num("y", :a, 8, 6.2i))).to be false
+    end
+
+    it "returns false if vectors are opposite" do
+      expect(num(1, 1i).codirectional?(num(-2, -2i))).to be false
+    end
+
+    it "returns true if other is the same vector" do
+      expect(real_number.codirectional?(real_number)).to be true
+      expect(complex_number.codirectional?(complex_number)).to be true
+      expect(composite_number.codirectional?(composite_number)).to be true
+    end
+
+    it "returns true if other is an equal vector" do
+      expect(real_number.codirectional?(num(999.15))).to be true
+      expect(complex_number.codirectional?(num(0.12, -13.5i))).to be true
+      expect(composite_number.codirectional?(num("y", :a, 8, 6.3i))).to be true
+    end
+
+    it "returns false if either vector is a zero vector" do
+      expect(zero_number.codirectional?(composite_number)).to be false
+      expect(composite_number.codirectional?(zero_number)).to be false
+      expect(zero_number.codirectional?(0)).to be false
+    end
+
+    it "automatically promotes other to a VectorNumber" do
+      expect(real_number.codirectional?(2)).to eq real_number.codirectional?(num(2))
+      expect(complex_number.codirectional?(1i)).to eq complex_number.codirectional?(num(1i))
+      expect(composite_number.codirectional?(:a)).to eq composite_number.codirectional?(num(:a))
+    end
+  end
+
+  describe "#opposite?" do
+    it "returns true if vectors are opposite" do
+      expect(num(1, 1i).opposite?(num(-1, -1i))).to be true
+      expect(num(1, "a").opposite?(-num("a", 2, "a"))).to be true
+      expect(num(3, "a", 4.5ri).opposite?(num(-6, -9i) - "a" - "a")).to be true
+    end
+
+    it "returns false if vectors are not collinear" do
+      expect(num(1, 1i).opposite?(num(1))).to be false
+      expect(num(1, "a").opposite?(num("a", -1))).to be false
+      expect(composite_number.opposite?(num("y", :a, 8, 6.2i))).to be false
+    end
+
+    it "returns false if vectors are codirectional" do
+      expect(num(1, 1i).opposite?(num(2, 2i))).to be false
+    end
+
+    it "returns false if other is the same vector" do
+      expect(real_number.opposite?(real_number)).to be false
+      expect(complex_number.opposite?(complex_number)).to be false
+      expect(composite_number.opposite?(composite_number)).to be false
+    end
+
+    it "returns false if other is an equal vector" do
+      expect(real_number.opposite?(num(999.15))).to be false
+      expect(complex_number.opposite?(num(0.12, -13.5i))).to be false
+      expect(composite_number.opposite?(num("y", :a, 8, 6.3i))).to be false
+    end
+
+    it "returns false if either vector is a zero vector" do
+      expect(zero_number.opposite?(composite_number)).to be false
+      expect(composite_number.opposite?(zero_number)).to be false
+      expect(zero_number.opposite?(0)).to be false
+    end
+
+    it "automatically promotes other to a VectorNumber" do
+      expect(real_number.opposite?(2)).to eq real_number.opposite?(num(2))
+      expect(complex_number.opposite?(1i)).to eq complex_number.opposite?(num(1i))
+      expect(composite_number.opposite?(:a)).to eq composite_number.opposite?(num(:a))
+    end
+  end
+
   describe "#vector_projection" do
     it "returns the vector projection of self onto other" do
       expect(real_number.vector_projection(complex_number))

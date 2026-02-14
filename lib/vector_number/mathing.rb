@@ -87,13 +87,13 @@ class VectorNumber
   #
   # @since 0.2.0
   def -(other)
-    self + new([other], &:-@)
+    new([self, new([other], &:-@)])
   end
 
   # @since 0.3.0
   alias sub -
 
-  # Multiply all coefficients by a real +other+, returning new vector.
+  # Multiply all coefficients by a real +other+, returning new vector scaled by +other+.
   #
   # This effectively multiplies {#magnitude} by +other+.
   #
@@ -128,9 +128,9 @@ class VectorNumber
   # @since 0.3.0
   alias mult *
 
-  # Divide all coefficients by a real +other+, returning new vector.
+  # Divide all coefficients by a real +other+, returning new vector scaled by reciprocal of +other+.
   #
-  # This effectively multiplies {#magnitude} by reciprocal of +other+.
+  # This effectively divides {#magnitude} by +other+.
   # @note This method never does integer division.
   #
   # @example

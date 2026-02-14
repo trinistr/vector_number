@@ -13,10 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A host of binary vector operations:
   - `#dot_product` (aliased as `#inner_product` and `#scalar_product`)
   - `#angle`
-  - `#scalar_projection`
-  - `#vector_projection`
-  - `#scalar_rejection`
-  - `#vector_rejection`
+  - `#collinear?`, `#codirectional?`, `#opposite?`
+  - `#scalar_projection`, `#vector_projection`
+  - `#scalar_rejection`, `#vector_rejection`
 - Some utility methods related to linear subspaces:
   - `#subspace_basis`
   - `#unit_vector`
