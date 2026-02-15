@@ -85,25 +85,6 @@ class VectorNumber
   # @since <<next>>
   alias values_at coefficients_at
 
-  # Get mutable hash with vector's data.
-  #
-  # Returned hash has a default value of 0.
-  #
-  # @example
-  #   VectorNumber["a", "b", 6, 1i].to_h # => {"a" => 1, "b" => 1, unit/1 => 6, unit/i => 1}
-  #   VectorNumber["a", "b", 6, 1i].to_h["c"] # => 0
-  #
-  # @return [Hash{Any => Numeric}]
-  def to_h(&block)
-    # TODO: Remove block argument.
-    if block_given?
-      # @type var block: ^(unit_type, coefficient_type) -> each_value_type
-      @data.to_h(&block)
-    else
-      @data.dup
-    end
-  end
-
   # Get the coefficient for the unit.
   #
   # If the +unit?(unit)+ is false, 0 is returned.
@@ -328,10 +309,14 @@ class VectorNumber
   #   @return [Enumerator]
   #
   # @since <<next>>
-  def transform_units(mapping = nil, &block)
+  def transform_units(mapping = nil, &transform)
     if block_given?
-      # @type var block: ^(unit_type unit) -> unit_type
-      mapping ? new(@data.transform_keys(mapping, &block)) : new(@data.transform_keys(&block))
+      # @type var transform: ^(unit_type unit) -> unit_type
+      if mapping
+        new(@data.transform_keys(mapping, &transform))
+      else
+        new(@data.transform_keys(&transform))
+      end
     elsif mapping
       new(@data.transform_keys(mapping))
     else

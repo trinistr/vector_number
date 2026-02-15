@@ -120,28 +120,6 @@ RSpec.describe VectorNumber do
 
   include_examples "has an alias", :values_at, :coefficients_at
 
-  describe "#to_h" do
-    subject(:hash) { number.to_h(&block) }
-
-    let(:number) { composite_number }
-    let(:block) { nil }
-
-    context "without a block" do
-      it "returns plain vector representation without calling #each" do
-        # Can't actually test for not calling #each, as objects are frozen and can't be mocked.
-        expect(hash).to eq(described_class::R => 5, "y" => 1, :a => 1)
-      end
-    end
-
-    context "with a block" do
-      let(:block) { ->(u, v) { [u, described_class.numeric_unit?(u) ? v : v * 0.5] } }
-
-      it "returns transformed plain vector representation" do
-        expect(hash).to eq(described_class::R => 5, "y" => 0.5, :a => 0.5)
-      end
-    end
-  end
-
   describe "#[]" do
     subject(:value) { number[unit] }
 

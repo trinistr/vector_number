@@ -134,6 +134,25 @@ class VectorNumber
     Complex(real, imaginary)
   end
 
+  # Get mutable hash with vector's data.
+  #
+  # Returned hash has a default value of 0.
+  #
+  # @example
+  #   VectorNumber["a", "b", 6, 1i].to_h # => {"a" => 1, "b" => 1, unit/1 => 6, unit/i => 1}
+  #   VectorNumber["a", "b", 6, 1i].to_h["c"] # => 0
+  #
+  # @return [Hash{Any => Numeric}]
+  def to_h(&block)
+    # TODO: Remove block argument.
+    if block_given?
+      # @type var block: ^(unit_type, coefficient_type) -> each_value_type
+      @data.to_h(&block)
+    else
+      @data.dup
+    end
+  end
+
   private
 
   def raise_convert_error(klass)

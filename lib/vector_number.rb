@@ -32,6 +32,7 @@
 # - {#real?}: +false+
 #
 # **Arithmetic** **operations**
+# - {#+@}: return self
 # - {#-@}/{#neg}: negate value
 # - {#coerce}: convert any object to a VectorNumber
 # - {#+}/{#add}: add object (vector addition)
@@ -78,13 +79,13 @@
 # - {#to_r}: convert to +Rational+ if possible
 # - {#to_d}: convert to +BigDecimal+ if possible
 # - {#to_c}: convert to +Complex+ if possible
+# - {#to_h}: convert to +Hash+
 #
 # **Hash-like** **operations**
 # - {#each}/{#each_pair}: iterate through every pair of unit and coefficient
 # - {#units}/{#keys}: return an array of units
 # - {#coefficients}/#{values}: return an array of coefficients
 # - {#coefficients_at}/{#values_at}: get coefficients for multiple units
-# - {#to_h}: convert to Hash
 # - {#[]}: get coefficient by unit
 # - {#assoc}: get a 2-element array containing a given unit and associated coefficient
 # - {#dig}: digs to the coefficient
@@ -99,7 +100,8 @@
 # - {#size}: number of non-zero dimensions
 # - {#to_s}: return string representation suitable for output
 # - {#inspect}: return string representation suitable for display
-# - {#dup}/{#+}: return self
+# - {#pretty_print}: support for PP
+# - {#dup}: return self
 # - {#clone}: return self
 #
 # @since 0.1.0
@@ -107,9 +109,9 @@ class VectorNumber
   require_relative "vector_number/comparing"
   require_relative "vector_number/converting"
   require_relative "vector_number/enumerating"
-  require_relative "vector_number/math_converting"
   require_relative "vector_number/mathing"
   require_relative "vector_number/querying"
+  require_relative "vector_number/rounding"
   require_relative "vector_number/stringifying"
   require_relative "vector_number/vectoring"
   require_relative "vector_number/version"

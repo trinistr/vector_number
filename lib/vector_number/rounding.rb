@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class VectorNumber
-  # @group Arithmetic operations
+  # @group Rounding
 
   # Return a new vector with every coefficient truncated using their +#truncate+.
   #

@@ -113,7 +113,7 @@ class VectorNumber
   def check_divisibility: (real_number | vector_instance) -> void
 end
 
-# Various mathematical operations that are also conversions.
+# Rounding operations.
 class VectorNumber
   def truncate: (?Integer) -> vector_instance
 
