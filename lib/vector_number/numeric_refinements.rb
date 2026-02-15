@@ -3,7 +3,7 @@
 class VectorNumber
   # Refinements of Numeric classes and Kernel to better work with VectorNumber and similar classes.
   #
-  # These do not depend on +VectorNumber+ and can technically be used separately.
+  # These do not depend on {VectorNumber} and can technically be used separately.
   # Currently includes:
   # - refinement for +Complex#<=>+ to work with classes implementing +<=>+;
   # - refinement for +Kernel#BigDecimal+ to work with classes implementing +to_d+.

@@ -3,7 +3,7 @@
 class VectorNumber
   # @group Type conversion
 
-  # Return real part of the number.
+  # Get real part of the vector.
   #
   # @example
   #   VectorNumber[23, "a"].real # => 23
@@ -12,7 +12,7 @@ class VectorNumber
   # @return [Numeric]
   def real = @data[R]
 
-  # Return imaginary part of the number.
+  # Get imaginary part of the vector.
   #
   # @example
   #   VectorNumber[23, "a"].imaginary # => 0
@@ -24,7 +24,7 @@ class VectorNumber
   # @since 0.2.1
   alias imag imaginary
 
-  # Return value as an Integer, truncating it, if only real part is non-zero.
+  # Convert vector to an Integer, if only real dimension is non-zero.
   #
   # @example
   #   VectorNumber[13.5].to_i # => 13
@@ -37,7 +37,7 @@ class VectorNumber
   #   Integer(VectorNumber[2, "i"]) # RangeError
   #
   # @return [Integer]
-  # @raise [RangeError] if any non-real part is non-zero
+  # @raise [RangeError] if any non-real dimension is non-zero
   def to_i
     raise_convert_error(Integer) unless numeric?(1)
 
@@ -46,7 +46,7 @@ class VectorNumber
 
   alias to_int to_i
 
-  # Return value as a Float if only real part is non-zero.
+  # Convert vector to a Float if only real dimension is non-zero.
   #
   # @example
   #   VectorNumber[13.5].to_f # => 13.5
@@ -58,14 +58,14 @@ class VectorNumber
   #   Float(VectorNumber[2, "i"]) # RangeError
   #
   # @return [Float]
-  # @raise [RangeError] if any non-real part is non-zero
+  # @raise [RangeError] if any non-real dimension is non-zero
   def to_f
     raise_convert_error(Float) unless numeric?(1)
 
     real.to_f
   end
 
-  # Return value as a Rational if only real part is non-zero.
+  # Convert vector to a Rational if only real dimension is non-zero.
   #
   # @example
   #   VectorNumber[13.5].to_r # => (27/2)
@@ -77,14 +77,14 @@ class VectorNumber
   #   Rational(VectorNumber[2, "i"]) # RangeError
   #
   # @return [Rational]
-  # @raise [RangeError] if any non-real part is non-zero
+  # @raise [RangeError] if any non-real dimension is non-zero
   def to_r
     raise_convert_error(Rational) unless numeric?(1)
 
     real.to_r
   end
 
-  # Return value as a BigDecimal if only real part is non-zero.
+  # Convert vector to a BigDecimal if only real dimension is non-zero.
   #
   # @example
   #   VectorNumber[13.5].to_d # => 0.135e2
@@ -101,7 +101,7 @@ class VectorNumber
   #
   # @param ndigits [Integer] precision
   # @return [BigDecimal]
-  # @raise [RangeError] if any non-real part is non-zero
+  # @raise [RangeError] if any non-real dimension is non-zero
   # @raise [NameError] if BigDecimal is not defined
   #
   # @see Kernel.BigDecimal
@@ -115,7 +115,7 @@ class VectorNumber
     BigDecimal(real)
   end
 
-  # Return value as a Complex if only real and/or imaginary parts are non-zero.
+  # Convert vector to a Complex if only real and/or imaginary dimensions are non-zero.
   #
   # @example
   #   VectorNumber[13.5].to_c # => (13.5+0i)
@@ -127,7 +127,7 @@ class VectorNumber
   #   Complex(VectorNumber[2, "i"]) # RangeError
   #
   # @return [Complex]
-  # @raise [RangeError] if any non-real, non-imaginary part is non-zero
+  # @raise [RangeError] if any non-real, non-imaginary dimension is non-zero
   def to_c
     raise_convert_error(Complex) unless numeric?(2)
 

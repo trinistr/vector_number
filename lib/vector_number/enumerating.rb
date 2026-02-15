@@ -126,7 +126,7 @@ class VectorNumber
 
   # Finds and returns the object in nested objects that is specified by +identifiers+.
   #
-  # As nested objects for a +VectorNumber+ are numeric coefficients,
+  # As nested objects for a VectorNumber are numeric coefficients,
   # digging deeper will most probably result in an error.
   #
   # @example
