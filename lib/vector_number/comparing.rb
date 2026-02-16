@@ -34,7 +34,8 @@ class VectorNumber
 
     case other
     when VectorNumber
-      size == other.size && @data == other.to_h
+      # HACK: Using instance variable access to avoid hash copying overhead.
+      size == other.size && @data == other.instance_variable_get(:@data)
     when Numeric
       numeric?(2) && other.real == real && other.imaginary == imaginary
     else
@@ -63,7 +64,7 @@ class VectorNumber
     return false unless self.class == other.class
 
     # @type var other : vector_instance
-    size.eql?(other.size) && @data.eql?(other.to_h)
+    size.eql?(other.size) && @data.eql?(other.instance_variable_get(:@data))
   rescue NoMethodError => e
     # :nocov:
     raise unless e.receiver.equal?(other)
