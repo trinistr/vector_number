@@ -6,6 +6,12 @@ RSpec.describe VectorNumber::SpecialUnit do
       unit = described_class.new(1, "m")
       expect(unit).to be_a described_class
     end
+
+    it "allows text to be omitted" do
+      unit = described_class.new("asd")
+      expect(unit.to_s).to eq "asd"
+      expect(unit.inspect).to eq "unit/asd"
+    end
   end
 
   describe "#to_s" do
@@ -41,7 +47,7 @@ RSpec.describe VectorNumber::SpecialUnit do
       expect(unit_1).not_to eq unit_2
     end
 
-    it "returns false for different object with same attributes" do
+    it "returns false for distinct units with equal attributes" do
       unit_1 = described_class.new(1, "m")
       unit_2 = described_class.new(1, "m")
       expect(unit_1).not_to eq unit_2

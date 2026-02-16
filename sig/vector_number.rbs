@@ -313,7 +313,7 @@ end
 class VectorNumber
   # Class for representing special numerical units.
   class SpecialUnit
-    def initialize: (Object unit, String text) -> void
+    def initialize: (Object unit, ?String text) -> void
 
     def to_s: () -> String
     

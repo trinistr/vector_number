@@ -8,13 +8,14 @@ class VectorNumber
   # - +#hash+ (from +Object+)
   # - {#to_s}
   # - {#inspect}
+  # - {#pretty_print}
   #
   # @since 0.6.0
   class SpecialUnit
     # @api private
     # @param unit [#to_s] name for {#inspect}
     # @param text [String] text for {#to_s}
-    def initialize(unit, text)
+    def initialize(unit, text = unit.to_s)
       @unit = unit
       @text = text
     end

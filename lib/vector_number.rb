@@ -121,7 +121,7 @@ class VectorNumber
   # List of special numeric unit constants.
   #
   # @since 0.6.0
-  NUMERIC_UNITS = [SpecialUnit.new("1", "").freeze, SpecialUnit.new("i", "i").freeze].freeze
+  NUMERIC_UNITS = [SpecialUnit.new("1", "").freeze, SpecialUnit.new("i").freeze].freeze
   # Constant for real unit (1).
   #
   # Its string representation is an empty string.
