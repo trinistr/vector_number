@@ -162,6 +162,10 @@ class VectorNumber
 
   # Calculate the angle between this vector and +other+ vector in radians.
   #
+  # Result of this method is particularly imprecise due to the nature of
+  # the arccosine function. It should not be used if vectors are suspected
+  # to be collinear, use {#collinear?} family of methods instead.
+  #
   # @example
   #   v = VectorNumber[2, "a"]
   #   v.angle(v) # => 0.0
@@ -171,20 +175,16 @@ class VectorNumber
   #   v.angle(0) # ZeroDivisionError
   #   VectorNumber[0].angle(v) # ZeroDivisionError
   #
+  # @see #collinear?
+  # @see #cosine_similarity
+  #
   # @param other [VectorNumber, Any]
   # @return [Numeric]
-  # @raise [ZeroDivisionError] if +self+ or +other+ is a zero vector
+  # @raise [ZeroDivisionError] if either +self+ or +other+ is a zero vector
   #
   # @since <<next>>
   def angle(other)
-    has_direction?
-    return 0.0 if equal?(other)
-
-    other = new([other]) unless VectorNumber === other
-    has_direction?(other)
-    return Math::PI / 2.0 if (product = dot_product(other)).zero?
-
-    Math.acos(product / magnitude / other.magnitude)
+    Math.acos(cosine_similarity(other))
   end
 
   # Determine if this vector is collinear with +other+ vector.

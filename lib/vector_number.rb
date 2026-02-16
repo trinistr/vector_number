@@ -71,6 +71,11 @@
 # - {#vector_rejection}: calculate the vector rejection from another vector
 # - {#scalar_rejection}: calculate the scalar rejection from another vector
 #
+# **Similarity** **measures**
+# - {#cosine_similarity}: calculate cosine similarity between vectors
+# - {#jaccard_index}: calculate Jaccard index between vectors
+# - {#jaccard_similarity}: calculate weighted Jaccard similarity index between vectors
+#
 # **Type** **conversion**
 # - {#real}: return real part
 # - {#imag}/{#imaginary}: return imaginary part
@@ -112,6 +117,7 @@ class VectorNumber
   require_relative "vector_number/mathing"
   require_relative "vector_number/querying"
   require_relative "vector_number/rounding"
+  require_relative "vector_number/similarity"
   require_relative "vector_number/stringifying"
   require_relative "vector_number/vectoring"
   require_relative "vector_number/version"

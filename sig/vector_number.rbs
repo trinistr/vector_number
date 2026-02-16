@@ -231,6 +231,15 @@ class VectorNumber
   def integer?: () -> false
 end
 
+# Similary metrics.
+class VectorNumber
+  def cosine_similarity: ((vector_instance | unit_type) other) -> ::Math::double
+
+  def jaccard_index: ((vector_instance | unit_type) other) -> Rational
+
+  def jaccard_similarity: ((vector_instance | unit_type) other) -> Rational
+end
+
 # Methods and options for string representation.
 class VectorNumber
   MULT_STRINGS: Hash[Symbol, String]
@@ -293,7 +302,7 @@ class VectorNumber
 
   def has_direction?: (?vector_instance vector) -> void
 
-  def scale_factor: ((vector_instance | unit_type) other) -> Numeric?
+  def scale_factor: ((vector_instance | unit_type) other) -> ::Math::double?
 end
 
 class VectorNumber
