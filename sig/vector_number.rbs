@@ -272,6 +272,8 @@ class VectorNumber
 
   def subspace_basis: () -> Array[vector_instance]
 
+  def subspace_projections: () -> Array[vector_instance]
+
   def uniform_vector: () -> vector_instance
 
   def unit_vector: () -> vector_instance

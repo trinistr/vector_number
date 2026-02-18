@@ -80,6 +80,7 @@ class VectorNumber
   #   v.subspace_basis # => [(1), (1⋅"a"), (1⋅"s")]
   #   VectorNumber[0].subspace_basis # => []
   #
+  # @see #subspace_projections
   # @see #uniform_vector
   #
   # @return [Array<VectorNumber>]
@@ -87,6 +88,22 @@ class VectorNumber
   # @since <<next>>
   def subspace_basis
     units.map { new([_1]) }
+  end
+
+  # Return an array of vectors representing projections onto
+  # basis vectors of linear subspace this vector belongs to.
+  #
+  # @example
+  #   v = VectorNumber[1.2, "a"] * 2 - "s" # => (2.4 + 2⋅"a" - 1⋅"s")
+  #   v.subspace_projections # => [(2.4), (2⋅"a"), (-1⋅"s")]
+  #
+  # @see #subspace_basis
+  #
+  # @return [Array<VectorNumber>]
+  #
+  # @since <<next>>
+  def subspace_projections
+    map { |u, c| new({ u => c }) }
   end
 
   # Return a new vector with the same non-zero dimensions,

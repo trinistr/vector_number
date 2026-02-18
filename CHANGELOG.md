@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `#scalar_projection`, `#vector_projection`
   - `#scalar_rejection`, `#vector_rejection`
 - Some utility methods related to linear subspaces:
-  - `#subspace_basis`
+  - `#subspace_basis`, `#subspace_projections`
   - `#unit_vector`
   - `#uniform_vector`
 - Methods for calculating norms:

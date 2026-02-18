@@ -75,11 +75,20 @@ RSpec.describe VectorNumber, :aggregate_failures do
   include_examples "has an alias", :infinity_norm, :maximum_norm
 
   describe "#subspace_basis" do
-    it "returns array of unit vectors formin a subspace basis based on the vector" do
+    it "returns array of unit vectors forming a subspace basis based on the vector" do
       expect(zero_number.subspace_basis).to eq []
       expect(real_number.subspace_basis).to eq [num(1)]
       expect(complex_number.subspace_basis).to eq [num(1), num(1i)]
       expect(composite_number.subspace_basis).to eq [num("y"), num(:a), num(1), num(1i)]
+    end
+  end
+
+  describe "#subspace_projections" do
+    it "returns array of vectors forming projections onto subspace basis vectors" do
+      expect(zero_number.subspace_projections).to eq []
+      expect(real_number.subspace_projections).to eq [num(999.15)]
+      expect(complex_number.subspace_projections).to eq [num(0.12), num(-13.5i)]
+      expect(composite_number.subspace_projections).to eq [num("y"), num(:a), num(8), num(6.3i)]
     end
   end
 
