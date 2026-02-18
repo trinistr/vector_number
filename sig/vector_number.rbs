@@ -284,6 +284,8 @@ class VectorNumber
 
   def angle: ((vector_instance | unit_type) other) -> Float
 
+  def orthogonal?: ((vector_instance | unit_type) other) -> bool
+
   def collinear?: ((vector_instance | unit_type) other) -> bool
 
   def parallel?: ((vector_instance | unit_type) other) -> bool

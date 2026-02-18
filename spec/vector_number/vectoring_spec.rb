@@ -207,6 +207,48 @@ RSpec.describe VectorNumber, :aggregate_failures do
     end
   end
 
+  describe "#orthogonal?" do
+    it "returns true if vectors are orthogonal" do
+      expect(num(1, 1i).orthogonal?(num(-1, 1i))).to be true
+      expect(num(1, "a").orthogonal?(-num("a", -2, "a"))).to be true
+      expect(num(3, "a", 4.5ri).orthogonal?(num("b"))).to be true
+    end
+
+    it "returns false if vectors are not orthogonal" do
+      expect(num(1, 1i).orthogonal?(num(1))).to be false
+      expect(num(1, "a").orthogonal?(num("a", 1))).to be false
+      expect(composite_number.orthogonal?(num("y", :a, 8, 6.2i))).to be false
+    end
+
+    it "returns false if vectors are collinear" do
+      expect(num(1, 1i).orthogonal?(num(2, 2i))).to be false
+    end
+
+    it "returns false if other is the same vector" do
+      expect(real_number.orthogonal?(real_number)).to be false
+      expect(complex_number.orthogonal?(complex_number)).to be false
+      expect(composite_number.orthogonal?(composite_number)).to be false
+    end
+
+    it "returns false if other is an equal vector" do
+      expect(real_number.orthogonal?(num(999.15))).to be false
+      expect(complex_number.orthogonal?(num(0.12, -13.5i))).to be false
+      expect(composite_number.orthogonal?(num("y", :a, 8, 6.3i))).to be false
+    end
+
+    it "returns false if either vector is a zero vector" do
+      expect(zero_number.orthogonal?(composite_number)).to be false
+      expect(composite_number.orthogonal?(zero_number)).to be false
+      expect(zero_number.orthogonal?(0)).to be false
+    end
+
+    it "automatically promotes other to a VectorNumber" do
+      expect(real_number.orthogonal?(2)).to eq real_number.orthogonal?(num(2))
+      expect(complex_number.orthogonal?(1i)).to eq complex_number.orthogonal?(num(1i))
+      expect(composite_number.orthogonal?(:a)).to eq composite_number.orthogonal?(num(:a))
+    end
+  end
+
   describe "#collinear?" do
     it "returns true if vectors are collinear" do
       expect(num(1, 1i).collinear?(num(-1, -1i))).to be true

@@ -204,6 +204,34 @@ class VectorNumber
     Math.acos(cosine_similarity(other))
   end
 
+  # Determine if this vector is orthogonal with +other+ vector.
+  #
+  # If either vector is a zero vector, they are not considered orthogonal.
+  # If vectors have no non-zero dimensions in common, they are orthogonal.
+  #
+  # @example
+  #   v = VectorNumber[2, "a"]
+  #   v.orthogonal?(2) # => false
+  #   v.orthogonal?(v) # => false
+  #   v.orthogonal?(0) # => false
+  #   v.orthogonal?(-2 * VectorNumber[-0.5, "a"]) # => true
+  #   v.orthogonal?(VectorNumber["b", :c]) # => true
+  #
+  # @see #collinear?
+  #
+  # @param other [VectorNumber, Any]
+  # @return [Boolean]
+  #
+  # @since <<next>>
+  def orthogonal?(other)
+    return false if zero?
+
+    other = new([other]) unless VectorNumber === other
+    return false if other.zero?
+
+    dot_product(other).zero?
+  end
+
   # Determine if this vector is collinear with +other+ vector.
   #
   # If either vector is a zero vector, they are considered collinear.
@@ -216,6 +244,7 @@ class VectorNumber
   #   v.collinear?(VectorNumber[4, "a", "a"]) # => true
   #   v.collinear?(-VectorNumber[4, "a", "a"]) # => true
   #
+  # @see orthogonal?
   # @see #parallel?
   # @see #codirectional?
   # @see #opposite?
