@@ -91,7 +91,10 @@ class VectorNumber
   # @example
   #   VectorNumber.numeric_unit?(VectorNumber::R) # => true
   #   VectorNumber.numeric_unit?(VectorNumber::I) # => true
+  #   VectorNumber.numeric_unit?(VectorNumber::SpecialUnit.new("my")) # => false
   #   VectorNumber.numeric_unit?(:i) # => false
+  #
+  # @see .special_unit?
   #
   # @param unit [Any]
   # @return [Boolean]
@@ -99,6 +102,28 @@ class VectorNumber
   # @since 0.6.0
   def self.numeric_unit?(unit)
     NUMERIC_UNITS.include?(unit) # steep:ignore ArgumentTypeMismatch
+  end
+
+  # Check if an object is a {SpecialUnit}. This includes numeric units.
+  #
+  # @example
+  #   VectorNumber.special_unit?(VectorNumber::R) # => true
+  #   VectorNumber.special_unit?(VectorNumber::SpecialUnit.new("my")) # => true
+  #   VectorNumber.special_unit?(:i) # => false
+  #
+  # @see .numeric_unit?
+  #
+  # @param unit [Any]
+  # @return [Boolean]
+  #
+  # @since <<next>>
+  def self.special_unit?(unit)
+    SpecialUnit === unit
+  end
+
+  class << self
+    # @since <<next>>
+    alias unit? special_unit?
   end
 
   # Number of non-zero dimensions.

@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Internal changes now (hopefully) allow for full support for `BasicObject` objects, though some methods are required.
   - `#hash` and `#eql?` are always required.
   - `#inspect` is required for stringification.
+- `SpecialUnit` class is now considered public API. Users may create new instances of it for their own use.
 
 [Compare v0.6.1...main](https://github.com/trinistr/vector_number/compare/v0.6.1...main)
 

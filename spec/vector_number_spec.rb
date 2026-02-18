@@ -46,9 +46,35 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(described_class.numeric_unit?(described_class::I)).to be true
     end
 
+    it "returns false for non-numeric special units" do
+      expect(described_class.numeric_unit?(described_class::SpecialUnit.new("my unit"))).to be false
+    end
+
     it "returns false for regular units" do
       expect(described_class.numeric_unit?(:a)).to be false
       expect(described_class.numeric_unit?(1)).to be false
+    end
+  end
+
+  describe ".special_unit?" do
+    it "returns true for special numeric units" do
+      expect(described_class.special_unit?(described_class::R)).to be true
+      expect(described_class.special_unit?(described_class::I)).to be true
+    end
+
+    it "returns true for non-numeric special units" do
+      expect(described_class.special_unit?(described_class::SpecialUnit.new("my unit"))).to be true
+    end
+
+    it "returns false for regular units" do
+      expect(described_class.special_unit?(:a)).to be false
+      expect(described_class.special_unit?(1)).to be false
+    end
+  end
+
+  describe ".unit?" do
+    it "is an alias of .special_unit?" do
+      expect(described_class.method(:unit?).original_name).to eq :special_unit?
     end
   end
 
