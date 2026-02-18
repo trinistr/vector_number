@@ -74,7 +74,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
 
   describe ".unit?" do
     it "is an alias of .special_unit?" do
-      expect(described_class.method(:unit?).original_name).to eq :special_unit?
+      expect(described_class.method(:unit?).unbind.original_name).to eq :special_unit?
     end
   end
 

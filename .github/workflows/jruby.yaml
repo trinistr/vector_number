@@ -12,7 +12,7 @@ jobs:
         ruby:
         - jruby
         - jruby-head
-        experimental: [true]
+        experimental: [false]
     continue-on-error: ${{ matrix.experimental }}
     env:
       BUNDLE_ONLY: "default:test:optional"
