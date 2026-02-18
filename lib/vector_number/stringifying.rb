@@ -20,7 +20,8 @@ class VectorNumber
   # An optional block can be supplied to provide customized substrings
   # for each unit and coefficient pair.
   # Care needs to be taken in handling +VectorNumber::R+ and +VectorNumber::I+ units.
-  # {.numeric_unit?} can be used to check if a particular unit needs special handling.
+  # {.numeric_unit?}/{.special_unit?} can be used to check if a particular unit
+  # requires different logic.
   #
   # @example
   #   VectorNumber[5, "s"].to_s # => "5 + 1⋅\"s\""
@@ -66,7 +67,9 @@ class VectorNumber
   #
   # @see to_s
   def inspect
-    "(#{self})"
+    return "(0)" if zero?
+
+    "(#{build_string("⋅")})"
   end
 
   # Support for PP, outputs the same text as {#inspect}.
@@ -118,7 +121,7 @@ class VectorNumber
   # @param operator [String]
   # @return [String]
   def value_to_s(unit, coefficient, operator)
-    if NUMERIC_UNITS.include?(unit) # steep:ignore ArgumentTypeMismatch
+    if SpecialUnit === unit
       "#{coefficient}#{unit}"
     else
       "#{coefficient}#{operator}#{unit.inspect}"
