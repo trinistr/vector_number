@@ -8,29 +8,92 @@
 
 ***
 
-VectorNumber is a Ruby gem that provides a Numeric-like experience for doing arithmetics on heterogeneous objects, with more advanced operations based on real vector spaces available when needed.
+**Do full linear algebra on Ruby objects.** Yes, *any* objects.
 
-Features:
-- [Add and subtract](#basics) (almost) any object, with no setup or declaration.
-- [Multiply and divide](#basics) vectors by any real number to create 1.35 of an array and -2 of a string. What does that mean? Only you know!
-- [Use vectors instead of inbuilt numbers](#numerical-behavior) in most situtations with no difference in behavior. Or, use familiar methods from numerics with sane semantics!
-- [Enumerate vectors in a hash-like fashion](#enumeration-and-hash-like-behavior), or transform to an array or hash as needed.
-- Enjoy a mix of vector-, complex- and polynomial-like behavior at appropriate times.
-- No dependencies, no extensions. It just works!
+```ruby
+# Create a vector where dimensions are whatever you want
+v1 = VectorNumber[x: 3, y: 4]               # 3 in :x direction, 4 in :y
+v2 = VectorNumber["weight" => 2.5, :x => 1] # mix symbols and strings
+v3 = VectorNumber[:y => 2, [1, 2, 3] => 5]  # or any other objects
 
-Other people have created some similar gems over the years, like [vector_space](https://github.com/tomstuart/vector_space) or [named_vector](https://rubygems.org/gems/named_vector) but they don't have the characterics that I wanted, and none of them have been updated in *years*.
+# Add them, scale them, find their lengths in a natural way
+v1 + v2            # => (4⋅:x + 4⋅:y + 2.5⋅"weight")
+v1 - v3            # => (3⋅:x + 2⋅:y - 5⋅[1, 2, 3])
+v2 + "banana"      # => (2.5⋅"weight" + 1⋅:x + 1⋅"banana")
+(v1 * 2).magnitude # => 10.0 (since 2*√(3²+4²) = 10)
 
-## Table of contents
+# Calculate dot products, angles, and projections
+v1.dot_product(v2)                # => 3 (= 3*1 + 4*0 + 0*2.5)
+v1.angle(v2)                      # => 1.3460753063647353 (≈77.1°)
+v1.vector_projection(v2).round(2) # => (1.03⋅"weight" + 0.41⋅:x)
+```
+
+VectorNumber treats **every distinct Ruby object as a dimension** in a vector space over the real numbers. This means you can do proper linear algebra on anything: symbols, strings, arrays, custom classes—whatever you need.
+
+## 🚀 Why VectorNumber?
+
+### 1. Full Linear Algebra on Any Domain
+Need to work with weighted tags? Feature vectors for machine learning? Coordinate systems with non-numeric axes? VectorNumber gives you the math:
+
+```ruby
+# ML feature vectors with meaningful dimension names
+doc1 = VectorNumber["word_ruby" => 3, "word_gem" => 2, "word_library" => 1]
+doc2 = VectorNumber["word_ruby" => 1, "word_gem" => 3, "word_code" => 2]
+
+# Cosine similarity for document comparison
+similarity = doc1.cosine_similarity(doc2).round(5) # => 0.64286
+
+# Find which document is "closer" to a query
+query = VectorNumber["word_ruby" => 1, "word_gem" => 1]
+doc1.cosine_similarity(query) > doc2.cosine_similarity(query) # => true
+```
+
+### 2. Numeric-Like Behavior, Hash-Like Access
+It feels like a number, but you can inspect it like a hash:
+
+```ruby
+v = VectorNumber["apple", "orange"] # => (1⋅"apple" + 1⋅"orange")
+v += "orange"  # => (1⋅"apple" + 2⋅"orange")
+v["apple"]     # => 1 (coefficient lookup)
+v["kiwi"]      # => 0 (missing dimensions are zero)
+v.to_h         # => {"apple" => 1, "orange" => 2}
+v.units        # => ["apple", "orange"]
+v.coefficients # => [1, 2]
+```
+
+### 3. Plays Nicely with Ruby Numbers
+Thanks to full `#coerce` support, VectorNumbers work seamlessly with Ruby's numeric types:
+
+```ruby
+5 + VectorNumber["x"] * 2   # => (5 + 2⋅"x")
+3.14 * VectorNumber[:theta] # => (3.14⋅:theta)
+VectorNumber[8] < 10        # => true (compares real value)
+```
+
+### 4. Rich API
+You want it? We got it!
+
+| Category  | Methods |
+|-----------|---------|
+| Basic Ops | `+` and `-`, `*` and `/` (scaling), `div` and `%` |
+| Rounding  | `round`, `ceil`, `floor`, `truncate` (per-coefficient) |
+| Norms     | `magnitude`/`abs`, `abs2`, `p_norm`, `maximum_norm` |
+| Projections | `vector_projection`, `scalar_projection`, `vector_rejection`, `scalar_rejection` |
+| Geometry  | `dot_product`, `angle`, `subspace_basis`, `unit_vector` |
+| Hash-like | `each`, `[]`, `transform_coefficients`, `transform_units` |
+
+...and many, **many** more!
+
+## 📜 Table of contents
 
 - [Installation](#installation)
-  - [Ruby engine support status](#ruby-engine-support-status)
 - [Usage](#usage)
-  - [Basics](#basics)
-    - [Getting values back](#getting-values-back)
-  - [(Somewhat) advanced usage](#somewhat-advanced-usage)
-    - [Frozenness](#frozenness)
-    - [Numerical behavior](#numerical-behavior)
-    - [Enumeration and hash-like behavior](#enumeration-and-hash-like-behavior)
+  - [API Documentation](#api-documentation)
+  - [Quick Start](#quick-start)
+  - [Real-world Examples](#real-world-examples)
+  - [Advanced Vector Operations](#advanced-vector-operations)
+  - [Hash-like Operations](#hash-like-operations)
+  - [Custom String Conversion](#custom-string-conversion)
 - [Conceptual basis](#conceptual-basis)
 - [Development](#development)
 - [Contributing](#contributing)
@@ -43,106 +106,211 @@ Install with `gem`:
 gem install vector_number
 ```
 
-If using Bundler, add gem to your Gemfile:
+Or, if using Bundler, add gem to your Gemfile:
 ```ruby
 gem "vector_number"
 ```
 
-### Ruby engine support status
-
-VectorNumber is developed on MRI (CRuby) but should work on other engines too.
-- TruffleRuby: minor differences in behavior, but otherwise works as expected.
-- JRuby: minor differences in behavior, but otherwise works as expected.
-- Other engines: untested, but should work, depending on compatibility with MRI.
+> [!NOTE]
+> VectorNumber is officially supported (and tested) on MRI (CRuby), JRuby and TruffleRuby.
 
 ## Usage
 
-> [!Note]
-> - Latest API documentation from `main` branch is automatically deployed to [GitHub Pages](https://trinistr.github.io/vector_number).
-> - Documentation for published versions is available on [RubyDoc](https://rubydoc.info/gems/vector_number).
+### API Documentation
 
-### Basics
+Full documentation with all methods and examples for each method is generated from source and is available online:
+- [Main branch](https://trinistr.github.io/vector_number)
+- [Latest published vesion](https://rubydoc.info/gems/vector_number)
 
-VectorNumbers are mostly useful for summing up heterogeneous objects:
+### Quick Start
+
 ```ruby
-sum = VectorNumber[4] + "death" + "death" + 13 + nil
-sum # => (17 + 2⋅"death" + 1⋅nil)
-sum.to_h # => {unit/1 => 17, "death" => 2, nil => 1}
-sum.to_a # => [[unit/1, 17], ["death", 2], [nil, 1]]
+require "vector_number"
 
-# Alternatively, the same result can be equivalently (and more efficiently)
-# achieved by passing all values to a constructor:
-VectorNumber[4, "death", "death", 13, nil]
-VectorNumber.new([4, "death", "death", 13, nil])
+# Create vectors
+VectorNumber[5, "hello", 5, :sym] # => (10 + 1⋅"hello" + 1⋅:sym)
+VectorNumber["x" => 3, "y" => 4]  # => (3⋅"x" + 4⋅"y")
+2 * VectorNumber[:a, :b, :c]      # => (2⋅:a + 2⋅:b + 2⋅:c)
+# or more explicitly
+VectorNumber.new([5, "hello", 5, :sym])
+VectorNumber.new({"x" => 3, "y" => 4})
+
+# Basic arithmetic
+v = VectorNumber["apple" => 3] + VectorNumber["orange" => 2]
+v -= "orange" # => (3⋅"apple" + 1⋅"orange")
+v *= 1.5      # => (4.5⋅"apple" + 1.5⋅"orange")
 ```
 
-Doing arithmetic with vectors is simple and intuitive:
+### Real-world Examples
+
+#### 📦 Inventory Management
+
+The most basic function of VectorNumber is the ability to act similarly to a Hash but with defined arithmetic operations. This naturally leads to intuitive operations like addition and subtraction of inventory items.
+
 ```ruby
-VectorNumber["string"] + "string" # => (2⋅"string")
-VectorNumber["string"] - "str" # => (1⋅"string" - 1⋅"str")
-VectorNumber[5] + VectorNumber["string"] - 0.5 # => (4.5 + 1⋅"string")
-VectorNumber["string", "string", "string", "str"] # => (3⋅"string" + 1⋅"str")
-# Multiply and divide by any real number:
-VectorNumber[:s] * 2 + VectorNumber["string"] * 0.3 # => (2⋅:s + 0.3⋅"string")
-VectorNumber[:s] / VectorNumber[3] # => (1/3⋅:s)
+class Inventory
+  def initialize(items)
+    @items = VectorNumber.new(items)
+  end
+  
+  def add(item, quantity = 1)
+    @items += VectorNumber.new({item => quantity})
+  end
+  
+  def remove(item, quantity = 1)
+    @items -= VectorNumber.new({item => quantity})
+  end
+  
+  def has?(item, quantity = 1)
+    @items[item] >= quantity
+  end
+  
+  def total_value(prices)
+    # Multiply each item's quantity by its price and sum them up
+    @items.dot_product(VectorNumber.new(prices))
+  end
+end
+
+inventory = Inventory.new("apple" => 10, "banana" => 5)
+inventory.add("apple", 3)
+inventory.remove("banana", 2)
+inventory.total_value("apple" => 0.5, "banana" => 0.3) # => 7.4
 ```
 
-Ruby numbers rely on `#coerce` to promote values to a common type. This allows using regular numbers as first operand in arithmetic operations:
+#### 📊 Weighted Scoring System
+
+VectorNumber has several similarity measures out-of-the-box, and implementing custom ones can easily be done with `map` and `reduce`. This example shows how to calculate a match score between a candidate's skills and job requirements using cosine similarity.
+
 ```ruby
-2 + VectorNumber["string"] # => (2 + 1⋅"string")
-1/3r * VectorNumber[[]] # => (1/3⋅[])
-13 / VectorNumber[2] # => (13/2)
+class Candidate
+  attr_reader :skills
+  
+  # @param skills [Hash{Symbol => Numeric}]
+  #   keys are skills and values are proficiency levels
+  def initialize(skills)
+    @skills = VectorNumber.new(skills)
+  end
+  
+  # Calculate similarity between candidate skills and job requirements
+  # @param job_requirements [Hash{Symbol => Numeric}]
+  # @return [Float] A score between 0 and 1
+  def match_score(job_requirements)
+    job_requirements = VectorNumber.new(job_requirements)
+    @skills.cosine_similarity(job_requirements)
+  end
+end
+
+job = {ruby: 5, rails: 4, sql: 3, nosql: 2}
+alice = Candidate.new(ruby: 5, rails: 5, sql: 2, python: 3)
+bob = Candidate.new(ruby: 3, rails: 2, sql: 4, java: 4)
+
+alice.match_score(job).round(2) # => 0.87
+bob.match_score(job).round(2)   # => 0.71
 ```
 
-> [!NOTE]
-> VectorNumbers don't perform "integer division" to prevent unexpected loss of precision. `#div` and rounding methods can achieve this if required.
+#### 🔬 Scientific/Domain Modeling
 
-#### Getting values back
-The simplest way to get a value for a specific unit is to use the `#[]` method:
+VectorNumber can be used for scientific and domain modeling where vector operations are common.
+
 ```ruby
-VectorNumber["string", "string", "string", "str"]["string"] # => 3
-VectorNumber["string", "string", "string", "str"]["str"] # => 1
-VectorNumber["string", "string", "string", "str"]["nonexistent"] # => 0
+# Work done by a constant force
+displacement = VectorNumber[x: 3, y: -2.5]
+force = VectorNumber[x: 5, y: 1]
+work = force.dot_product(displacement) # => 12.5
+
+# Gravitational force
+position_massive = VectorNumber[x: 1.5, y: -200, z: -150]
+position_small = VectorNumber[x: -120, y: 13, z: 15.5]
+direction = position_small - position_massive
+unit_direction = direction.unit_vector
+gravitational_force = -unit_direction * 10_000 * 10 * 6.674 / direction.abs2
+  # => (3.1317735497992065⋅:x - 5.490269679894905⋅:y - 4.265913765364352⋅:z)
 ```
 
-> [!NOTE]
-> Accessing a unit that doesn't exist returns 0, not `nil` as you might expect.
+### Advanced Vector Operations
 
-### (Somewhat) advanced usage
+VectorNumber supports many vector operations beside vector arithmetic. This is a sample of what's available:
 
-> [!TIP]
-> Look at API documentation for all methods.
+```ruby
+v = VectorNumber[x: 3, y: 4]
+w = VectorNumber[x: 1, y: 2, z: 5]
 
-#### Frozenness
-VectorNumbers are always frozen, as a number should be. However, they hold references to units (keys), which aren't frozen or duplicated. It is the user's responsibility to ensure that keys aren't mutated, the same as it is for Hash.
+# Vector properties
+v.magnitude                     # => 5.0
+v.p_norm(1)                     # => 7 (Manhattan distance)
+v.unit_vector                   # => (0.6⋅:x + 0.8⋅:y)
 
-As vectors are immutable, `+@`, `dup` and `clone` return the same instance.
+# Relationships
+v.dot_product(w)                # => 11 (=3*1 + 4*2 + 0*5)
+v.angle(w)                      # => 1.1574640509137637 (rad)
+v.vector_projection(w)          # => (11/30⋅:x + 11/15⋅:y + 11/6⋅:z)
+v.scalar_projection(w)          # => 2.008316044185609
+v.vector_rejection(w)           # => (79/30⋅:x + 49/15⋅:y - 11/6⋅:z)
 
-#### Numerical behavior
-VectorNumbers implement most of the methods you can find in `Numeric`, with appropriate behavior. For example:
-- `abs` (`magnitude`) calculates length of the vector;
-- `infinite?` checks whether any coefficient is infinite (or NaN), in the same way as `Complex` does it;
-- `positive?` is true if all coefficients are positive, the same for `negative?` (though this is different from `Complex`) (and they can both be false);
-- `round` and friends round each coefficient, with all the bells and whistles;
-- `div` and `%` perform division and remainder operations elementwise;
-- `5 < VectorNumber[6]` returns `true` and `5 < VectorNumber["string"]` raises `ArgumentError`, etc.
+# Basis operations
+w.subspace_basis                # => [(1⋅:x), (1⋅:y), (1⋅:z)]
+w.uniform_vector                # => (1⋅:x + 1⋅:y + 1⋅:z)
 
-VectorNumbers, if only consisting of a real number, can mostly be used interchangeably with core numbers due to `coerce` and conversion (`to_i`, etc.) methods. They can even be used as array indices! Due to including `Comparable`, they can also participate in comparison and sorting.
+# Collinearity
+v.collinear?(w)                 # => false
+v.parallel?(v * 3)              # => true
+v.opposite?(v * -1)             # => true
+```
 
-#### Enumeration and Hash-like behavior
-VectorNumbers implement `each` (`each_pair`) in the same way as Hash does, allowing `Enumerable` methods to be used in a familiar way.
+### Hash-Like Operations
 
-There are also the usual `[]`, `unit?` (`key?`), `units` (`keys`), `coefficients` (`values`) methods. `to_h` and `to_a` can be used if a regular Hash or Array is needed.
+Most of Hash interface is implemented—though much of it comes from Enumerable—with the notable exception of self-modifying methods.
 
-## Conceptual basis
+```ruby
+v = VectorNumber[a: 2, b: 3, c: 5]
 
-VectorNumbers are based on the concept of a vector space over the field of real numbers (real vector space). In the case of VectorNumber, the dimensionality of the vector space is countably infinite, as most distinct objects in Ruby signify a separate dimension.
+# Querying
+v[:a]                           # => 2
+v[:d]                           # => 0
+v.unit?(:b)                     # => true
+v.unit?(:d)                     # => false
+v.fetch(:d, 42)                 # => 42
 
-For most dimensions, an object is that distinct dimension's unit. There are two exceptions currently: real unit (1) and imaginary unit (i) which define the real and imaginary dimensions and subsume all real and complex numbers. A VectorNumber can not be a unit itself. Distinction of objects is determined by `eql?`, same as for Hash.
+# Transformation
+v.transform_coefficients { |c| c * 2 } # (4⋅:a + 6⋅:b + 10⋅:c)
+v.transform_units { |u| u.to_s }       # (2⋅"a" + 3⋅"b" + 5⋅"c")
 
-Length of a VectorNumber in any given dimension is given by a real number, called its coefficient. All dimensions are linearly independent — change in one coefficient does not affect any other coefficient. There is no distinction between a dimension explicitly specified as having a 0 coefficient (or arriving at 0 through calculation) and a dimension not specified at all.
+# Enumeration
+v.each { |unit, coeff| puts "#{coeff}×#{unit}" }
+v.to_h                          # => {a: 2, b: 3, c: 5}
+```
 
-This might be more easily imagined as a geometric vector. For example, this is a graphic representation of a vector `3 * VectorNumber[1] + 2 * VectorNumber[1i] + 3 * VectorNumber["string"] + 4.5 * VectorNumber[[1,2,3]]` in the vector space:
+### Custom String Conversion
+
+While the default string representation works well for console output, there are many possible scenarios and use cases, so the `to_s` method supports customization:
+
+```ruby
+v = VectorNumber[:a => 2, "x" => 5.5, [] => -3.14]
+# Replacing the multiplication symbol
+v.to_s(mult: :asterisk)
+  # => "2*:a + 5.5*\"x\" - 3.14*[]"
+# Custom formatting with a block
+v.to_s { |unit, coeff, i| "#{' + ' unless i.zero?}(#{coeff}#{unit})" }
+  # => "(2a) + (5.5x) + (-3.14[])"
+# Using Enumerator for complex processing
+v.to_enum(:to_s).map { |unit, coeff| "#{unit.inspect}: #{coeff}" }.join(', ')
+  # => ":a: 2, \"x\": 5.5, []: -3.14"
+```
+
+## Conceptual Basis
+
+VectorNumber is built on the mathematical concept of a **real vector space** with countably infinite dimensions:
+- Every distinct Ruby object (determined by `eql?`) is a dimension
+- Each dimension has a coefficient (a real number)
+- The real unit `1` and imaginary unit `i` are special dimensions that subsume Ruby's numeric types
+- All operations follow vector space axioms
+
+Furthermore, VectorNumbers exist in a normed Euclidean inner product space:
+- All dimensions are orthogonal and independent
+- The norm (magnitude) of a vector is calculated using the Euclidean norm
+- Inner (dot) product is defined, which allows angles between vectors to be calculated
+
+This might be more easily imagined as a geometric vector. For example, this is a graphic representation of a vector `VectorNumber[3, 2i] + VectorNumber["string" => 3, [1,2,3] => 4.5]`:
 
 ![Vector in vector space](https://raw.githubusercontent.com/trinistr/vector_number/main/doc/vector_space.svg)
 
