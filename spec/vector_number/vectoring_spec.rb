@@ -114,7 +114,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
   end
 
   describe "#dot_product" do
-    it "calculates the dot product of two vectors" do
+    it "calculates the inner product of two vectors" do
       expect(real_number.dot_product(num(2))).to eq 1998.3
       expect(complex_number.dot_product(num(1i))).to eq(-13.5)
       expect(composite_number.dot_product(num(:a, 1, 1i, "y"))).to eq 16.3
@@ -158,6 +158,51 @@ RSpec.describe VectorNumber, :aggregate_failures do
 
   include_examples "has an alias", :inner_product, :dot_product
   include_examples "has an alias", :scalar_product, :dot_product
+
+  describe "#cross_product" do
+    it "calculates the vector product of two vectors" do
+      expect(num(x: 3, y: 4, z: 5).cross_product(num(x: 1, y: 2, z: 3)))
+        .to eq num(x: 2, y: -4, z: 2)
+      expect(num(x: 1, y: 2, z: 3).cross_product(num(x: 3, y: 4, z: 5)))
+        .to eq num(x: -2, y: 4, z: -2)
+      expect(num(x: 3, y: 4, z: 5).cross_product(num(x: 1, y: 0, z: 0)))
+        .to eq num(x: 0, y: 5, z: -4)
+    end
+
+    it "uses the basis to calculate product" do
+      expect(num(x: 3, y: 4, z: 5).cross_product(num(x: 1, y: 2, z: 3), %i[y x z]))
+        .to eq num(x: -2, y: 4, z: -2)
+    end
+
+    it "allows specifying any units for basis" do
+      expect(num(1).cross_product(num(1i), [described_class::R, described_class::I, "!"]))
+        .to eq num("!")
+    end
+
+    it "discards extra dimensions" do
+      expect(num(x: 3, y: 4, z: 5, w: 6).cross_product(num(x: 1, y: 2, z: 3, w: 4)))
+        .to eq num(x: 2, y: -4, z: 2)
+    end
+
+    it "returns zero vector if either vector is a zero vector" do
+      expect(num(x: 3, y: 4, z: 5).cross_product(zero_number)).to eq zero_number
+      expect(zero_number.cross_product(num(x: 3, y: 4, z: 5))).to eq zero_number
+      expect(zero_number.cross_product(num)).to eq zero_number
+    end
+
+    it "raises ArgumentError if basis does not contain exactly 3 units" do
+      expect { num.cross_product(num, []) }.to raise_error(ArgumentError)
+      expect { num.cross_product(num, %i[x]) }.to raise_error(ArgumentError)
+      expect { num.cross_product(num, %i[x y]) }.to raise_error(ArgumentError)
+      expect { num.cross_product(num, %i[x y z w]) }.to raise_error(ArgumentError)
+    end
+
+    it "automatically promotes other to a VectorNumber" do
+      expect(num(x: 3, y: 4, z: 5).cross_product(:x)).to eq num(x: 0, y: 5, z: -4)
+    end
+  end
+
+  include_examples "has an alias", :vector_product, :cross_product
 
   describe "#angle" do
     it "returns angle between two vectors in radians" do
@@ -212,6 +257,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(num(1, 1i).orthogonal?(num(-1, 1i))).to be true
       expect(num(1, "a").orthogonal?(-num("a", -2, "a"))).to be true
       expect(num(3, "a", 4.5ri).orthogonal?(num("b"))).to be true
+      expect(num(1).orthogonal?(num(1i))).to be true
     end
 
     it "returns false if vectors are not orthogonal" do
@@ -260,6 +306,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(num(1, 1i).collinear?(num(1))).to be false
       expect(num(1, "a").collinear?(num("a", -1))).to be false
       expect(composite_number.collinear?(num("y", :a, 8, 6.2i))).to be false
+      expect(num(1).collinear?(num(1i))).to be false
     end
 
     it "always returns true if other is the same vector" do
@@ -298,6 +345,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(num(1, 1i).parallel?(num(1))).to be false
       expect(num(1, "a").parallel?(num("a", -1))).to be false
       expect(composite_number.parallel?(num("y", :a, 8, 6.2i))).to be false
+      expect(num(1).parallel?(num(1i))).to be false
     end
 
     it "returns true if other is the same vector" do
@@ -336,6 +384,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(num(1, 1i).codirectional?(num(1))).to be false
       expect(num(1, "a").codirectional?(num("a", -1))).to be false
       expect(composite_number.codirectional?(num("y", :a, 8, 6.2i))).to be false
+      expect(num(1).codirectional?(num(1i))).to be false
     end
 
     it "returns false if vectors are opposite" do
@@ -378,6 +427,7 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(num(1, 1i).opposite?(num(1))).to be false
       expect(num(1, "a").opposite?(num("a", -1))).to be false
       expect(composite_number.opposite?(num("y", :a, 8, 6.2i))).to be false
+      expect(num(1).opposite?(num(1i))).to be false
     end
 
     it "returns false if vectors are codirectional" do

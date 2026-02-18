@@ -309,6 +309,7 @@ Furthermore, VectorNumbers exist in a normed Euclidean inner product space:
 - All dimensions are orthogonal and independent
 - The norm (magnitude) of a vector is calculated using the Euclidean norm
 - Inner (dot) product is defined, which allows angles between vectors to be calculated
+- All unit vectors have a length of 1
 
 This might be more easily imagined as a geometric vector. For example, this is a graphic representation of a vector `VectorNumber[3, 2i] + VectorNumber["string" => 3, [1,2,3] => 4.5]`:
 

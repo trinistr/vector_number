@@ -13,7 +13,7 @@ class VectorNumber
   type list[T] = Array[T]
   type real_number = Integer | Float | Rational | BigDecimal
 
-  type unit_type = (any_value & _Unit | Numeric)
+  type unit_type = (any_value & _Unit | Numeric | nil)
   type coefficient_type = real_number
 
   type vector_instance = VectorNumber
@@ -281,6 +281,9 @@ class VectorNumber
   def dot_product: ((vector_instance | unit_type) other) -> coefficient_type
   alias inner_product dot_product
   alias scalar_product dot_product
+
+  def cross_product: ((vector_instance | unit_type) other, ?[unit_type, unit_type, unit_type] basis) -> vector_instance
+  alias vector_product cross_product
 
   def angle: ((vector_instance | unit_type) other) -> Float
 

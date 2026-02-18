@@ -13,14 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `#ceildiv` method, inspired by `Integer#ceildiv`. Works similarly to `#div`, but rounds up instead of down.
 - A host of binary vector operations:
   - `#dot_product` (aliased as `#inner_product` and `#scalar_product`)
+  - `#cross_product` (aliased as `#vector_product`)
   - `#angle`
   - `#orthogonal?`, `#collinear?`, `#parallel?`, `#codirectional?`, `#opposite?`
   - `#scalar_projection`, `#vector_projection`
   - `#scalar_rejection`, `#vector_rejection`
 - Some utility methods related to linear subspaces:
   - `#subspace_basis`, `#subspace_projections`
-  - `#unit_vector`
   - `#uniform_vector`
+  - `#unit_vector`
 - Methods for calculating norms:
   - `#p_norm`
   - `#maximum_norm` (aliased as `#infinity_norm`)
