@@ -80,6 +80,7 @@ class VectorNumber
   #   v.subspace_basis # => [(1), (1⋅"a"), (1⋅"s")]
   #   VectorNumber[0].subspace_basis # => []
   #
+  # @see #subspace_projections
   # @see #uniform_vector
   #
   # @return [Array<VectorNumber>]
@@ -87,6 +88,22 @@ class VectorNumber
   # @since <<next>>
   def subspace_basis
     units.map { new([_1]) }
+  end
+
+  # Return an array of vectors representing projections onto
+  # basis vectors of linear subspace this vector belongs to.
+  #
+  # @example
+  #   v = VectorNumber[1.2, "a"] * 2 - "s" # => (2.4 + 2⋅"a" - 1⋅"s")
+  #   v.subspace_projections # => [(2.4), (2⋅"a"), (-1⋅"s")]
+  #
+  # @see #subspace_basis
+  #
+  # @return [Array<VectorNumber>]
+  #
+  # @since <<next>>
+  def subspace_projections
+    map { |u, c| new({ u => c }) }
   end
 
   # Return a new vector with the same non-zero dimensions,
@@ -160,6 +177,44 @@ class VectorNumber
   # @since <<next>>
   alias scalar_product dot_product
 
+  # Calculate the cross product (vector product) of this vector with +other+ vector.
+  #
+  # As cross product is normally defined only for regular 3D space,
+  # this method has unusual properties:
+  # - +basis+ argument specifies which triplet of dimensions to work in,
+  # - all other dimensions are discarded.
+  #
+  # @example
+  #   v = VectorNumber[x: 3, y: 4, z: 5]
+  #   v.cross_product(:x) # => (5⋅:y - 4⋅:z)
+  #   v.vector_product(:x, [:y, :x, :z]) # => (-5⋅:y + 4⋅:z)
+  #   v.cross_product(VectorNumber[:a, :x, :z], [:a, :b, :x]) # => (3⋅:b)
+  #   v.cross_product(-v) # => (0)
+  #   v.cross_product(0) # => (0)
+  #
+  # @param other [VectorNumber, Any]
+  # @param basis [Array(Any, Any, Any)] units specifying basis to use
+  # @return [VectorNumber]
+  # @raise [ArgumentError] if +basis+ does not contain exactly 3 units
+  #
+  # @since <<next>>
+  def cross_product(other, basis = %i[x y z]) # rubocop:disable Metrics/AbcSize
+    raise ArgumentError, "`basis` must contain exactly 3 units" if basis.size != 3
+
+    other = new([other]) unless VectorNumber === other
+    return VectorNumber.new if collinear?(other)
+
+    i, j, k = *basis
+    new({
+      i => (self[j] * other[k] - self[k] * other[j]), # steep:ignore UnresolvedOverloading
+      j => (self[k] * other[i] - self[i] * other[k]), # steep:ignore UnresolvedOverloading
+      k => (self[i] * other[j] - self[j] * other[i]), # steep:ignore UnresolvedOverloading
+    })
+  end
+
+  # @since <<next>>
+  alias vector_product cross_product
+
   # Calculate the angle between this vector and +other+ vector in radians.
   #
   # Result of this method is particularly imprecise due to the nature of
@@ -187,6 +242,34 @@ class VectorNumber
     Math.acos(cosine_similarity(other))
   end
 
+  # Determine if this vector is orthogonal with +other+ vector.
+  #
+  # If either vector is a zero vector, they are not considered orthogonal.
+  # If vectors have no non-zero dimensions in common, they are orthogonal.
+  #
+  # @example
+  #   v = VectorNumber[2, "a"]
+  #   v.orthogonal?(2) # => false
+  #   v.orthogonal?(v) # => false
+  #   v.orthogonal?(0) # => false
+  #   v.orthogonal?(-2 * VectorNumber[-0.5, "a"]) # => true
+  #   v.orthogonal?(VectorNumber["b", :c]) # => true
+  #
+  # @see #collinear?
+  #
+  # @param other [VectorNumber, Any]
+  # @return [Boolean]
+  #
+  # @since <<next>>
+  def orthogonal?(other)
+    return false if zero?
+
+    other = new([other]) unless VectorNumber === other
+    return false if other.zero?
+
+    dot_product(other).zero?
+  end
+
   # Determine if this vector is collinear with +other+ vector.
   #
   # If either vector is a zero vector, they are considered collinear.
@@ -199,6 +282,7 @@ class VectorNumber
   #   v.collinear?(VectorNumber[4, "a", "a"]) # => true
   #   v.collinear?(-VectorNumber[4, "a", "a"]) # => true
   #
+  # @see orthogonal?
   # @see #parallel?
   # @see #codirectional?
   # @see #opposite?
@@ -356,7 +440,7 @@ class VectorNumber
   #
   # @since <<next>>
   def vector_rejection(other)
-    return VectorNumber[0] if equal?(other) && has_direction?
+    return VectorNumber.new if equal?(other) && has_direction?
 
     other = new([other]) unless VectorNumber === other
     has_direction?(other)
@@ -403,7 +487,7 @@ class VectorNumber
 
   # @param other [VectorNumber, Any]
   # @return [Numeric, nil] 0 for zero vectors
-  def scale_factor(other) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+  def scale_factor(other) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     return 0 if zero?
     return 1 if equal?(other)
 
@@ -413,6 +497,8 @@ class VectorNumber
 
     # Due to above `zero?` checks, we can guarantee that `@data.first` is not nil.
     scale = @data.first.then { |u, c| Rational(other[u], c) } # steep:ignore ArgumentTypeMismatch
+    return nil if scale.zero?
+
     (@data.all? { |u, c| Rational(other[u], c) == scale }) ? scale : nil
   end
 end
