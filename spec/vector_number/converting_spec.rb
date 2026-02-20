@@ -191,6 +191,18 @@ RSpec.describe VectorNumber do
       end
     end
 
+    context "when ndigits argument is specified" do
+      subject(:conversion) { number.to_d(1) }
+
+      context "with real number" do
+        let(:number) { real_number }
+
+        it "returns value as a BigDecimal with specified precision" do
+          expect(conversion).to eql BigDecimal(1000)
+        end
+      end
+    end
+
     context "when BigDecimal is not available", bigdecimal: false do
       # There is no simple way to mock the method,
       # so we create a class which mocks unavailability.
