@@ -9,6 +9,20 @@
 #
 # All instances are frozen after creation.
 #
+# **Working** **with** **numeric** **units**
+#
+# Real and imaginary units are represented by {R} and {I} constants, not numbers,
+# as may be expected. They are instances of {SpecialUnit} class which has useful
+# behavior. However, they are not equal to any object besides themselves, which
+# necessitates always using these constants, not new objects.
+#
+# User must use these specific constants when
+# - initializing vector using a hash,
+# - accessing vector by unit.
+#
+# Customizing {#to_s} result should also check for these using {.numeric_unit?},
+# or, alternatively, for all {SpecialUnit}s with {.unit?}.
+#
 # @since 0.1.0
 class VectorNumber
   require_relative "vector_number/comparing"
