@@ -236,7 +236,8 @@ end
 
 # Similary metrics.
 class VectorNumber
-  def cosine_similarity: ((vector_instance | unit_type) other) -> ::Math::double
+  def cosine: ((vector_instance | unit_type) other) -> ::Math::double
+  alias cosine_similarity cosine
 
   def jaccard_index: ((vector_instance | unit_type) other) -> Rational
 

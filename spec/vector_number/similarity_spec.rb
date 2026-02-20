@@ -6,57 +6,56 @@ RSpec.describe VectorNumber, :aggregate_failures do
   let(:complex_number) { num(Complex(0.12, -13.5)) }
   let(:composite_number) { num("y", :a, 5, Complex(3, 5), 1.3i) }
 
-  describe "#cosine_similarity" do
+  describe "#cosine" do
     it "returns cosine similarity between two vectors" do
-      expect(real_number.cosine_similarity(num(2))).to eq 1.0
-      expect(complex_number.cosine_similarity(num(-0.12, 13.5i))).to eq(-1.0)
-      expect(composite_number.cosine_similarity(composite_number.uniform_vector))
-        .to eq 0.792758048281296
+      expect(real_number.cosine(num(2))).to eq 1.0
+      expect(complex_number.cosine(num(-0.12, 13.5i))).to eq(-1.0)
+      expect(composite_number.cosine(composite_number.uniform_vector)).to eq 0.792758048281296
     end
 
     it "returns 1 if other is the same vector" do
-      expect(real_number.cosine_similarity(real_number)).to be 1.0
-      expect(complex_number.cosine_similarity(complex_number)).to be 1.0
-      expect(composite_number.cosine_similarity(composite_number)).to be 1.0
+      expect(real_number.cosine(real_number)).to be 1.0
+      expect(complex_number.cosine(complex_number)).to be 1.0
+      expect(composite_number.cosine(composite_number)).to be 1.0
     end
 
     it "returns 1 if other is an equal vector" do
-      expect(real_number.cosine_similarity(num(999.15))).to be 1.0
-      expect(complex_number.cosine_similarity(num(0.12, -13.5i))).to be 1.0
-      expect(composite_number.cosine_similarity(num("y", :a, 8, 6.3i))).to be 1.0
+      expect(real_number.cosine(num(999.15))).to be 1.0
+      expect(complex_number.cosine(num(0.12, -13.5i))).to be 1.0
+      expect(composite_number.cosine(num("y", :a, 8, 6.3i))).to be 1.0
     end
 
     it "returns 0 if vectors are orthogonal" do
-      expect(num(1, 1i).cosine_similarity(num(1, -1i))).to be 0.0
-      expect(num(1, "a").cosine_similarity(num("a", -1))).to be 0.0
+      expect(num(1, 1i).cosine(num(1, -1i))).to be 0.0
+      expect(num(1, "a").cosine(num("a", -1))).to be 0.0
     end
 
     it "returns ≈0 if vectors are codirectional" do
-      expect(num(1, 1i).cosine_similarity(num(2, 2i))).to be_within(1e-15).of(1.0)
-      expect(num(1, "a").cosine_similarity(num("a", 1) * 0.34)).to be_within(1e-15).of(1.0)
-      expect(composite_number.cosine_similarity(composite_number.unit_vector))
-        .to be_within(1e-15).of(1.0)
+      expect(num(1, 1i).cosine(num(2, 2i))).to be_within(1e-15).of(1.0)
+      expect(num(1, "a").cosine(num("a", 1) * 0.34)).to be_within(1e-15).of(1.0)
+      expect(composite_number.cosine(composite_number.unit_vector)).to be_within(1e-15).of(1.0)
     end
 
     it "returns ≈-1.0 if vectors are opposite" do
-      expect(num(1, 1i).cosine_similarity(num(-2, -2i))).to be_within(1e-15).of(-1.0)
-      expect(num(1, "a").cosine_similarity(num("a", 1) * -0.34)).to be_within(1e-15).of(-1.0)
-      expect(composite_number.cosine_similarity(composite_number.unit_vector * -1))
+      expect(num(1, 1i).cosine(num(-2, -2i))).to be_within(1e-15).of(-1.0)
+      expect(num(1, "a").cosine(num("a", 1) * -0.34)).to be_within(1e-15).of(-1.0)
+      expect(composite_number.cosine(composite_number.unit_vector * -1))
         .to be_within(1e-15).of(-1.0)
     end
 
     it "raises ZeroDivisionError if either vector is a zero vector" do
-      expect { zero_number.cosine_similarity(num(1)) }.to raise_error(ZeroDivisionError)
-      expect { num(1).cosine_similarity(zero_number) }.to raise_error(ZeroDivisionError)
+      expect { zero_number.cosine(num(1)) }.to raise_error(ZeroDivisionError)
+      expect { num(1).cosine(zero_number) }.to raise_error(ZeroDivisionError)
     end
 
     it "automatically promotes other to a VectorNumber" do
-      expect(real_number.cosine_similarity(2)).to eq real_number.cosine_similarity(num(2))
-      expect(complex_number.cosine_similarity(1i)).to eq complex_number.cosine_similarity(num(1i))
-      expect(composite_number.cosine_similarity(:a))
-        .to eq composite_number.cosine_similarity(num(:a))
+      expect(real_number.cosine(2)).to eq real_number.cosine(num(2))
+      expect(complex_number.cosine(1i)).to eq complex_number.cosine(num(1i))
+      expect(composite_number.cosine(:a)).to eq composite_number.cosine(num(:a))
     end
   end
+
+  include_examples "has an alias", :cosine_similarity, :cosine
 
   describe "#jaccard_index" do
     it "returns jaccard index similarity between two vectors" do

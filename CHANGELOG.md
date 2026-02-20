@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `#maximum_norm` (aliased as `#infinity_norm`)
   - 2-norm (Euclidean norm) can already be calculated using `#magnitude`.
 - Methods for calculating similarity measures:
-  - `#cosine_similarity`
+  - `#cosine` (aliased as `#cosine_similarity`)
   - `#jaccard_index`
   - `#jaccard_similarity`
 - Multiple hash-like methods:

@@ -41,11 +41,11 @@ doc1 = VectorNumber["word_ruby" => 3, "word_gem" => 2, "word_library" => 1]
 doc2 = VectorNumber["word_ruby" => 1, "word_gem" => 3, "word_code" => 2]
 
 # Cosine similarity for document comparison
-similarity = doc1.cosine_similarity(doc2).round(5) # => 0.64286
+similarity = doc1.cosine(doc2).round(5) # => 0.64286
 
 # Find which document is "closer" to a query
 query = VectorNumber["word_ruby" => 1, "word_gem" => 1]
-doc1.cosine_similarity(query) > doc2.cosine_similarity(query) # => true
+doc1.cosine(query) > doc2.cosine(query) # => true
 ```
 
 ### 2. Numeric-Like Behavior, Hash-Like Access

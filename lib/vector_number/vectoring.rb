@@ -231,7 +231,7 @@ class VectorNumber
   #   VectorNumber[0].angle(v) # ZeroDivisionError
   #
   # @see #collinear?
-  # @see #cosine_similarity
+  # @see #cosine
   #
   # @param other [VectorNumber, Any]
   # @return [Numeric]
@@ -239,7 +239,7 @@ class VectorNumber
   #
   # @since <<next>>
   def angle(other)
-    Math.acos(cosine_similarity(other))
+    Math.acos(cosine(other))
   end
 
   # Determine if this vector is orthogonal with +other+ vector.

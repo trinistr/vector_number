@@ -3,16 +3,18 @@
 class VectorNumber
   # @group Similarity measures
 
-  # Calculate cosine similarity between this vector and +other+.
+  # Calculate cosine between this vector and +other+.
+  #
+  # Cosine can be used as a measure of similarity.
   #
   # @example
   #   v = VectorNumber[2, "a"]
-  #   v.cosine_similarity(v) # => 1.0
+  #   v.cosine(v) # => 1.0
   #   v.cosine_similarity(1) # => 0.8944271909999159
-  #   v.cosine_similarity("b") # => 0.0
+  #   v.cosine("b") # => 0.0
   #   v.cosine_similarity(-v) # => -1.0
-  #   v.cosine_similarity(0) # ZeroDivisionError
-  #   VectorNumber[0].cosine_similarity(v) # ZeroDivisionError
+  #   v.cosine(0) # ZeroDivisionError
+  #   VectorNumber[0].cosine(v) # ZeroDivisionError
   #
   # @see #angle
   #
@@ -21,7 +23,7 @@ class VectorNumber
   # @raise [ZeroDivisionError] if either +self+ or +other+ is a zero vector
   #
   # @since <<next>>
-  def cosine_similarity(other)
+  def cosine(other)
     has_direction?
     return 1.0 if equal?(other)
 
@@ -32,6 +34,9 @@ class VectorNumber
     # Due to precision errors, the result might be slightly outside [-1, 1], so we clamp.
     (product / magnitude / other.magnitude).clamp(-1.0, 1.0)
   end
+
+  # @since <<next>>
+  alias cosine_similarity cosine
 
   # Calculate Jaccard index of similarity between this vector and +other+.
   #
