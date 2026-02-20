@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `#transform_units` (aliased as `#transform_keys`)
 - `#pretty_print` method to support `PP` which works much in the same way as `#inspect`. This is mainly useful in interactive sessions.
 
+**Removed**
+- [🍄 BREAKING] `VectorNumber::NumericRefinements` module. If these refinements are desired, they can easily be implemented by user.
+
 **Changed**
 - [🍄 BREAKING] `#to_s` and `#inspect` now call `#inspect` on all coefficients and non-special units, better aligning with standard classes.
   - Neither Strings nor Symbols are displayed completely unadorned now.
