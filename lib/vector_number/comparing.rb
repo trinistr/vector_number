@@ -98,7 +98,7 @@ class VectorNumber
   #   VectorNumber[130] <=> 12 # => 1
   #   1 <=> VectorNumber[13] # => -1
   #   VectorNumber[12.1] <=> Complex(12.1, 0) # => 0
-  #   # This doesn't work as expected without NumericRefinements:
+  #   # This doesn't work as expected:
   #   Complex(12.1, 0) <=> VectorNumber[12.1] # => nil
   #
   #   # Any non-real comparison returns nil:
@@ -108,7 +108,6 @@ class VectorNumber
   #
   # @see #numeric?
   # @see Comparable
-  # @see NumericRefinements
   #
   # @param other [Any]
   # @return [Integer]

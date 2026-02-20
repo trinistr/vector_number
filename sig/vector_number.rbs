@@ -317,20 +317,6 @@ class VectorNumber
 end
 
 class VectorNumber
-  # Refinements of Numeric classes to better work with VectorNumber and similar classes.
-  module NumericRefinements
-    module CommutativeShuttle
-      def <=>: (untyped other) -> Integer?
-    end
-
-    module BigDecimalToD
-      def BigDecimal: (untyped value, exception: bool) -> BigDecimal?
-                    | (untyped value, Integer ndigits, exception: bool) -> BigDecimal?
-    end
-  end
-end
-
-class VectorNumber
   # Class for representing special numerical units.
   class SpecialUnit
     def initialize: (Object unit, ?String text) -> void

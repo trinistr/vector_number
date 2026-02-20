@@ -93,9 +93,9 @@ class VectorNumber
   #   VectorNumber[2, 2i].to_d # RangeError
   #   VectorNumber[2, :i].to_d # RangeError
   #
-  #   # This does't work without NumericRefinements:
+  #   # This does't work:
   #   BigDecimal(VectorNumber[2]) # TypeError
-  #   # #to_s can be used as a workaround if refinements aren't used:
+  #   # #to_s can be used as a workaround:
   #   BigDecimal(VectorNumber[2].to_s) # => 0.2e1
   #   BigDecimal(VectorNumber[2, "i"].to_s) # => ArgumentError
   #
@@ -105,7 +105,6 @@ class VectorNumber
   # @raise [NameError] if BigDecimal is not defined
   #
   # @see Kernel.BigDecimal
-  # @see NumericRefinements
   def to_d(ndigits = nil)
     raise_convert_error(BigDecimal) unless numeric?(1)
 
