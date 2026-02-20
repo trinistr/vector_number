@@ -24,7 +24,7 @@ RSpec.describe VectorNumber do
         let(:number) { real_number }
 
         it "returns number as a string" do
-          expect(string).to eq "189/41"
+          expect(string).to eq "(189/41)"
         end
       end
 

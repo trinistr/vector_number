@@ -41,8 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `#pretty_print` method to support `PP` which works much in the same way as `#inspect`. This is mainly useful in interactive sessions.
 
 **Changed**
-- [🍄 BREAKING] `#to_s` now calls `#inspect` on all non-special units, better aligning with standard classes.
-  - This means that neither Strings nor Symbols are displayed completely unadorned now.
+- [🍄 BREAKING] `#to_s` and `#inspect` now call `#inspect` on all coefficients and non-special units, better aligning with standard classes.
+  - Neither Strings nor Symbols are displayed completely unadorned now.
+  - Rational coefficients are displayed in extra brackets.
 - `#abs` is now an alias of `#magnitude`, instead of the other way around.
 - `VectorNumber.[]` now raises `ArgumentError` if a block is passed. Previously, block was silently ignored.
 - Incorrectly using numeric keys when initializing from a hash now raises `RangeError`.

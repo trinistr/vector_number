@@ -135,12 +135,12 @@ class VectorNumber
   #
   # @example
   #   VectorNumber[10] / 2 # => (5)
-  #   VectorNumber["a", "b", 6].quo(2) # => (1/2⋅"a" + 1/2⋅"b" + 3/1)
-  #   VectorNumber["a"] / VectorNumber[2] # => (1/2⋅"a")
+  #   VectorNumber["a", "b", 6].quo(2) # => ((1/2)⋅"a" + (1/2)⋅"b" + (3/1))
+  #   VectorNumber["a"] / VectorNumber[2] # => ((1/2)⋅"a")
   #   # Can't divide by a non-real:
   #   VectorNumber["a"] / VectorNumber["b"] # RangeError
   # @example numeric types can be divided in reverse
-  #   2 / VectorNumber[10] # => (1/5)
+  #   2 / VectorNumber[10] # => ((1/5))
   #   # Can't divide by a non-real:
   #   2 / VectorNumber["a"] # RangeError
   #

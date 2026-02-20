@@ -243,9 +243,9 @@ v.unit_vector                   # => (0.6⋅:x + 0.8⋅:y)
 # Relationships
 v.dot_product(w)                # => 11 (=3*1 + 4*2 + 0*5)
 v.angle(w)                      # => 1.1574640509137637 (rad)
-v.vector_projection(w)          # => (11/30⋅:x + 11/15⋅:y + 11/6⋅:z)
+v.vector_projection(w)          # => ((11/30)⋅:x + (11/15)⋅:y + (11/6)⋅:z)
 v.scalar_projection(w)          # => 2.008316044185609
-v.vector_rejection(w)           # => (79/30⋅:x + 49/15⋅:y - 11/6⋅:z)
+v.vector_rejection(w)           # => ((79/30)⋅:x + (49/15)⋅:y - (11/6)⋅:z)
 
 # Basis operations
 w.subspace_basis                # => [(1⋅:x), (1⋅:y), (1⋅:z)]
