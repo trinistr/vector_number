@@ -77,7 +77,7 @@ class VectorNumber
   # @param pp [PP]
   # @return [void]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def pretty_print(pp) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     pp.text("(0)") and return if zero?
 

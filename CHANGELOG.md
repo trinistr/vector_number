@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
+[Compare v0.7.0...main](https://github.com/trinistr/vector_number/compare/v0.7.0...main)
+
+## [v0.7.0] — 2026-02-20
+
+This is a massive update rounding out the functionality of the gem. Main highlights:
+- many, many unary and binary vector operations
+- more convenient construction via `.[]`
+- new and improved README
+
 **Added**
 - "Hash mode" to `VectorNumber.[]`, allowing to quickly create VectorNumbers with desired coefficients.
   - Using positional arguments and keyword arguments together is prohibited.
@@ -55,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `#inspect` is required for stringification.
 - `SpecialUnit` class is now considered public API. Users may create new instances of it for their own use.
 
-[Compare v0.6.1...main](https://github.com/trinistr/vector_number/compare/v0.6.1...main)
+[Compare v0.6.1...v0.7.0](https://github.com/trinistr/vector_number/compare/v0.6.1...v0.7.0)
 
 ## [v0.6.1] — 2026-02-08
 
@@ -257,6 +266,9 @@ README was updated to reflect this change.
 - Initial work.
 
 [Next]: https://github.com/trinistr/vector_number/tree/main
+[v0.7.0]: https://github.com/trinistr/vector_number/tree/v0.7.0
+[v0.7.0]: https://github.com/trinistr/vector_number/tree/v0.7.0
+[v0.7.0]: https://github.com/trinistr/vector_number/tree/v0.7.0
 [v0.6.1]: https://github.com/trinistr/vector_number/tree/v0.6.1
 [v0.6.0]: https://github.com/trinistr/vector_number/tree/v0.6.0
 [v0.5.0]: https://github.com/trinistr/vector_number/tree/v0.5.0

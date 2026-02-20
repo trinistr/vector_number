@@ -33,7 +33,7 @@ class VectorNumber
     # @param pp [PP]
     # @return [void]
     #
-    # @since <<next>>
+    # @since 0.7.0
     def pretty_print(pp)
       pp.text(inspect)
     end

@@ -130,13 +130,13 @@ class VectorNumber
   # @param unit [Any]
   # @return [Boolean]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def self.special_unit?(unit)
     SpecialUnit === unit
   end
 
   class << self
-    # @since <<next>>
+    # @since 0.7.0
     alias unit? special_unit?
   end
 

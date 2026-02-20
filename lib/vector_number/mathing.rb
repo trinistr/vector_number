@@ -250,7 +250,7 @@ class VectorNumber
   # @raise [RangeError] if +other+ is not a number or is not a real number
   # @raise [ZeroDivisionError] if +other+ is zero
   #
-  # @since <<next>>
+  # @since 0.7.0
   def ceildiv(other)
     check_divisibility(other)
 

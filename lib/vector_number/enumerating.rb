@@ -77,12 +77,12 @@ class VectorNumber
   # @param units [Array<Any>]
   # @return [Array<Numeric>]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def coefficients_at(*units)
     @data.values_at(*units) # : Array[coefficient_type]
   end
 
-  # @since <<next>>
+  # @since 0.7.0
   alias values_at coefficients_at
 
   # Get the coefficient for the unit.
@@ -119,7 +119,7 @@ class VectorNumber
   # @param unit [Any]
   # @return [Array(Any, Numeric)]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def assoc(unit)
     @data.assoc(unit) || [unit, 0]
   end
@@ -138,7 +138,7 @@ class VectorNumber
   # @param identifiers [Array<Any>]
   # @return [Numeric]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def dig(*identifiers)
     @data.dig(*identifiers)
   end
@@ -175,7 +175,7 @@ class VectorNumber
   #   @return [Any]
   # @raise [KeyError] if default value was needed, but not provided
   #
-  # @since <<next>>
+  # @since 0.7.0
   def fetch(...)
     @data.fetch(...) # steep:ignore UnresolvedOverloading
   end
@@ -203,12 +203,12 @@ class VectorNumber
   #   @return [Array<Any>]
   # @raise [KeyError] if default value was needed, but not provided
   #
-  # @since <<next>>
+  # @since 0.7.0
   def fetch_coefficients(...)
     @data.fetch_values(...) # steep:ignore UnresolvedOverloading
   end
 
-  # @since <<next>>
+  # @since 0.7.0
   alias fetch_values fetch_coefficients
 
   # Check if a unit has a non-zero coefficient.
@@ -257,7 +257,7 @@ class VectorNumber
   # @overload transform_coefficients
   #   @return [Enumerator]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def transform_coefficients(mapping = nil, &transform)
     if mapping
       if block_given?
@@ -274,7 +274,7 @@ class VectorNumber
     end
   end
 
-  # @since <<next>>
+  # @since 0.7.0
   alias transform_values transform_coefficients
 
   # Return a new VectorNumber with units transformed
@@ -308,7 +308,7 @@ class VectorNumber
   # @overload transform_units
   #   @return [Enumerator]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def transform_units(mapping = nil, &transform)
     if block_given?
       # @type var transform: ^(unit_type unit) -> unit_type
@@ -324,6 +324,6 @@ class VectorNumber
     end
   end
 
-  # @since <<next>>
+  # @since 0.7.0
   alias transform_keys transform_units
 end

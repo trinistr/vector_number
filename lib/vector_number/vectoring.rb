@@ -48,7 +48,7 @@ class VectorNumber
   # @param p [Numeric]
   # @return [Numeric]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def p_norm(p) # rubocop:disable Naming/MethodParameterName
     @data.values.sum { _1.abs**p }**(1.0 / p) # steep:ignore UnresolvedOverloading
   end
@@ -63,7 +63,7 @@ class VectorNumber
   #
   # @return [Numeric]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def maximum_norm
     return 0 if zero?
 
@@ -85,7 +85,7 @@ class VectorNumber
   #
   # @return [Array<VectorNumber>]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def subspace_basis
     units.map { new([_1]) }
   end
@@ -101,7 +101,7 @@ class VectorNumber
   #
   # @return [Array<VectorNumber>]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def subspace_projections
     map { |u, c| new({ u => c }) }
   end
@@ -120,7 +120,7 @@ class VectorNumber
   #
   # @return [VectorNumber]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def uniform_vector
     new { 1 }
   end
@@ -138,7 +138,7 @@ class VectorNumber
   # @return [VectorNumber]
   # @raise [ZeroDivisionError] if +self+ is a zero vector
   #
-  # @since <<next>>
+  # @since 0.7.0
   def unit_vector
     has_direction?
 
@@ -161,7 +161,7 @@ class VectorNumber
   # @param other [VectorNumber, Any]
   # @return [Numeric]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def dot_product(other)
     return 0 if zero?
     return abs2 if equal?(other)
@@ -172,9 +172,9 @@ class VectorNumber
     @data.sum { |u, c| c * other[u] } # steep:ignore UnresolvedOverloading
   end
 
-  # @since <<next>>
+  # @since 0.7.0
   alias inner_product dot_product
-  # @since <<next>>
+  # @since 0.7.0
   alias scalar_product dot_product
 
   # Calculate the cross product (vector product) of this vector with +other+ vector.
@@ -197,7 +197,7 @@ class VectorNumber
   # @return [VectorNumber]
   # @raise [ArgumentError] if +basis+ does not contain exactly 3 units
   #
-  # @since <<next>>
+  # @since 0.7.0
   def cross_product(other, basis = %i[x y z]) # rubocop:disable Metrics/AbcSize
     raise ArgumentError, "`basis` must contain exactly 3 units" if basis.size != 3
 
@@ -212,7 +212,7 @@ class VectorNumber
     })
   end
 
-  # @since <<next>>
+  # @since 0.7.0
   alias vector_product cross_product
 
   # Calculate the angle between this vector and +other+ vector in radians.
@@ -237,7 +237,7 @@ class VectorNumber
   # @return [Numeric]
   # @raise [ZeroDivisionError] if either +self+ or +other+ is a zero vector
   #
-  # @since <<next>>
+  # @since 0.7.0
   def angle(other)
     Math.acos(cosine(other))
   end
@@ -260,7 +260,7 @@ class VectorNumber
   # @param other [VectorNumber, Any]
   # @return [Boolean]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def orthogonal?(other)
     return false if zero?
 
@@ -290,7 +290,7 @@ class VectorNumber
   # @param other [VectorNumber, Any]
   # @return [Boolean]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def collinear?(other)
     !!scale_factor(other)
   end
@@ -312,7 +312,7 @@ class VectorNumber
   # @param other [VectorNumber, Any]
   # @return [Boolean]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def parallel?(other)
     !!scale_factor(other)&.nonzero?
   end
@@ -336,7 +336,7 @@ class VectorNumber
   # @param other [VectorNumber, Any]
   # @return [Boolean]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def codirectional?(other)
     scale_factor(other)&.positive? || false
   end
@@ -360,7 +360,7 @@ class VectorNumber
   # @param other [VectorNumber, Any]
   # @return [Boolean]
   #
-  # @since <<next>>
+  # @since 0.7.0
   def opposite?(other)
     scale_factor(other)&.negative? || false
   end
@@ -381,7 +381,7 @@ class VectorNumber
   # @return [VectorNumber]
   # @raise [ZeroDivisionError] if +other+ is a zero vector
   #
-  # @since <<next>>
+  # @since 0.7.0
   def vector_projection(other)
     return self if equal?(other) && has_direction?
 
@@ -410,7 +410,7 @@ class VectorNumber
   # @return [Numeric]
   # @raise [ZeroDivisionError] if +other+ is a zero vector
   #
-  # @since <<next>>
+  # @since 0.7.0
   def scalar_projection(other)
     return magnitude if equal?(other) && has_direction?
 
@@ -438,7 +438,7 @@ class VectorNumber
   # @return [VectorNumber]
   # @raise [ZeroDivisionError] if +other+ is a zero vector
   #
-  # @since <<next>>
+  # @since 0.7.0
   def vector_rejection(other)
     return VectorNumber.new if equal?(other) && has_direction?
 
@@ -467,7 +467,7 @@ class VectorNumber
   # @return [Numeric]
   # @raise [ZeroDivisionError] if +other+ is a zero vector
   #
-  # @since <<next>>
+  # @since 0.7.0
   def scalar_rejection(other)
     return 0.0 if equal?(other) && has_direction?
 

@@ -22,7 +22,7 @@ class VectorNumber
   # @return [Numeric]
   # @raise [ZeroDivisionError] if either +self+ or +other+ is a zero vector
   #
-  # @since <<next>>
+  # @since 0.7.0
   def cosine(other)
     has_direction?
     return 1.0 if equal?(other)
@@ -35,7 +35,7 @@ class VectorNumber
     (product / magnitude / other.magnitude).clamp(-1.0, 1.0)
   end
 
-  # @since <<next>>
+  # @since 0.7.0
   alias cosine_similarity cosine
 
   # Calculate Jaccard index of similarity between this vector and +other+.
@@ -59,7 +59,7 @@ class VectorNumber
   # @return [Rational]
   # @raise [ZeroDivisionError] if both vectors are zero vectors
   #
-  # @since <<next>>
+  # @since 0.7.0
   def jaccard_index(other)
     other = new([other]) unless VectorNumber === other
     intersection = units.intersection(other.units)
@@ -86,7 +86,7 @@ class VectorNumber
   # @return [Rational]
   # @raise [ZeroDivisionError] if both vectors are zero vectors
   #
-  # @since <<next>>
+  # @since 0.7.0
   def jaccard_similarity(other)
     other = new([other]) unless VectorNumber === other
     Rational(
