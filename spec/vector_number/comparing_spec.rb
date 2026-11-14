@@ -5,7 +5,7 @@ RSpec.describe VectorNumber do
   let(:composite_number) { num("y", :a, 5) }
 
   describe "#==" do
-    subject { (rand > 0.5) ? compared_number == other : other == compared_number }
+    subject { [compared_number == other, other == compared_number].all? }
 
     let(:compared_number) { num([13, 8.7.i, "oui", "ya", Object.new].sample(3)) }
 
@@ -163,7 +163,7 @@ RSpec.describe VectorNumber do
   end
 
   describe "#eql?" do
-    subject { (rand > 0.5) ? compared_number.eql?(other) : other.eql?(compared_number) }
+    subject { [compared_number.eql?(other), other.eql?(compared_number)].all? }
 
     let(:compared_number) { num([13, 8.7.i, "oui", "ya", Object.new].sample(3)) }
 
