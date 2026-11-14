@@ -309,6 +309,8 @@ class VectorNumber
 
   def vector_rejection: ((vector_instance | unit_type) other) -> vector_instance
 
+  def linear_transformation: (Hash[unit_type, vector_instance] matrix) -> vector_instance
+
   private
 
   def has_direction?: (?vector_instance vector) -> void

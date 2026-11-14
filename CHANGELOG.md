@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Next]
 
+**Added**
+- `#linear_transformation` method for applying linear transformations to vectors.
+
 [Compare v0.7.0...main](https://github.com/trinistr/vector_number/compare/v0.7.0...main)
 
 ## [v0.7.0] — 2026-02-20

@@ -648,4 +648,54 @@ RSpec.describe VectorNumber, :aggregate_failures do
       expect(composite_number.scalar_rejection(:a)).to eq composite_number.scalar_rejection(num(:a))
     end
   end
+
+  describe "#linear_transformation" do
+    subject(:transformed_vector) { v.linear_transformation(m) }
+
+    let(:v) { num({ a: 1 } => -2, "b" => 3, [] => 5) }
+
+    context "with an identity matrix" do
+      let(:v) { num(x: 2, y: 3, z: -3.3) }
+      let(:m) { { x: num(x: 1), y: num(y: 1), z: num(z: 1) } }
+
+      it "produces a copy of the vector if vector and matrix have the same units" do
+        expect(transformed_vector).to eq num(x: 2, y: 3, z: -3.3)
+      end
+
+      it "produces a truncated copy if matrix has less units than vector" do
+        m.delete(:y)
+        expect(transformed_vector).to eq num(x: 2, z: -3.3)
+      end
+
+      it "produces a trunacted copy if vector has less units than matrix" do
+        v = num(x: 2, z: -3.3)
+        expect(v.linear_transformation(m)).to eq num(x: 2, z: -3.3)
+      end
+    end
+
+    context "with a stretch matrix" do
+      let(:m) { { { a: 1 } => num({ a: 1 } => 1), "b" => num("b" => 2.5), [] => num([] => 1) } }
+
+      it "produces an appropriately stretched vector" do
+        expect(transformed_vector).to eq num({ a: 1 } => -2, "b" => 7.5, [] => 5)
+      end
+    end
+
+    context "with a rotation matrix" do
+      # 2D rotation of 90 degrees clockwise for simplicity
+      let(:m) { { { a: 1 } => num({ a: 1 } => 0, "b" => 1), "b" => num({ a: 1 } => -1, "b" => 0) } }
+
+      it "produces an appropriately rotated vector" do
+        expect(transformed_vector).to eq num({ a: 1 } => 3, "b" => 2)
+      end
+    end
+
+    context "with a matrix that has different units than the vector" do
+      let(:m) { { x: num({ a: 1 } => 2), y: num("b" => -2), z: num([] => 1, "b" => 1) } }
+
+      it "produces an appropriately transformed vector" do
+        expect(transformed_vector).to eq num(x: -4, y: -6, z: 8)
+      end
+    end
+  end
 end

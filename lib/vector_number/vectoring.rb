@@ -181,7 +181,7 @@ class VectorNumber
   #
   # As cross product is normally defined only for regular 3D space,
   # this method has unusual properties:
-  # - +basis+ argument specifies which triplet of dimensions to work in,
+  # - +dimensions+ argument specifies which triplet of dimensions to work in,
   # - all other dimensions are discarded.
   #
   # @example
@@ -193,18 +193,18 @@ class VectorNumber
   #   v.cross_product(0) # => (0)
   #
   # @param other [VectorNumber, Any]
-  # @param basis [Array(Any, Any, Any)] units specifying basis to use
+  # @param dimensions [Array(Any, Any, Any)] units specifying basis to use
   # @return [VectorNumber]
-  # @raise [ArgumentError] if +basis+ does not contain exactly 3 units
+  # @raise [ArgumentError] if +dimensions+ does not contain exactly 3 units
   #
   # @since 0.7.0
-  def cross_product(other, basis = %i[x y z]) # rubocop:disable Metrics/AbcSize
-    raise ArgumentError, "`basis` must contain exactly 3 units" if basis.size != 3
+  def cross_product(other, dimensions = %i[x y z]) # rubocop:disable Metrics/AbcSize
+    raise ArgumentError, "`dimensions` must contain exactly 3 units" if dimensions.size != 3
 
     other = new([other]) unless VectorNumber === other
     return VectorNumber.new if collinear?(other)
 
-    i, j, k = *basis
+    i, j, k = *dimensions
     new({
       i => (self[j] * other[k] - self[k] * other[j]), # steep:ignore UnresolvedOverloading
       j => (self[k] * other[i] - self[i] * other[k]), # steep:ignore UnresolvedOverloading
@@ -475,6 +475,23 @@ class VectorNumber
     has_direction?(other)
 
     (abs2 - dot_product(other)**2 / other.abs2)**0.5 # steep:ignore NoMethod
+  end
+
+  # Calculate linear transformation of this vector using transformation +matrix+.
+  #
+  # Due to the nature of +VectorNumber+, standard matrix representation is meaningless.
+  # Instead, rows and columns must be annotated with units corresponding to relevant
+  # dimensions — this takes the form of a hash of vectors. Each key in this hash
+  # corresponds to the dimension of the resultant vector.
+  #
+  # @param matrix [Hash{Any => VectorNumber}]
+  #   a hash where keys correspond to the dimensions of the resultant vector,
+  #   and values are rows of the transformation matrix
+  # @return [VectorNumber]
+  #
+  # @since <<next>>
+  def linear_transformation(matrix)
+    new(matrix.transform_values { |row| dot_product(row) })
   end
 
   private
